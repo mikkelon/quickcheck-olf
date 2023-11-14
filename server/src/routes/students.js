@@ -1,6 +1,6 @@
 import express, { response } from "express";
 import { db } from "../firebase.js";
-import { addDoc, collection, doc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDoc } from "firebase/firestore";
 const router = express.Router();
 
 
@@ -25,6 +25,21 @@ router.delete("/:id", async (req, res) => {
     try {
         const docDelete = await deleteDoc(doc(db, "students", id));
         res.status(200).send("Elev slettet");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - eleven findes ikke.");
+    }
+});
+
+/* Opdater elev */
+router.put("/:id", async (req, res) => {
+    let id = req.params.id;
+
+    try {
+        const docRef = doc(db, "students", id);
+        await updateDoc(docRef, req.body);
+        res.status(200).send("Elev opdateret");
     }
     catch (error) {
         console.log(error);
