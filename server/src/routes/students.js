@@ -20,7 +20,6 @@ router.post("/", async (req, res) => {
 
 /* Slet elev */
 router.delete("/:id", async (req, res) => {
-    console.log(req.body);
     let id = req.params.id;
 
     try {
