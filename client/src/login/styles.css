@@ -1,0 +1,26 @@
+/* center content inside body */
+body {
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+    justify-content: center;
+    align-items: center;
+    font-family: Playpen Sans, sans-serif;
+}
+
+body>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
