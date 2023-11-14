@@ -1,6 +1,6 @@
 import express, { response } from "express";
 import { db } from "../firebase.js";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc } from "firebase/firestore";
 const router = express.Router();
 
 
@@ -18,5 +18,20 @@ router.post("/", async (req, res) => {
     }
 });
 
+/* Slet elev */
+router.delete("/:id", async (req, res) => {
+    console.log(req.body);
+    console.log(req.params.id);
+    let id = req.params.id;
+
+    try {
+        const docDelete = await deleteDoc(doc(db, "students", id));
+        res.status(200).send("Elev slettet");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - eleven findes ikke.");
+    }
+});
 
 export default router;
