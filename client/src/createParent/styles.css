@@ -46,13 +46,14 @@ body>h1 {
 }
 
 .create {
-    display: flex;
+    width: fit-content;
+    height: fit-content;
+    display: grid;
+    /* center content */
+    place-items: center;
     margin-left: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     /* add border */
-    /* border: 1px solid #ccc; */
+    border: 1px solid #ccc;
     border-radius: 5px;
     padding: 15px;
 }
