@@ -1,26 +1,37 @@
-const createBtn = document.getElementById('createBtn');
+const createBtnContainer = document.getElementById('createBtn');
 const parentsContainer = document.getElementById('other-parents');
 
 var parentsFile = 'components/parent.html';
 var createBtnFile = 'components/createButton.html';
 
-createBtn.addEventListener('click', () => {
-    loadNewParent();
-});
-
 function loadNewParent() {
-    fetch(parentsContainer).then(function (response) {
-        console.log(response);
-        return response.text();
-    }).then(function (html) {
-        document.querySelector("parentForms").innerHTML = html;
+    fetch(parentsFile).then((response) => response.text()).then(function (html) {
+        parentsContainer.innerHTML += html;
     });
 
-    fetch(createBtnFile).then(function (response) {
-        return response.text();
-    }).then(function (html) {
-        document.querySelector("createBtn").innerHTML = html;
+    fetch(createBtnFile).then((response) => response.text())
+        .then(function (html) {
+            createCreateBtn(html);
+        });
+}
+
+function createCreateBtn(html) {
+    createBtnContainer.innerHTML = html;
+
+    const createBtn = document.getElementById('create');
+
+    createBtn.addEventListener('click', () => {
+        loadNewParent();
     });
 }
 
-loadNewParent();
+fetch(parentsFile).then((response) => response.text())
+    .then(function (html) {
+        document.getElementById('parentForms').innerHTML += html;
+    });
+
+
+fetch(createBtnFile).then((response) => response.text())
+    .then(function (html) {
+        createCreateBtn(html);
+    });
