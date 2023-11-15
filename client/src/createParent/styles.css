@@ -108,7 +108,17 @@ body>h1 {
 }
 
 .delete:hover {
-    background-color: #ff565653;
+    background-color: #ff565632;
     cursor: pointer;
     border-radius: 4px;
 }
+.add:hover {
+    background-color: #00f60828;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.back-icon:hover{
+    cursor: pointer;
+}
+
