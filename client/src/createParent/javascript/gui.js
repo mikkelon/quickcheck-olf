@@ -11,6 +11,9 @@ import {
     deleteChild
 } from './crud.js';
 
+// Fetch options for the grade dropdown from an API
+let gradeOptions;
+
 // Function to display parents on the UI
 function displayParents() {
     const parentsContainer = document.getElementById('parents');
@@ -84,11 +87,54 @@ function createParentElement(parent, index) {
     const emailForm = createFormElement('E-mail', 'text', 'email', parent.email);
     formsContainer.appendChild(emailForm);
 
+    const nameInput = nameForm.querySelector('.forms-input');
+    const phoneInput = phoneForm.querySelector('.forms-input');
+    const emailInput = emailForm.querySelector('.forms-input');
+
+    nameInput.addEventListener('blur', () => updateParentData(index, 'name', nameInput.value));
+    phoneInput.addEventListener('blur', () => updateParentData(index, 'phone', phoneInput.value));
+    emailInput.addEventListener('blur', () => updateParentData(index, 'email', emailInput.value));
+
     parentDiv.appendChild(headerDiv);
     parentDiv.appendChild(formsContainer);
 
     return parentDiv;
 }
+
+// Function to create a child element
+// function createChildElement(child, index) {
+//     const childDiv = document.createElement('div');
+//     childDiv.classList.add('container');
+
+//     const headerDiv = document.createElement('div');
+//     headerDiv.classList.add('container-header');
+//     headerDiv.innerHTML = `<h2>${child.name}</h2>
+//             <svg class="delete" width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                 <path
+//                     d="M16 8L8 16M8.00001 8L16 16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+//                     stroke="#FF5656" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+//             </svg>`;
+//     headerDiv.querySelector('.delete').addEventListener('click', () => deleteChildHandler(index));
+
+//     const formsContainer = document.createElement('div');
+//     formsContainer.classList.add('forms-container');
+
+//     const nameForm = createFormElement('Fulde navn', 'text', 'name', child.name);
+//     formsContainer.appendChild(nameForm);
+
+//     const gradeForm = createFormElement('Klasse', 'text', 'grade', child.grade);
+//     formsContainer.appendChild(gradeForm);
+
+//     const birthdayForm = createFormElement('Fødselsdag', 'date', 'birthday', child.birthday);
+//     formsContainer.appendChild(birthdayForm);
+
+//     childDiv.appendChild(headerDiv);
+//     childDiv.appendChild(formsContainer);
+
+//     return childDiv;
+// }
+
+// ...
 
 // Function to create a child element
 function createChildElement(child, index) {
@@ -111,17 +157,68 @@ function createChildElement(child, index) {
     const nameForm = createFormElement('Fulde navn', 'text', 'name', child.name);
     formsContainer.appendChild(nameForm);
 
-    const gradeForm = createFormElement('Klasse', 'text', 'grade', child.grade);
+    const gradeForm = createDropdownFormElement('Klasse', 'grade', gradeOptions, child.grade);
     formsContainer.appendChild(gradeForm);
 
     const birthdayForm = createFormElement('Fødselsdag', 'date', 'birthday', child.birthday);
     formsContainer.appendChild(birthdayForm);
+
+    const nameInput = nameForm.querySelector('.forms-input');
+    const gradeInput = gradeForm.querySelector('.forms-input');
+    const birthdayInput = birthdayForm.querySelector('.forms-input');
+
+    nameInput.addEventListener('blur', () => updateChildData(index, 'name', nameInput.value));
+    gradeInput.addEventListener('blur', () => updateChildData(index, 'grade', gradeInput.value));
+    birthdayInput.addEventListener('blur', () => updateChildData(index, 'birthday', birthdayInput.value));
 
     childDiv.appendChild(headerDiv);
     childDiv.appendChild(formsContainer);
 
     return childDiv;
 }
+
+// Function to fetch grade options from an API
+async function fetchGradeOptionsFromAPI() {
+    try {
+        const response = await fetch('https://example.com/api/grades'); // Replace with your API endpoint
+        const data = await response.json();
+        return data.options || [];
+    } catch (error) {
+        console.error('Error fetching grade options:', error);
+        return [];
+    }
+}
+
+// Function to create a dropdown form element
+function createDropdownFormElement(labelText, inputId, options, selectedOption) {
+    const formContainer = document.createElement('div');
+    formContainer.classList.add('form-container');
+
+    const label = document.createElement('label');
+    label.classList.add('forms-label');
+    label.textContent = labelText;
+
+    const select = document.createElement('select');
+    select.classList.add('forms-input');
+    select.setAttribute('id', inputId);
+
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        optionElement.textContent = option;
+        if (option === selectedOption) {
+            optionElement.selected = true;
+        }
+        select.appendChild(optionElement);
+    });
+
+    formContainer.appendChild(label);
+    formContainer.appendChild(select);
+
+    return formContainer;
+}
+
+// ...
 
 // Function to create a form element
 function createFormElement(labelText, inputType, inputId, inputValue) {
@@ -144,28 +241,6 @@ function createFormElement(labelText, inputType, inputId, inputValue) {
     return formContainer;
 }
 
-
-// Function to create buttons for adding parents and children
-function createAddButtons() {
-    const parentButton = createAddButton('createParent', 'tilføj forældre', () => {
-        // Handle the click event for adding a parent
-        // You can show a form or perform any other action
-        console.log('Add Parent button clicked');
-    });
-
-    const childButton = createAddButton('createChild', 'tilføj barn', () => {
-        // Handle the click event for adding a child
-        // You can show a form or perform any other action
-        console.log('Add Child button clicked');
-    });
-
-    const parentsContainer = document.getElementById('parents');
-    const childrenContainer = document.getElementById('children');
-
-    parentsContainer.appendChild(parentButton);
-    childrenContainer.appendChild(childButton);
-}
-
 // Function to create a button for adding a parent or child
 function createAddButton(id, text, clickHandler) {
     const addButton = document.createElement('div');
@@ -184,8 +259,6 @@ function createAddButton(id, text, clickHandler) {
         <p>${text}</p>`;
 
     addButton.addEventListener('click', clickHandler);
-
-
 
     return addButton;
 }
@@ -208,19 +281,27 @@ function deleteChildHandler(index) {
     displayChildren();
 }
 
+// Function to update parent data
+function updateParentData(index, field, value) {
+    const updatedParent = updateParent(index, field, value);
+    console.log('Updated Parent:', updatedParent);
+}
+
+// Function to update child data
+function updateChildData(index, field, value) {
+    const updatedChild = updateChild(index, field, value);
+    console.log('Updated Child:', updatedChild);
+}
+
 // Function to initialize the GUI
 function initGUI() {
+    // gradeOptions = await fetchGradeOptionsFromAPI();
+    gradeOptions = ["Grøn", "Rød", "Blå"]
+
     // Example: Display parents and children on page load
     displayParents();
     displayChildren();
-
-    // Create buttons for adding parents and children
-    // createAddButtons();
-
-    // You can add more event listeners and interactions here...
 }
-
-
 
 // Initialize the GUI when the DOM is ready
 document.addEventListener('DOMContentLoaded', initGUI);

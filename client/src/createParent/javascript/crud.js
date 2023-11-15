@@ -29,14 +29,14 @@ function getAllChildren() {
 }
 
 // Function to update parent by index
-function updateParent(index, newData) {
-    parentsData[index] = { ...parentsData[index], ...newData };
+function updateParent(index, field, newData) {
+    parentsData[index][field] = newData;
     return parentsData[index];
 }
 
 // Function to update child by index
-function updateChild(index, newData) {
-    childrenData[index] = { ...childrenData[index], ...newData };
+function updateChild(index, field, newData) {
+    childrenData[index][field] = newData;
     return childrenData[index];
 }
 
