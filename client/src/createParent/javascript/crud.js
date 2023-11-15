@@ -1,4 +1,5 @@
 // crud.js
+import { createParents } from "../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
@@ -9,6 +10,10 @@ function createParent(name, phone, email) {
     const newParent = { name, phone, email };
     parentsData.push(newParent);
     return newParent;
+}
+
+function submitToDatabase() {
+    createParents(parentsData, childrenData);
 }
 
 // Function to create a new child
@@ -60,5 +65,6 @@ export {
     updateParent,
     updateChild,
     deleteParent,
-    deleteChild
+    deleteChild,
+    submitToDatabase
 };

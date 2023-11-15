@@ -1,15 +1,18 @@
 // gui.js
 
 import {
-  createParent,
-  createChild,
-  getAllParents,
-  getAllChildren,
-  updateParent,
-  updateChild,
-  deleteParent,
-  deleteChild,
-} from "./crud.js";
+    createParent,
+    createChild,
+    getAllParents,
+    getAllChildren,
+    updateParent,
+    updateChild,
+    deleteParent,
+    deleteChild,
+    submitToDatabase
+} from './crud.js';
+
+import { getClasses } from '../../datahandler.js';
 
 // Fetch options for the grade dropdown from an API
 let gradeOptions;
@@ -26,17 +29,13 @@ function displayParents() {
     parentsContainer.appendChild(parentDiv);
   });
 
-  const parentButton = createAddButton(
-    "createParent",
-    "Tilføj Forældre",
-    () => {
-      // Handle the click event for adding a child
-      // You can show a form or perform any other action
-      console.log("Add Parent button clicked");
-      createParent("", "", "");
-      displayParents();
-    }
-  );
+    const parentButton = createAddButton('createParent', 'Tilføj Forældre', () => {
+        // Handle the click event for adding a child
+        // You can show a form or perform any other action
+        console.log('Add Parent button clicked');
+        createParent("", "", "");
+        displayParents();
+    });
 
   parentsContainer.appendChild(parentButton);
 }
@@ -53,13 +52,13 @@ function displayChildren() {
     childrenContainer.appendChild(childDiv);
   });
 
-  const createButton = createAddButton("createChild", "Tilføj Barn", () => {
-    // Handle the click event for adding a parent
-    // You can show a form or perform any other action
-    console.log("Add Children button clicked");
-    createChild("", "", "");
-    displayChildren();
-  });
+    const createButton = createAddButton('createChild', 'Tilføj Barn', () => {
+        // Handle the click event for adding a parent
+        // You can show a form or perform any other action
+        console.log('Add Children button clicked');
+        createChild("test", "2", "2020-02-02");
+        displayChildren();
+    });
 
   childrenContainer.appendChild(createButton);
 }
@@ -117,6 +116,8 @@ function createParentElement(parent, index) {
 
   return parentDiv;
 }
+
+// ...
 
 // Function to create a child element
 function createChildElement(child, index) {
@@ -177,17 +178,6 @@ function createChildElement(child, index) {
   return childDiv;
 }
 
-// Function to fetch grade options from an API
-async function fetchGradeOptionsFromAPI() {
-  try {
-    const response = await fetch("https://example.com/api/grades"); // Replace with your API endpoint
-    const data = await response.json();
-    return data.options || [];
-  } catch (error) {
-    console.error("Error fetching grade options:", error);
-    return [];
-  }
-}
 
 // Function to create a dropdown form element
 function createDropdownFormElement(
@@ -207,15 +197,15 @@ function createDropdownFormElement(
   select.classList.add("forms-input");
   select.setAttribute("id", inputId);
 
-  options.forEach((option) => {
-    const optionElement = document.createElement("option");
-    optionElement.value = option;
-    optionElement.textContent = option;
-    if (option === selectedOption) {
-      optionElement.selected = true;
-    }
-    select.appendChild(optionElement);
-  });
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option.colorLabel;
+        optionElement.textContent = option.colorLabel;
+        if (option === selectedOption) {
+            optionElement.selected = true;
+        }
+        select.appendChild(optionElement);
+    });
 
   formContainer.appendChild(label);
   formContainer.appendChild(select);
@@ -299,13 +289,25 @@ function updateChildData(index, field, value) {
 }
 
 // Function to initialize the GUI
-function initGUI() {
-  // gradeOptions = await fetchGradeOptionsFromAPI();
-  gradeOptions = ["Grøn", "Rød", "Blå"];
+async function initGUI() {
+    // gradeOptions = await fetchGradeOptionsFromAPI();
+    getClasses().then((data) => {
+        gradeOptions = data;
+    }).then(() => {
+        // Example: Display parents and children on page load
+        displayParents();
+        displayChildren();
+    });
 
-  // Example: Display parents and children on page load
-  displayParents();
-  displayChildren();
+    const submit = document.getElementById('submit');
+    submit.addEventListener('click', () => {
+        submitToDatabase();
+    });
+
+    const cancel = document.getElementById('cancel');
+    cancel.addEventListener('click', () => {
+        window.location.href = '../index.html';
+    });
 }
 
 // Initialize the GUI when the DOM is ready

@@ -45,12 +45,17 @@ router.get("/:classId", async (req, res) => {
 router.post("/", async (req, res) => {
   console.log(req.body);
 
+  let results = [];
+
   try {
-    const doc = await addDoc(collection(db, "students"), req.body);
-    res.status(201).send("Elev oprettet");
+    for (let i = 0; i < req.body.length; i++) {
+      const doc = await addDoc(collection(db, "students"), req.body[i]);
+      results.push({ id: doc.id, ...req.body[i] });
+    }
+    res.status(201).send(results);
   } catch (error) {
     console.log(error);
-    res.status(400).send("Fejl ved oprettelse af elev");
+    res.status(400).send("Fejl ved oprettelse af elever");
   }
 });
 

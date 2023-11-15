@@ -48,3 +48,65 @@ export const getClasses = async () => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+export const createStudents = async (students) => {
+  const url = "http://localhost:6969/students";
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(students),
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching classes:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+}
+
+export const createParents = async (parents, children) => {
+  const url = "http://localhost:6969/parents";
+
+  const result = createStudents(children)
+    .then((data) => {
+      return data.map((student) => student.id);
+    })
+    .then(async (childrenIds) => {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ parents, childrenIds }),
+      };
+
+      try {
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error fetching classes:", error);
+        throw error; // Rethrow the error for the caller to handle
+      }
+    });
+
+  return result;
+};
+
