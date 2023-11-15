@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Architects Daughter", sans-serif;
+  user-select: none;
+}
+
+header {
+  background-color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-bottom: 1px solid #ccc; */
+  position: relative;
+}
+
+header img {
+  width: 3rem;
+}
+
+header .logo {
+  width: 3rem;
+  justify-self: center;
+}
+
+header .back-btn {
+  position: absolute;
+  left: 1rem;
+}
+
+main {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 4rem;
+  /* center the grid */
+  justify-items: center;
+  margin: 0 auto;
+  max-width: fit-content;
+}
+
+.card {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 300px;
+  height: 150px;
+  display: flex;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.card .avatar {
+  width: 75px;
+  /* keep aspect ratio */
+  height: 75px;
+  margin-right: 1rem;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card .name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  align-self: top;
+  justify-self: center;
+}
+
+.card .location {
+  font-size: 0.75rem;
+  color: #666;
+  justify-self: center;
+}
+
+.card .status {
+  font-size: 1.25rem;
+  justify-self: center;
+}
+
+.checked-in {
+  background-color: #ffe6e6;
+}
+
+.checked-out {
+  background-color: #e9fcee;
+}
+
+.checked-in .status {
+  color: #ff5656;
+}
+
+.checked-out .status {
+  color: #56e87f;
+}
