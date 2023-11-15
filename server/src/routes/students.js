@@ -5,9 +5,13 @@ import {
   collection,
   doc,
   deleteDoc,
-  getDocs,
+  updateDoc,
+  getDoc,
   query,
   where,
+  getDocs,
+  setDoc,
+  DocumentReference,
   writeBatch,
 } from "firebase/firestore";
 const router = express.Router();
@@ -140,6 +144,42 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).send("Fejl - eleven findes ikke.");
+  }
+});
+
+/* Hent elever tilstede*/
+router.get("/checkedIn", async (req, res) => {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, "students"), where("checkedIn", "==", true))
+    );
+    const students = querySnapshot.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - elever ikke fundet.");
+  }
+});
+
+/* Opdater elev tilstedeværelse */
+router.put("/toggleCheckedIn/:id", async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const docRef = doc(db, "students", studentId);
+    const studentDoc = await getDoc(docRef);
+
+    if (!studentDoc.exists()) {
+      throw new Error("Eleven findes ikke.");
+    }
+    const currentCheckedInStatus = studentDoc.data().checkedIn;
+    const updatedCheckedInStatus = !currentCheckedInStatus;
+    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
+    res
+      .status(200)
+      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - kunne ikke opdatere elev.");
   }
 });
 
