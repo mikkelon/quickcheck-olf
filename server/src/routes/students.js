@@ -1,12 +1,6 @@
 import express from "express";
 import { db } from "../firebase.js";
-import {
-    addDoc,
-    collection,
-    doc,
-    deleteDoc,
-    getDocs,
-} from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDoc, query, where, getDocs } from "firebase/firestore";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -60,6 +54,33 @@ router.delete("/:id", async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(404).send("Fejl - eleven findes ikke.");
+    }
+});
+
+/* Opdater elev */
+router.put("/:id", async (req, res) => {
+    let id = req.params.id;
+
+    try {
+        const docRef = doc(db, "students", id);
+        await updateDoc(docRef, req.body);
+        res.status(200).send("Elev opdateret");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - eleven findes ikke.");
+    }
+});
+
+/* Hent elever tilstede*/
+router.get("/checkedIn", async (req, res) => {
+    try {
+        const querySnapshot = await getDocs(query(collection(db, "students"), where("checkedIn", "==", true)));
+        const students = querySnapshot.docs.map(doc => doc.data());
+        res.status(200).send(students);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - elever ikke fundet.");
     }
 });
 
