@@ -24,3 +24,6 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
+button:hover {
+    transform: scale(1.05);
+}
