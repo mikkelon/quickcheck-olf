@@ -10,9 +10,21 @@ const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
 const renderCards = async () => {
-  const data = await getStudentsByClassId(classId);
-  console.log(data);
-  data.forEach((student) => {
+  const students = await getStudentsByClassId(classId);
+  // Sort students by checked in status
+  // Checked in students first
+  students.sort((a, b) => {
+    if (a.checkedIn && !b.checkedIn) {
+      return -1;
+    }
+    if (!a.checkedIn && b.checkedIn) {
+      return 1;
+    }
+    return 0;
+  });
+
+  console.log(students);
+  students.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
@@ -41,7 +53,7 @@ const renderCards = async () => {
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
-    cardStatus.textContent = checkedIn ? "Ikke hentet" : "Hentet";
+    cardStatus.textContent = checkedIn ? "Tjekket ind" : "Tjekket ud";
     card.classList.add(checkedIn ? "checked-in" : "checked-out");
     textContainer.appendChild(cardStatus);
 
@@ -56,11 +68,11 @@ const renderCards = async () => {
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
         card.classList.add("checked-out");
-        status.innerHTML = "Hentet";
+        status.innerHTML = "Tjekket ud";
       } else {
         card.classList.add("checked-in");
         card.classList.remove("checked-out");
-        status.innerHTML = "Ikke hentet";
+        status.innerHTML = "Tjekket ind";
       }
     });
   });
