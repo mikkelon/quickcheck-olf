@@ -1,33 +1,40 @@
-export const parents = [
-    // {
-    //     id: 1,
-    //     name: 'Parent 1',
-    //     phone: '1234567890',
-    //     email: 'parent@email.com'
-    // }
-];
-export const children = [];
+// app.js
 
-export function addParent(parent) {
-    parents.push(parent);
-}
+import {
+    createParent,
+    createChild,
+    getAllParents,
+    getAllChildren,
+    updateParent,
+    updateChild,
+    deleteParent,
+    deleteChild
+} from './crud.js';
 
-export function addChild(child) {
-    children.push(child);
-}
+// Example usage:
+// Create parents
+const parent1 = createParent('Parent 1', '123456789', 'parent1@example.com');
+const parent2 = createParent('Parent 2', '987654321', 'parent2@example.com');
 
-export function removeParent(parent) {
-    const index = parents.indexOf(parent);
+// Create children
+const child1 = createChild('Child 1', 'Grade 1', '2023-01-01');
+const child2 = createChild('Child 2', 'Grade 2', '2023-02-01');
 
-    if (index > -1) {
-        parents.splice(index, 1);
-    }
-}
+// Get all parents and children
+const allParents = getAllParents();
+const allChildren = getAllChildren();
 
-export function removeChild(child) {
-    const index = children.indexOf(child);
+console.log('All Parents:', allParents);
+console.log('All Children:', allChildren);
 
-    if (index > -1) {
-        children.splice(index, 1);
-    }
-}
+// Update parent
+const updatedParent = updateParent(0, { phone: '999999999' });
+console.log('Updated Parent:', updatedParent);
+
+// Delete child
+const deletedChild = deleteChild(0);
+console.log('Deleted Child:', deletedChild);
+
+// Get all children after deletion
+const childrenAfterDeletion = getAllChildren();
+console.log('Children After Deletion:', childrenAfterDeletion);
