@@ -50,12 +50,8 @@ router.put("/:id", async (req, res) => {
 /* Hent elever tilstede*/
 router.get("/checkedIn", async (req, res) => {
     try {
-        // const fbQuery = query(collection(db, "students"), where("checkedIn", "==", true));
-        // const studentsDocs = await getDocs(collection(db, "students"), where("checkedIn", "==", true));
         const querySnapshot = await getDocs(query(collection(db, "students"), where("checkedIn", "==", true)));
-        // const students = [];
         const students = querySnapshot.docs.map(doc => doc.data());
-        console.log(students);
         res.status(200).send(students);
     } catch (error) {
         console.log(error);
