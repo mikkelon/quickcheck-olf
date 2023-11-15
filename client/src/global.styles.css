@@ -27,9 +27,3 @@
     font-weight: bold;
     margin-left: 1rem;
 }
-
-.vertical-line {
-    border-left: 5px solid #ccc;
-    height: 100%;
-    margin: 0px 10px 0px 10px;
-}

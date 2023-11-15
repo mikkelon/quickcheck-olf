@@ -9,7 +9,7 @@ var createChildButtonFile = "components/createChildButton.html";
 var childrenFile = "components/child.html";
 
 var parentForms = 1;
-var childForms = 0;
+var childForms = 1;
 
 function loadParents() {
   parentsContainer.innerHTML = "";

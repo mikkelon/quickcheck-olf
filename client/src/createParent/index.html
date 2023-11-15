@@ -29,16 +29,27 @@
         <button class="logout">Log ud</button>
     </div>
 
-    <h1>Opret Forældre</h1>
 
-    <div class="parents-section">
-        <div id="parents">
-        </div>
-        <!-- <div id="createBtn" /> -->
+    <div class="sectionsContainer">
+        <section>
+            <h1>Opret Forældre</h1>
+            <div id="parents" class="nodeContainer">
+            </div>
+            <!-- <div id="createBtn" /> -->
+        </section>
+
+        <div class="horizontal-line"></div>
+
+        <section>
+            <h1>Tilføj Børn</h1>
+            <div id="children" class="nodeContainer"></div>
+        </section>
     </div>
-    <div class="horizontal-line"></div>
-    <div class="children-section">
-        <div id="children"></div>
+
+    <div class="btn-container">
+        <button id="cancel" class="btn">Anullér</button>
+        <button id="submit" class="btn">Opret</button>
     </div>
 </body>
+
 </html>
