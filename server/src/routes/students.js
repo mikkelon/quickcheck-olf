@@ -41,7 +41,7 @@ router.get("/:classId", async (req, res) => {
   }
 });
 
-/* Opret elev */
+/* Opret elev(er) */
 router.post("/", async (req, res) => {
   console.log(req.body);
 

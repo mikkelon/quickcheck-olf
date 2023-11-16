@@ -42,11 +42,9 @@ router.get("/:classId", async (req, res) => {
 
 /* Opret forælder */
 router.post("/", async (req, res) => {
-  console.log(req.body);
-
   try {
     const doc = await addDoc(collection(db, "parents"), req.body);
-    res.status(201).send("Forælder oprettet");
+    res.status(201).send({ id: doc.id, ...req.body });
   } catch (error) {
     console.log(error);
     res.status(400).send("Fejl ved oprettelse af forælder");

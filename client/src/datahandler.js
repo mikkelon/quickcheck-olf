@@ -77,13 +77,14 @@ export const createStudents = async (students) => {
 }
 
 export const createParents = async (parents, children) => {
-  const url = "http://localhost:6969/parents";
 
   const result = createStudents(children)
     .then((data) => {
       return data.map((student) => student.id);
     })
     .then(async (childrenIds) => {
+      const url = "http://localhost:6969/parents";
+
       const options = {
         method: "POST",
         headers: {

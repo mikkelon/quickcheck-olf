@@ -56,7 +56,7 @@ function displayChildren() {
         // Handle the click event for adding a parent
         // You can show a form or perform any other action
         console.log('Add Children button clicked');
-        createChild("test", "2", "2020-02-02");
+        createChild("", "", "");
         displayChildren();
     });
 
