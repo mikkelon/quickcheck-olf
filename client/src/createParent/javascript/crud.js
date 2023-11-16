@@ -13,7 +13,7 @@ function createParent(name, phone, email) {
 }
 
 function submitToDatabase() {
-    createParents(parentsData, childrenData);
+    return createParents(parentsData, childrenData);
 }
 
 // Function to create a new child
@@ -57,6 +57,13 @@ function deleteChild(index) {
     return deletedChild[0];
 }
 
+function clear() {
+    parentsData = [];
+    childrenData = [];
+    createChild("", "", "");
+    createParent("", "", "");
+}
+
 export {
     createParent,
     createChild,
@@ -66,5 +73,6 @@ export {
     updateChild,
     deleteParent,
     deleteChild,
-    submitToDatabase
+    submitToDatabase,
+    clear
 };

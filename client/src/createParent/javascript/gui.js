@@ -1,15 +1,16 @@
 // gui.js
 
 import {
-    createParent,
-    createChild,
-    getAllParents,
-    getAllChildren,
-    updateParent,
-    updateChild,
-    deleteParent,
-    deleteChild,
-    submitToDatabase
+  createParent,
+  createChild,
+  getAllParents,
+  getAllChildren,
+  updateParent,
+  updateChild,
+  deleteParent,
+  deleteChild,
+  submitToDatabase,
+  clear
 } from './crud.js';
 
 import { getClasses } from '../../datahandler.js';
@@ -29,13 +30,13 @@ function displayParents() {
     parentsContainer.appendChild(parentDiv);
   });
 
-    const parentButton = createAddButton('createParent', 'Tilføj Forældre', () => {
-        // Handle the click event for adding a child
-        // You can show a form or perform any other action
-        console.log('Add Parent button clicked');
-        createParent("", "", "");
-        displayParents();
-    });
+  const parentButton = createAddButton('createParent', 'Tilføj Forældre', () => {
+    // Handle the click event for adding a child
+    // You can show a form or perform any other action
+    console.log('Add Parent button clicked');
+    createParent("", "", "");
+    displayParents();
+  });
 
   parentsContainer.appendChild(parentButton);
 }
@@ -52,13 +53,13 @@ function displayChildren() {
     childrenContainer.appendChild(childDiv);
   });
 
-    const createButton = createAddButton('createChild', 'Tilføj Barn', () => {
-        // Handle the click event for adding a parent
-        // You can show a form or perform any other action
-        console.log('Add Children button clicked');
-        createChild("", "", "");
-        displayChildren();
-    });
+  const createButton = createAddButton('createChild', 'Tilføj Barn', () => {
+    // Handle the click event for adding a parent
+    // You can show a form or perform any other action
+    console.log('Add Children button clicked');
+    createChild("", "", "");
+    displayChildren();
+  });
 
   childrenContainer.appendChild(createButton);
 }
@@ -197,15 +198,15 @@ function createDropdownFormElement(
   select.classList.add("forms-input");
   select.setAttribute("id", inputId);
 
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option.colorLabel;
-        optionElement.textContent = option.colorLabel;
-        if (option === selectedOption) {
-            optionElement.selected = true;
-        }
-        select.appendChild(optionElement);
-    });
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option.colorLabel;
+    optionElement.textContent = option.colorLabel;
+    if (option === selectedOption) {
+      optionElement.selected = true;
+    }
+    select.appendChild(optionElement);
+  });
 
   formContainer.appendChild(label);
   formContainer.appendChild(select);
@@ -288,26 +289,53 @@ function updateChildData(index, field, value) {
   console.log("Updated Child:", updatedChild);
 }
 
+function forælderOprettet(family) {
+  const informationContainer = document.getElementById("information");
+  // scroll to top
+  window.scrollTo(0, 0);
+  // setTimeout(() => {
+  //   window.location.href = './index.html';
+  // }, 1500);
+
+  clear();
+  displayParents();
+  displayChildren();
+
+  if (family) {
+    informationContainer.innerHTML = `<p>Forældre oprettet</p>`;
+    informationContainer.classList.add("success");
+  } else {
+    informationContainer.innerHTML = `<p>Kunne ikke oprette forældre</p>`;
+    informationContainer.classList.add("error");
+  }
+
+
+
+}
+
+
+
 // Function to initialize the GUI
 async function initGUI() {
-    // gradeOptions = await fetchGradeOptionsFromAPI();
-    getClasses().then((data) => {
-        gradeOptions = data;
-    }).then(() => {
-        // Example: Display parents and children on page load
-        displayParents();
-        displayChildren();
-    });
+  // gradeOptions = await fetchGradeOptionsFromAPI();
+  getClasses().then((data) => {
+    gradeOptions = data;
+  }).then(() => {
+    // Example: Display parents and children on page load
+    displayParents();
+    displayChildren();
+  });
 
-    const submit = document.getElementById('submit');
-    submit.addEventListener('click', () => {
-        submitToDatabase();
-    });
+  const submit = document.getElementById('submit');
+  submit.addEventListener('click', () => {
+    const family = submitToDatabase();
+    forælderOprettet(family);
+  });
 
-    const cancel = document.getElementById('cancel');
-    cancel.addEventListener('click', () => {
-        window.location.href = '../index.html';
-    });
+  const cancel = document.getElementById('cancel');
+  cancel.addEventListener('click', () => {
+    window.location.href = '../index.html';
+  });
 }
 
 // Initialize the GUI when the DOM is ready
