@@ -73,7 +73,7 @@ router.post("/", async (req, res) => {
         throw new Error("Fejl - manglende data");
       }
       student.checkedIn = false; // Checked in status is false by default
-      student.parents = ""; // ID of parent object will be added after parent creation
+      student.parentsId = ""; // ID of parent object will be added after parent creation
       const studentRef = doc(collection(db, "students")); // Create reference to student object
       batch.set(studentRef, student); // Add student to batch
       studentIds.push(studentRef.id); // Add student ID to array
