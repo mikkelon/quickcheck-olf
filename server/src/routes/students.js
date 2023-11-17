@@ -8,6 +8,7 @@ import {
   getDocs,
   query,
   where,
+  writeBatch,
 } from "firebase/firestore";
 const router = express.Router();
 
@@ -42,44 +43,87 @@ router.get("/:classId", async (req, res) => {
 });
 
 /* Opret elev(er) */
+/**
+ * Takes an object containing an array of students and an array of parents
+ * Adds the students and the parents to the database
+ * Links the students to the parents and vice versa
+ */
 router.post("/", async (req, res) => {
   console.log(req.body);
+  // Rough data validation
+  if (!req.body) {
+    throw new Error("Fejl - manglende data");
+  } else if (!req.body.students || !req.body.parents) {
+    throw new Error("Fejl - manglende data");
+  }
+
+  const students = req.body.students;
+  const parents = req.body.parents;
+
   try {
-    let student = req.body;
-    let finalStudent = {};
-    if (student.name && student.classId && student.birthday) {
-      if (typeof student.name == "string") {
-        finalStudent.name = student.name;
-      } else {
-        throw new Error("Name should be a string");
+    // Add children to database
+    const studentIds = []; // Array to hold the IDs of the students - will be added to parent object later
+
+    let batch = writeBatch(db); // Use batch to write all students at once
+
+    // TODO: Maybe add further validation of student data
+    for (const student of students) {
+      // If any of the required fields are missing, return an error
+      if (!student.name || !student.classId || !student.birthday) {
+        throw new Error("Fejl - manglende data");
       }
-      if (typeof student.classId == "string") {
-        const classes = await getDocs(collection(db, "classes"));
-        let found = false;
-        classes.forEach((doc) => {
-          if (doc.id == student.classId) {
-            found = true;
-            finalStudent.classId = doc.id;
-          }
-        });
-        if (!found) {
-          throw new Error("Class not found");
-        }
-      } else {
-        throw new Error("classId should be string");
-      }
-      if (
-        typeof student.birthday === "string" &&
-        student.birthday.length === 8
-      ) {
-        finalStudent.birthday = student.birthday;
-      } else {
-        throw new Error("Birthday should be string and 8 digits");
-      }
+      student.checkedIn = false; // Checked in status is false by default
+      student.parents = ""; // ID of parent object will be added after parent creation
+      const studentRef = doc(collection(db, "students")); // Create reference to student object
+      batch.set(studentRef, student); // Add student to batch
+      studentIds.push(studentRef.id); // Add student ID to array
     }
-    finalStudent.checkedIn = false;
-    const doc = await addDoc(collection(db, "students"), finalStudent);
-    res.status(201).send("Elev oprettet");
+
+    await batch.commit(); // Commit batch to database
+
+    // Add parents to database
+    const parentId = ""; // ID of parent object will be added to student after parent creation
+
+    // Format for parent object:
+    // {
+    //   students: [
+    //     "studentId1",
+    //     "studentId2",
+    //     ...
+    //   ],
+    //   parents: [
+    //     {
+    //       name: "Parent Name",
+    //       phone: "12345678",
+    //       email: ""
+    //     },
+    //     ...
+    //   ],
+    // }
+
+    const parentObject = {
+      students: studentIds,
+      parents: parents,
+    };
+    console.log(parentObject);
+
+    const parentDoc = await addDoc(collection(db, "parents"), parentObject); // Add parent to database
+    const parentDocId = parentDoc.id; // Get ID of parent object
+
+    // Add parent ID to students
+
+    batch = writeBatch(db); // Use batch to update all students at once
+
+    for (const studentId of studentIds) {
+      const studentDoc = doc(collection(db, "students"), studentId); // Create reference to student object
+      // Update parents array in student object
+      batch.update(studentDoc, {
+        parents: parentDocId,
+      });
+    }
+    await batch.commit(); // Commit batch to database
+
+    res.status(201).send(studentIds);
   } catch (error) {
     console.log(error);
     res.status(400).send(error.toString());
