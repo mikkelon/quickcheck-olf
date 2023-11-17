@@ -19,15 +19,21 @@ header img {
 }
 
 main {
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
   width: 75%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  /* gap: 1rem; */
 }
 
 .title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.subheader {
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -36,13 +42,14 @@ main {
   justify-content: center;
   align-items: center;
   width: 100%;
-  outline: 1px solid blue;
+  /* outline: 1px solid blue; */
 }
 
 .search-bar {
   width: 50%;
   position: relative;
   display: flex;
+  margin-bottom: 1rem;
 }
 
 .search-bar input {
@@ -63,8 +70,64 @@ main {
   top: 0.5rem;
 }
 
-.container .filter-options {
+.filter-options {
   gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-options button {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.filter-options button:hover {
+  background-color: #eee;
+}
+
+#class-select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+#active-filters-wrapper {
+  display: none;
+  flex-direction: column;
+}
+
+#active-filters {
+  outline: 1px solid #ccc;
+  border-radius: 5px;
+  min-height: 3rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.active-filter {
+  outline: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remove-filter {
+  width: 1rem;
+  height: 1rem;
+  background-image: url("../../assets/icons/close-square-thin.svg");
+  background-size: cover;
+}
+
+.remove-filter:hover {
+  background-image: url("../../assets/icons/close-square-bold.svg");
+  cursor: pointer;
 }
 
 .students-table {
