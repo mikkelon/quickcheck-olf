@@ -330,12 +330,7 @@ async function initGUI() {
   submit.addEventListener('click', () => {
     const family = submitToDatabase();
     forælderOprettet(family);
-  });
-
-  const cancel = document.getElementById('cancel');
-  cancel.addEventListener('click', () => {
-    window.location.href = '../index.html';
-  });
+  }); 
 }
 
 // Initialize the GUI when the DOM is ready
@@ -350,4 +345,9 @@ logout.addEventListener("click", () => {
 const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
   window.location.href = "../dashboard/index.html";
+});
+
+const cancel = document.getElementById('cancel');
+cancel.addEventListener('click', () => {
+  window.location.href = './index.html';
 });
