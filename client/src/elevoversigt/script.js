@@ -17,14 +17,14 @@ const renderStudent = (student) => {
   studentName.textContent = student.name ? student.name : "N/A";
   studentElement.appendChild(studentName);
 
-  const studentClass = document.createElement("p");
-  studentClass.textContent = student.class?.colorLabel
-    ? student.class.colorLabel
-    : "N/A";
-  studentClass.style.color = student.class?.color
-    ? student.class.color
-    : "black";
-  studentElement.appendChild(studentClass);
+  const studentClassDiv = document.createElement("div");
+  studentClassDiv.classList.add("student-class");
+  studentClassDiv.style.backgroundColor = student.class.color;
+  studentClassDiv.textContent = student.class.colorLabel;
+  if (student.class.colorLabel.toLowerCase() === "hvid") {
+    studentClassDiv.style.outline = "1px solid #000";
+  }
+  studentElement.appendChild(studentClassDiv);
 
   const studentCheckBtn = document.createElement("div");
   studentCheckBtn.classList.add("check-btn");
