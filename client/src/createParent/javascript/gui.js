@@ -180,10 +180,7 @@ function createChildElement(child, index) {
     );
   });
   birthdayInput.addEventListener("blur", () => {
-    const birthday = birthdayInput.value;
-    // change birthday format to ddmmyyyy
-    const birthdayArray = birthday.split("-");
-    const newBirthday = birthdayArray[2] + birthdayArray[1] + birthdayArray[0];
+    const newBirthday = event.target.value;
     updateChildData(index, "birthday", newBirthday);
   });
 
@@ -198,8 +195,11 @@ function createDropdownFormElement(
   labelText,
   inputId,
   options,
-  selectedOption
+  selectedClassId
 ) {
+  console.log("Creating dropdown form element");
+  console.log("Selected classID:", selectedClassId);
+
   const formContainer = document.createElement("div");
   formContainer.classList.add("form-container");
 
@@ -221,7 +221,11 @@ function createDropdownFormElement(
     select.appendChild(optionElement);
   });
 
-  select.value = "";
+  // Find index of option where data-class-id matches selectedClassId
+  const selectedIndex = options.findIndex(
+    (option) => option.id === selectedClassId
+  );
+  select.selectedIndex = selectedIndex;
 
   formContainer.appendChild(label);
   formContainer.appendChild(select);
