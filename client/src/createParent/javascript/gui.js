@@ -302,10 +302,10 @@ function forælderOprettet(family) {
   displayChildren();
 
   if (family) {
-    informationContainer.innerHTML = `<p>Forældre oprettet</p>`;
+    informationContainer.innerHTML = `<p>Familie oprettet</p>`;
     informationContainer.classList.add("success");
   } else {
-    informationContainer.innerHTML = `<p>Kunne ikke oprette forældre</p>`;
+    informationContainer.innerHTML = `<p>Kunne ikke oprette familie</p>`;
     informationContainer.classList.add("error");
   }
 
