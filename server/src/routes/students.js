@@ -118,7 +118,7 @@ router.post("/", async (req, res) => {
       const studentDoc = doc(collection(db, "students"), studentId); // Create reference to student object
       // Update parents array in student object
       batch.update(studentDoc, {
-        parents: parentDocId,
+        parentsId: parentDocId,
       });
     }
     await batch.commit(); // Commit batch to database
