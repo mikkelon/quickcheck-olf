@@ -44,6 +44,21 @@ router.get("/:classId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const doc = await addDoc(collection(db, "parents"), req.body);
+    // Get students where parent id is in childrenIds
+    const firebaseQuery = query(
+      collection(db, "students"),
+      where("parentId", "in", req.body.childrenIds)
+    );
+    // Add parent id to students
+    const studentsDocs = await getDocs(firebaseQuery);
+    const students = studentsDocs.docs.map((doc) => doc.data());
+    const studentsWithParent = students.map((student) => {
+      return { ...student, parentId: doc.id };
+    });
+    // Update students
+    studentsWithParent.forEach(async (student) => {
+      await addDoc(collection(db, "students"), student);
+    });
     res.status(201).send({ id: doc.id, ...req.body });
   } catch (error) {
     console.log(error);
