@@ -97,4 +97,6 @@ router.delete("/:id", async (req, res) => {
     console.log(error);
     res.status(404).send("Fejl - eleven findes ikke.");
   }
- });
+});
+
+export default router;
