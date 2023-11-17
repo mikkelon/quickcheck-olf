@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-/* Slet elev */
+/* Slet forælder */
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
 
@@ -61,6 +61,24 @@ router.delete("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).send("Fejl - forælder findes ikke.");
+  }
+});
+
+
+/* Se børn */
+router.get("/:parentsID/children", async (req, res) => {
+  const parentsID = req.params.parentsID;
+  try {
+    const firebaseQuery = query(
+      collection(db, "students"),
+      where("parentsID", "==", parentsID)
+    );
+    const studentsDocs = await getDocs(firebaseQuery);
+    const students = studentsDocs.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af elever");
   }
 });
 
