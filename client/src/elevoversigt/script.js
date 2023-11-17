@@ -43,8 +43,28 @@ const renderStudent = (student) => {
   studentContainer.appendChild(studentElement);
 };
 
+function sortByClassThenCheckedInStatus(a, b) {
+  console.log("sorting");
+  // First, compare the class IDs
+  const classComparison = a.class.id.localeCompare(b.class.id);
+
+  // If the class IDs are the same, prioritize checked-in students (those with 'checkedIn' set to true)
+  if (classComparison === 0) {
+    if (a.checkedIn === b.checkedIn) {
+      // If both have the same 'checkedIn' status, sort by name
+      return a.name.localeCompare(b.name);
+    } else {
+      // Checked-in students come before non-checked-in students
+      return b.checkedIn - a.checkedIn;
+    }
+  }
+
+  return classComparison; // Sort by class ID
+}
+
 const renderStudents = () => {
   studentContainer.innerHTML = "";
+  studentArray.sort(sortByClassThenCheckedInStatus);
   studentArray.forEach(renderStudent);
 };
 
@@ -107,6 +127,7 @@ const filterStudents = () => {
     noStudents.textContent = "Ingen elever fundet";
     studentContainer.appendChild(noStudents);
   }
+
   filteredStudents.forEach(renderStudent);
 };
 
