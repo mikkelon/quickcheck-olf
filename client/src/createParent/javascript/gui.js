@@ -340,3 +340,14 @@ async function initGUI() {
 
 // Initialize the GUI when the DOM is ready
 document.addEventListener("DOMContentLoaded", initGUI);
+
+
+const logout = document.getElementById("logout");
+logout.addEventListener("click", () => {
+  window.location.href = "../login/index.html";
+});
+
+const goBack = document.getElementById("back-icon");
+goBack.addEventListener("click", () => {
+  window.location.href = "../dashboard/index.html";
+});

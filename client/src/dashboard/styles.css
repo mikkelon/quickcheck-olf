@@ -21,7 +21,7 @@ h1 {
   justify-self: center;
 }
 
-.logout {
+#logout {
   position: absolute;
   background-color: rgba(239, 27, 27, 0.321);
   color: #ff5656;
@@ -29,7 +29,7 @@ h1 {
   right: 1em;
 }
 
-.logout:hover {
+#logout:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
