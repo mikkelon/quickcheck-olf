@@ -44,18 +44,45 @@ router.get("/:classId", async (req, res) => {
 /* Opret elev(er) */
 router.post("/", async (req, res) => {
   console.log(req.body);
-
-  let results = [];
-
   try {
-    for (let i = 0; i < req.body.length; i++) {
-      const doc = await addDoc(collection(db, "students"), req.body[i]);
-      results.push({ id: doc.id, ...req.body[i] });
+    let student = req.body;
+    let finalStudent = {};
+    if (student.name && student.classId && student.birthday) {
+      if (typeof student.name == "string") {
+        finalStudent.name = student.name;
+      } else {
+        throw new Error("Name should be a string");
+      }
+      if (typeof student.classId == "string") {
+        const classes = await getDocs(collection(db, "classes"));
+        let found = false;
+        classes.forEach((doc) => {
+          if (doc.id == student.classId) {
+            found = true;
+            finalStudent.classId = doc.id;
+          }
+        });
+        if (!found) {
+          throw new Error("Class not found");
+        }
+      } else {
+        throw new Error("classId should be string");
+      }
+      if (
+        typeof student.birthday === "string" &&
+        student.birthday.length === 8
+      ) {
+        finalStudent.birthday = student.birthday;
+      } else {
+        throw new Error("Birthday should be string and 8 digits");
+      }
     }
-    res.status(201).send(results);
+    finalStudent.checkedIn = false;
+    const doc = await addDoc(collection(db, "students"), finalStudent);
+    res.status(201).send("Elev oprettet");
   } catch (error) {
     console.log(error);
-    res.status(400).send("Fejl ved oprettelse af elever");
+    res.status(400).send(error.toString());
   }
 });
 
@@ -70,6 +97,4 @@ router.delete("/:id", async (req, res) => {
     console.log(error);
     res.status(404).send("Fejl - eleven findes ikke.");
   }
-});
-
-export default router;
+ });

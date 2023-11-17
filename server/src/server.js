@@ -20,7 +20,8 @@ app.use("/students", students);
 app.use("/classes", classes);
 app.use("/parents", parents);
 
-
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);
 });
+
+
