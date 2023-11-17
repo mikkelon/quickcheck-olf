@@ -49,7 +49,7 @@ body>h1 {
     
 }
 
-.logout {
+#logout {
     background-color: rgba(239, 27, 27, 0.321);
     color: #FF5656;
     font-weight: bold;
@@ -116,12 +116,12 @@ body>h1 {
 }
 
 
-.back-icon:hover{
+#back-icon:hover{
     cursor: pointer;
     transform:scale(1.05);
 }
 
-.logout:hover{
+#logout:hover{
     cursor: pointer;
     transform:scale(1.05);
 }

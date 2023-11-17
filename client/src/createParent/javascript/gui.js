@@ -302,10 +302,10 @@ function forælderOprettet(family) {
   displayChildren();
 
   if (family) {
-    informationContainer.innerHTML = `<p>Forældre oprettet</p>`;
+    informationContainer.innerHTML = `<p>Familie oprettet</p>`;
     informationContainer.classList.add("success");
   } else {
-    informationContainer.innerHTML = `<p>Kunne ikke oprette forældre</p>`;
+    informationContainer.innerHTML = `<p>Kunne ikke oprette familie</p>`;
     informationContainer.classList.add("error");
   }
 
@@ -330,13 +330,24 @@ async function initGUI() {
   submit.addEventListener('click', () => {
     const family = submitToDatabase();
     forælderOprettet(family);
-  });
-
-  const cancel = document.getElementById('cancel');
-  cancel.addEventListener('click', () => {
-    window.location.href = '../index.html';
-  });
+  }); 
 }
 
 // Initialize the GUI when the DOM is ready
 document.addEventListener("DOMContentLoaded", initGUI);
+
+
+const logout = document.getElementById("logout");
+logout.addEventListener("click", () => {
+  window.location.href = "../login/index.html";
+});
+
+const goBack = document.getElementById("back-icon");
+goBack.addEventListener("click", () => {
+  window.location.href = "../dashboard/index.html";
+});
+
+const cancel = document.getElementById('cancel');
+cancel.addEventListener('click', () => {
+  window.location.href = './index.html';
+});
