@@ -21,8 +21,15 @@ const renderStudent = (student) => {
   studentClassDiv.classList.add("student-class");
   studentClassDiv.style.backgroundColor = student.class.color;
   studentClassDiv.textContent = student.class.colorLabel;
-  if (student.class.colorLabel.toLowerCase() === "hvid") {
+  const colorLabel = student.class.colorLabel.toLowerCase();
+  if (colorLabel === "hvid") {
     studentClassDiv.style.outline = "1px solid #000";
+  } else if (
+    colorLabel === "blå" ||
+    colorLabel === "lilla" ||
+    colorLabel === "grøn"
+  ) {
+    studentClassDiv.style.color = "#fff";
   }
   studentElement.appendChild(studentClassDiv);
 
