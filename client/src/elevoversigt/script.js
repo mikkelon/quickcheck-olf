@@ -1,4 +1,8 @@
-import { getStudentsWithClass, getClasses } from "../datahandler.js";
+import {
+  getStudentsWithClass,
+  getClasses,
+  toggleStudentCheckIn,
+} from "../datahandler.js";
 
 // #--- Student list ---#
 const studentContainer = document.querySelector(".students");
@@ -27,6 +31,13 @@ const renderStudent = (student) => {
   studentCheckBtn.classList.add(
     student.checkedIn ? "checked-in" : "checked-out"
   );
+  studentCheckBtn.addEventListener("click", () => {
+    console.log("Toggling check in status", student.id);
+    toggleStudentCheckIn(student.id);
+    student.checkedIn = !student.checkedIn;
+    studentCheckBtn.classList.toggle("checked-in");
+    studentCheckBtn.classList.toggle("checked-out");
+  });
   studentElement.appendChild(studentCheckBtn);
 
   studentContainer.appendChild(studentElement);
