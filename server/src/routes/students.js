@@ -1,25 +1,88 @@
-import express, { response } from "express";
+import express from "express";
 import { db } from "../firebase.js";
 import {
   addDoc,
   collection,
   doc,
   deleteDoc,
-  updateDoc,
-  getDoc,
+  getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 const router = express.Router();
 
-/* Opret elev */
+router.get("/", async (req, res) => {
+  try {
+    const studentsDocs = await getDocs(collection(db, "students"));
+    const students = studentsDocs.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af elever");
+  }
+});
+
+/* Hent elever i en klasse */
+// TODO: classId er ikke en attribut på student endnu
+router.get("/:classId", async (req, res) => {
+  const classId = req.params.classId;
+  console.log(classId);
+  try {
+    const firebaseQuery = query(
+      collection(db, "students"),
+      where("classId", "==", classId)
+    );
+    const studentsDocs = await getDocs(firebaseQuery);
+    const students = studentsDocs.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af elever");
+  }
+});
+
+/* Opret elev(er) */
 router.post("/", async (req, res) => {
   console.log(req.body);
-
   try {
-    const doc = await addDoc(collection(db, "students"), req.body);
+    let student = req.body;
+    let finalStudent = {};
+    if (student.name && student.classId && student.birthday) {
+      if (typeof student.name == "string") {
+        finalStudent.name = student.name;
+      } else {
+        throw new Error("Name should be a string");
+      }
+      if (typeof student.classId == "string") {
+        const classes = await getDocs(collection(db, "classes"));
+        let found = false;
+        classes.forEach((doc) => {
+          if (doc.id == student.classId) {
+            found = true;
+            finalStudent.classId = doc.id;
+          }
+        });
+        if (!found) {
+          throw new Error("Class not found");
+        }
+      } else {
+        throw new Error("classId should be string");
+      }
+      if (
+        typeof student.birthday === "string" &&
+        student.birthday.length === 8
+      ) {
+        finalStudent.birthday = student.birthday;
+      } else {
+        throw new Error("Birthday should be string and 8 digits");
+      }
+    }
+    finalStudent.checkedIn = false;
+    const doc = await addDoc(collection(db, "students"), finalStudent);
     res.status(201).send("Elev oprettet");
   } catch (error) {
     console.log(error);
-    res.status(400).send("Fejl ved oprettelse af elev");
+    res.status(400).send(error.toString());
   }
 });
 
@@ -30,61 +93,6 @@ router.delete("/:id", async (req, res) => {
   try {
     const docDelete = await deleteDoc(doc(db, "students", id));
     res.status(200).send("Elev slettet");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
-  }
-});
-
-/* Opdater elev */
-router.put("/:id", async (req, res) => {
-  try {
-    let id = req.params.id;
-
-    if (!id && typeof id !== "string") {
-      throw new Error("Id should be string and not be empty");
-    }
-    let student = req.body;
-    const docRef = doc(db, "students", id);
-
-    const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) {
-      throw new Error("Student id not found");
-    }
-
-    if (student.name) {
-      if (typeof student.name !== "string") {
-        throw new Error("Name should be a string");
-      }
-    }
-
-    if (student.classId) {
-      if (typeof student.classId !== "string") {
-        throw new Error("classId should be a string");
-      }
-      const classes = await getDoc(collection(db, "classes"));
-      const classFound = classes.some((doc) => doc.id === student.classId);
-      if (!classFound) {
-        throw new Error("Class not found");
-      }
-    }
-
-    if (student.birthday) {
-      if (
-        typeof student.birthday !== "string" ||
-        student.birthday.trim().length !== 8
-      ) {
-        throw new Error("Birthday should be a string with 8 digits (MMDDYYYY)");
-      }
-    }
-
-    if (student.checkedIn) {
-      if (typeof student.checkedIn !== "boolean") {
-        throw new Error("checkedIn should be a boolean");
-      }
-    }
-    await updateDoc(docRef, student);
-    res.status(200).send("Elev opdateret");
   } catch (error) {
     console.log(error);
     res.status(404).send("Fejl - eleven findes ikke.");
