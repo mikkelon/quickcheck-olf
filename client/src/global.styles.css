@@ -1,22 +1,4 @@
-/* center content inside body */
-body {
-    display: flex;
-    flex-direction: column;
-    height: 75vh;
-    justify-content: center;
-    align-items: center;
-    font-family: Playpen Sans, sans-serif;
-}
-
-body>div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.form-container {
+.forms-container {
     display: flex;
     flex-direction: column;
     width: 300px;
@@ -27,13 +9,13 @@ body>div {
     gap: 1rem;
 }
 
-.container {
+.form-container {
     display: flex;
     flex-direction: column;
     gap: 2px
 }
 
-input {
+.forms-input {
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 12px 12px;
@@ -41,16 +23,31 @@ input {
     width: 100%;
 }
 
-label {
+.forms-label {
     font-weight: bold;
     margin-left: 1rem;
 }
 
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px 32px;
+    font-size: x-large;
+}
+
 button {
-    background-color: #4CAF50;
     color: white;
     padding: 12px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+section {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
