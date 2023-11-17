@@ -19,7 +19,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const studentsDocs = await getDocs(collection(db, "students"));
-    const students = studentsDocs.docs.map((doc) => doc.data());
+    const students = studentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
