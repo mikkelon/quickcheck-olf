@@ -8,7 +8,7 @@ backBtn.addEventListener("click", () => {
 
 let børn = [
   { name: "Børge", checkedIn: true },
-  { name: "Sofie", checkedIn: false }
+  { name: "Sofie", checkedIn: false },
 ];
 
 const params = new URLSearchParams(window.location.search);
@@ -20,7 +20,7 @@ const renderCards = () => {
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
 
-    const infoButton = document.createElement("button");
+    const infoButton = document.createElement("div");
     infoButton.classList.add("info-button");
     const infoIcon = document.createElement("img");
     infoIcon.src = "../../../assets/icons/information-fill.svg";
@@ -51,7 +51,7 @@ const renderCards = () => {
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
-    cardStatus.textContent = checkedIn ? "Ikke hentet" : "Hentet";
+    cardStatus.textContent = checkedIn ? "Tjekket ud" : "Tjekket ind";
     card.classList.add(checkedIn ? "checked-in" : "checked-out");
     textContainer.appendChild(cardStatus);
 
@@ -66,11 +66,11 @@ const renderCards = () => {
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
         card.classList.add("checked-out");
-        status.innerHTML = "Hentet";
+        status.innerHTML = "Tjekket ind";
       } else {
         card.classList.add("checked-in");
         card.classList.remove("checked-out");
-        status.innerHTML = "Ikke hentet";
+        status.innerHTML = "Tjekket ud";
       }
     });
   });
