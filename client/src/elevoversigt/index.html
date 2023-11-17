@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" type="module" defer></script>
+    <title>QuickCheck</title>
+  </head>
+  <body>
+    <header>
+      <img src="../../assets/logo.png" />
+    </header>
+    <main>
+      <h1 class="title">Elevoversigt</h1>
+      <div class="container search">
+        <div class="search-bar">
+          <input type="text" placeholder="Søg efter elev" />
+          <img src="../../assets/icons/magnifer.svg" />
+        </div>
+      </div>
+      <div class="container filter-options">
+        <select>
+          <option value="0">Alle klasser</option>
+        </select>
+        <button>Tjekket ind</button>
+        <button>Tjekket ud</button>
+      </div>
+      <div class="container students">
+        <div class="student-column-titles">
+          <p class="grid-center">Navn</p>
+          <p class="grid-center">Klasse</p>
+          <p class="grid-center">Tjek ind/ud</p>
+        </div>
+        <div class="student">
+          <p class="grid-center">Fabian Andersen</p>
+          <p class="class-text grid-center">Rød</p>
+          <div class="check-btn gird-center"></div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
