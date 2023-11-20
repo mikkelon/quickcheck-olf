@@ -1,4 +1,7 @@
-import { getStudentsByClassId } from "../../datahandler.js";
+import {
+  getStudentsByClassId,
+  toggleStudentCheckIn,
+} from "../../datahandler.js";
 
 const backBtn = document.querySelector(".back-btn");
 
@@ -64,6 +67,7 @@ const renderCards = async () => {
     main.appendChild(card);
 
     card.addEventListener("click", () => {
+      toggleStudentCheckIn(student.id);
       const status = card.querySelector(".status");
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
