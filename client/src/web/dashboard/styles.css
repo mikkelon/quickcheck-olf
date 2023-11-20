@@ -40,7 +40,6 @@ h1 {
   gap: 20px;
   width: 75vw;
   margin: 0 auto;
-
 }
 
 .buttons button {
@@ -51,35 +50,14 @@ h1 {
   font-size: x-large;
   font-family: Playpen Sans, sans-serif;
   border-radius: 25px;
-
 }
 
 .buttons button:hover {
   cursor: pointer;
   transform: scale(1.05);
   transition: 0.3s;
-
 }
 
-#elevoversigt {
-  background-color: #ff5656;
-}
-
-#opretFamilie {
-  background-color: #8774ff;
-}
-
-#test1 {
-  background-color: #56e87f;
-}
-
-#test2 {
-  background-color: #ffc956;
-}
-
-#test3 {
-  background-color: #56e8d0;
-}
 @media screen and (max-width: 600px) {
   .buttons button {
     width: calc(100% - 10px);

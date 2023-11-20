@@ -1,5 +1,3 @@
-import { getStudentsByClassId } from "../../datahandler.js";
-
 const backBtn = document.querySelector(".back-btn");
 
 backBtn.addEventListener("click", () => {
@@ -23,7 +21,7 @@ const renderCards = () => {
     const infoButton = document.createElement("div");
     infoButton.classList.add("info-button");
     const infoIcon = document.createElement("img");
-    infoIcon.src = "../../../assets/icons/information-fill.svg";
+    infoIcon.src = "../../../../assets/icons/information-fill.svg";
     infoButton.appendChild(infoIcon);
     card.appendChild(infoButton);
 
@@ -31,7 +29,7 @@ const renderCards = () => {
     cardImg.classList.add("avatar");
     cardImg.src = student.imgUrl
       ? student.imgUrl
-      : "../../../assets/avatar-placeholder.png";
+      : "../../../../assets/avatar-placeholder.png";
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-container");

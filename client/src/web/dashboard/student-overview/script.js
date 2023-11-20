@@ -2,7 +2,7 @@ import {
   getStudentsWithClass,
   getClasses,
   toggleStudentCheckIn,
-} from "../datahandler.js";
+} from "../../../datahandler.js";
 
 // #--- Student list ---#
 const studentContainer = document.querySelector(".students");
