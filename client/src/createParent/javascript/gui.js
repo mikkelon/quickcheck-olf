@@ -10,10 +10,8 @@ import {
   deleteParent,
   deleteChild,
   submitToDatabase,
-  clear
-} from './crud.js';
-
-
+  clear,
+} from "./crud.js";
 import { getClasses } from "../../datahandler.js";
 
 // Fetch options for the class dropdown from an API
