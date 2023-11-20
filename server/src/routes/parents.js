@@ -80,7 +80,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Se børn */
-router.get("/:parentsID/children", async (req, res) => {
+router.get("/:parentsID/students", async (req, res) => {
   const parentsID = req.params.parentsID;
   try {
     const firebaseQuery = query(
