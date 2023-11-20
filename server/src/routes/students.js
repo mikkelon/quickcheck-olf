@@ -6,11 +6,13 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  setDoc,
   getDoc,
   getDocs,
   query,
   where,
   writeBatch,
+  DocumentReference
 } from "firebase/firestore";
 const router = express.Router();
 
@@ -171,5 +173,29 @@ router.get("/checkedIn", async (req, res) => {
         res.status(404).send("Fejl - elever ikke fundet.");
     }
 });
+
+
+/* Opdater elev tilstedeværelse */
+router.put("/toggleCheckedIn/:id", async (req, res) => {
+
+
+    try {
+        const studentId = req.params.id;
+        const docRef = doc(db, "students", studentId);
+        const studentDoc = await getDoc(docRef);
+
+        if (!studentDoc.exists()) {
+            throw new Error("Eleven findes ikke.");
+        }
+        const currentCheckedInStatus = studentDoc.data().checkedIn;
+        const updatedCheckedInStatus = !currentCheckedInStatus;
+        await updateDoc(docRef, { "checkedIn": updatedCheckedInStatus });
+        res.status(200).send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - kunne ikke opdatere elev.");
+    }
+});
+
 
 export default router;
