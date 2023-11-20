@@ -5,16 +5,40 @@
 }
 
 body {
-    margin: 40px
+    margin: 40px;
 }
 
-#child {
+.header {
     display: flex;
-    align-items: start;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+
+#back-icon:hover{
+    cursor: pointer;
+    transform:scale(1.05);
+}
+
+.delete-btn {
+    background-color: #FF5656;
+    color: white;
+    font-size: 16px;
+}
+
+.save-btn {
+    background-color: #4bb14e;
+    color: white;
+    font-size: 16px;
+}
+
+.child {
+    display: flex;
     flex-wrap: wrap;
-    gap: 60px;
-    height: 100%;
+    width: auto;
+    gap: 20px;
 }
 
 #information {
@@ -52,7 +76,6 @@ body {
 }
 
 #status {
-    fill: red;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -75,10 +98,8 @@ body {
     display: flex;
     flex: 1;
     flex-direction: column;
-    width: 100%;
     gap: 10px;
-    height: 100%;
-
+    min-width: 25%;
 }
 
 #notes {
@@ -95,4 +116,29 @@ body {
     width: fit-content;
     background-color: #4bb14e56;
     color: #4bb14e;
+}
+
+.horizontal-line {
+    border: 1px solid #ccc;
+    width: 100%;
+    margin: 40px 0px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px
+}
+
+.parents {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.parents-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
 }
