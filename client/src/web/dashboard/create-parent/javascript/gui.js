@@ -12,7 +12,7 @@ import {
   submitToDatabase,
   clear,
 } from "./crud.js";
-import { getClasses } from "../../datahandler.js";
+import { getClasses } from "../../../../datahandler.js";
 
 // Fetch options for the class dropdown from an API
 let classOptions;
@@ -355,7 +355,6 @@ async function initGUI() {
 // Initialize the GUI when the DOM is ready
 document.addEventListener("DOMContentLoaded", initGUI);
 
-
 const logout = document.getElementById("logout");
 logout.addEventListener("click", () => {
   window.location.href = "../login/index.html";
@@ -363,10 +362,10 @@ logout.addEventListener("click", () => {
 
 const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
-  window.location.href = "../dashboard/index.html";
+  window.location.href = "../../dashboard/index.html";
 });
 
-const cancel = document.getElementById('cancel');
-cancel.addEventListener('click', () => {
-  window.location.href = './index.html';
+const cancel = document.getElementById("cancel");
+cancel.addEventListener("click", () => {
+  window.location.href = "./index.html";
 });

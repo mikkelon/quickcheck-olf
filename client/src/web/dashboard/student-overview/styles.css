@@ -188,17 +188,17 @@ main {
 }
 
 .checked-in {
-  background-image: url("../../assets/icons/check-circle-bold.svg");
+  background-image: url("../../../../assets/icons/check-circle-bold.svg");
 }
 
 .checked-in:hover {
-  background-image: url("../../assets/icons/close-circle-bold.svg");
+  background-image: url("../../../../assets/icons/close-circle-bold.svg");
 }
 
 .checked-out {
-  background-image: url("../../assets/icons/close-circle-bold.svg");
+  background-image: url("../../../../assets/icons/close-circle-bold.svg");
 }
 
 .checked-out:hover {
-  background-image: url("../../assets/icons/check-circle-bold.svg");
+  background-image: url("../../../../assets/icons/check-circle-bold.svg");
 }
