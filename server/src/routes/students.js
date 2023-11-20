@@ -123,12 +123,31 @@ router.put("/toggleCheckedIn/:id", async (req, res) => {
 router.post("/note", async (req, res) => {
   console.log(req.body);
   let note = req.body;
-  if (!note.studentId || typeof note.studentId !== "string") {
-    throw new Error("Missing or invalid studentId");
-  }
   try {
     const doc = await addDoc(collection(db, "notes"), req.body);
-    res.status(201).send("Note oprettet");
+
+    res.status(201).send(doc.id);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved oprettelse af note");
+  }
+});
+
+router.put("/note/add/:id", async (req, res) => {
+  let studentId = req.params.id;
+  let note = req.body;
+  try {
+    const docRef = doc(db, "students", studentId);
+    const studentDoc = await getDoc(docRef);
+
+    if (!studentDoc.exists()) {
+      throw new Error("Eleven findes ikke.");
+    }
+    const currentNotes = studentDoc.data().notes;
+    const updatedNotes = [...currentNotes, note];
+    await updateDoc(docRef, { notes: updatedNotes });
+    res.status(200).send(`Note opdateret`);
+
   } catch (error) {
     console.log(error);
     res.status(400).send("Fejl ved oprettelse af note");
