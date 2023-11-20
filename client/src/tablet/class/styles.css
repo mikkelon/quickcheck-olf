@@ -85,17 +85,18 @@ main {
 }
 
 .checked-in {
-  background-color: #ffe6e6;
-}
-
-.checked-out {
   background-color: #e9fcee;
 }
 
+.checked-out {
+  /* background-color: #ffe6e6; */
+  opacity: 0.5;
+}
+
 .checked-in .status {
-  color: #ff5656;
+  color: #56e87f;
 }
 
 .checked-out .status {
-  color: #56e87f;
+  color: #ff5656;
 }

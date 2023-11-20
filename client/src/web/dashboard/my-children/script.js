@@ -1,27 +1,35 @@
-import { getStudentsByClassId } from "../../datahandler.js";
-
 const backBtn = document.querySelector(".back-btn");
 
 backBtn.addEventListener("click", () => {
   window.location.href = "../";
 });
 
+let børn = [
+  { name: "Børge", checkedIn: true },
+  { name: "Sofie", checkedIn: false },
+];
+
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
-const renderCards = async () => {
-  const data = await getStudentsByClassId(classId);
-  console.log(data);
-  data.forEach((student) => {
+const renderCards = () => {
+  børn.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
+
+    const infoButton = document.createElement("div");
+    infoButton.classList.add("info-button");
+    const infoIcon = document.createElement("img");
+    infoIcon.src = "../../../../assets/icons/information-fill.svg";
+    infoButton.appendChild(infoIcon);
+    card.appendChild(infoButton);
 
     const cardImg = document.createElement("img");
     cardImg.classList.add("avatar");
     cardImg.src = student.imgUrl
       ? student.imgUrl
-      : "../../../assets/avatar-placeholder.png";
+      : "../../../../assets/avatar-placeholder.png";
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-container");
@@ -41,7 +49,7 @@ const renderCards = async () => {
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
-    cardStatus.textContent = checkedIn ? "Ikke hentet" : "Hentet";
+    cardStatus.textContent = checkedIn ? "Tjekket ud" : "Tjekket ind";
     card.classList.add(checkedIn ? "checked-in" : "checked-out");
     textContainer.appendChild(cardStatus);
 
@@ -56,11 +64,11 @@ const renderCards = async () => {
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
         card.classList.add("checked-out");
-        status.innerHTML = "Hentet";
+        status.innerHTML = "Tjekket ind";
       } else {
         card.classList.add("checked-in");
         card.classList.remove("checked-out");
-        status.innerHTML = "Ikke hentet";
+        status.innerHTML = "Tjekket ud";
       }
     });
   });

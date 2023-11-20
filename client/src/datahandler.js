@@ -101,6 +101,7 @@ export const getStudents = async () => {
     console.error("Error fetching students:", error);
     throw error; // Rethrow the error for the caller to handle
   }
+
 };
 
 /**
@@ -126,4 +127,27 @@ export const getStudentsWithClass = async () => {
   console.log(studentsWithClass);
 
   return studentsWithClass;
+};
+
+/**
+ * Toggles the checked in status of a student
+ * @param {*} studentId The id of the student (firebase document id)
+ */
+export const toggleStudentCheckIn = async (studentId) => {
+  const url = `http://localhost:6969/students/toggleCheckedIn/${studentId}`;
+  const options = {
+    method: "PUT",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error toggling student check in:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
 };

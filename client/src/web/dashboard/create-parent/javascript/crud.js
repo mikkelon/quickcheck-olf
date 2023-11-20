@@ -1,5 +1,5 @@
 // crud.js
-import { createStudentsAndParents } from "../../datahandler.js";
+import { createStudentsAndParents } from "../../../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
