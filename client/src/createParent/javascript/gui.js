@@ -10,8 +10,9 @@ import {
   deleteParent,
   deleteChild,
   submitToDatabase,
-  clear,
-} from "./crud.js";
+  clear
+} from './crud.js';
+
 
 import { getClasses } from "../../datahandler.js";
 
