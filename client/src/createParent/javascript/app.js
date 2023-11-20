@@ -1,15 +1,13 @@
 // app.js
 
-import {
-    createParent,
-    createChild} from './crud.js';
+import { createParent, createChild } from "./crud.js";
 
 // Example usage:
 // Create parents
-const parent1 = createParent('', '', '');
+const parent1 = createParent("", "", "");
 
 // Create children
-const child1 = createChild('', '', '');
+const child1 = createChild("", "", "");
 
 // // Get all parents and children
 // const allParents = getAllParents();
