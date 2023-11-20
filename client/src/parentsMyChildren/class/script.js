@@ -6,28 +6,26 @@ backBtn.addEventListener("click", () => {
   window.location.href = "../";
 });
 
+let børn = [
+  { name: "Børge", checkedIn: true },
+  { name: "Sofie", checkedIn: false },
+];
+
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
-const renderCards = async () => {
-  const students = await getStudentsByClassId(classId);
-  // Sort students by checked in status
-  // Checked in students first
-  students.sort((a, b) => {
-    if (a.checkedIn && !b.checkedIn) {
-      return -1;
-    }
-    if (!a.checkedIn && b.checkedIn) {
-      return 1;
-    }
-    return 0;
-  });
-
-  console.log(students);
-  students.forEach((student) => {
+const renderCards = () => {
+  børn.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
+
+    const infoButton = document.createElement("div");
+    infoButton.classList.add("info-button");
+    const infoIcon = document.createElement("img");
+    infoIcon.src = "../../../assets/icons/information-fill.svg";
+    infoButton.appendChild(infoIcon);
+    card.appendChild(infoButton);
 
     const cardImg = document.createElement("img");
     cardImg.classList.add("avatar");
@@ -53,7 +51,7 @@ const renderCards = async () => {
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
-    cardStatus.textContent = checkedIn ? "Tjekket ind" : "Tjekket ud";
+    cardStatus.textContent = checkedIn ? "Tjekket ud" : "Tjekket ind";
     card.classList.add(checkedIn ? "checked-in" : "checked-out");
     textContainer.appendChild(cardStatus);
 
@@ -68,11 +66,11 @@ const renderCards = async () => {
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
         card.classList.add("checked-out");
-        status.innerHTML = "Tjekket ud";
+        status.innerHTML = "Tjekket ind";
       } else {
         card.classList.add("checked-in");
         card.classList.remove("checked-out");
-        status.innerHTML = "Tjekket ind";
+        status.innerHTML = "Tjekket ud";
       }
     });
   });

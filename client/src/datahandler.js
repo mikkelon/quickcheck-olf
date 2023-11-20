@@ -101,6 +101,7 @@ export const getStudents = async () => {
     console.error("Error fetching students:", error);
     throw error; // Rethrow the error for the caller to handle
   }
+
 };
 
 /**
