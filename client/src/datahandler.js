@@ -48,3 +48,83 @@ export const getClasses = async () => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+
+/**
+ * Create students and parents
+ * @param {*} students
+ * @param {*} parents
+ */
+export const createStudentsAndParents = async (students, parents) => {
+  const url = "http://localhost:6969/students";
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ students, parents }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error creating students and parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+/**
+ * Get all students
+ * @returns {Array} Array of students
+ */
+export const getStudents = async () => {
+  const url = "http://localhost:6969/students";
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching students:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+/**
+ * Get all students with class information
+ * @returns {Array} Array of student objects with imbedded class object
+ */
+export const getStudentsWithClass = async () => {
+  // Fetch students
+  const students = await getStudents();
+
+  // Fetch classes
+  const classes = await getClasses();
+
+  // Add class information to students
+  const studentsWithClass = students.map((student) => {
+    const studentClass = classes.find((c) => c.id === student.classId);
+    return {
+      ...student,
+      class: studentClass,
+    };
+  });
+
+  console.log(studentsWithClass);
+
+  return studentsWithClass;
+};

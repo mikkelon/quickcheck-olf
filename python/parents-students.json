@@ -1,0 +1,247 @@
+[
+  {
+    "parents": [
+      {
+        "name": "Anne Nielsen",
+        "phone": "12345678",
+        "email": "anne@example.com"
+      },
+      {
+        "name": "Peter Hansen",
+        "phone": "23456789",
+        "email": "peter@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Mads Jensen",
+        "classId": "0777Ja1ckgt5F6XcaxZR",
+        "birthday": "2005-02-15"
+      },
+      {
+        "name": "Lotte Madsen",
+        "classId": "1SQCbli5ByGUHHdstWAU",
+        "birthday": "2006-04-20"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Jesper Larsen",
+        "phone": "45678901",
+        "email": "jesper@example.com"
+      },
+      {
+        "name": "Mette Pedersen",
+        "phone": "56789012",
+        "email": "mette@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Andreas Jørgensen",
+        "classId": "4tRapRljbXu3hsoIwHfc",
+        "birthday": "2007-08-10"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Lars Rasmussen",
+        "phone": "67890123",
+        "email": "lars@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Sofie Kristensen",
+        "classId": "84ehOz9SzI92RcrSez9p",
+        "birthday": "2008-06-05"
+      },
+      {
+        "name": "Julie Andersen",
+        "classId": "8dzcQJ0v6hNEeWpZvwRK",
+        "birthday": "2009-07-12"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Gitte Nielsen",
+        "phone": "98765432",
+        "email": "gitte@example.com"
+      },
+      {
+        "name": "Kasper Kristensen",
+        "phone": "65432109",
+        "email": "kasper@example.com"
+      },
+      {
+        "name": "Helle Rasmussen",
+        "phone": "54321098",
+        "email": "helle@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Thomas Christoffersen",
+        "classId": "WkSzVkaGW5F8NF9moGsN",
+        "birthday": "2010-01-25"
+      },
+      {
+        "name": "Louise Pedersen",
+        "classId": "mOnmdU4Za5aweOgFuVbd",
+        "birthday": "2012-05-22"
+      },
+      {
+        "name": "Frederik Andersen",
+        "classId": "qqdH0wmbyNaFxvk6P1jy",
+        "birthday": "2013-08-30"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Niels Jørgensen",
+        "phone": "43210987",
+        "email": "niels@example.com"
+      },
+      {
+        "name": "Anne Pedersen",
+        "phone": "32109876",
+        "email": "anne@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Sara Madsen",
+        "classId": "z2WT087zmNdc6ZQ1NeBK",
+        "birthday": "2014-11-05"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Anders Jensen",
+        "phone": "87654321",
+        "email": "anders@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Maria Olsen",
+        "classId": "Y1lzso2ntN1CyyRemzaL",
+        "birthday": "2015-02-18"
+      },
+      {
+        "name": "Laura Mikkelsen",
+        "classId": "4tRapRljbXu3hsoIwHfc",
+        "birthday": "2016-04-30"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Morten Mikkelsen",
+        "phone": "78901234",
+        "email": "morten@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Oscar Sørensen",
+        "classId": "84ehOz9SzI92RcrSez9p",
+        "birthday": "2017-07-05"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Ida Christensen",
+        "phone": "23456789",
+        "email": "ida@example.com"
+      },
+      {
+        "name": "Nicolai Rasmussen",
+        "phone": "34567890",
+        "email": "nicolai@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Emma Larsen",
+        "classId": "WkSzVkaGW5F8NF9moGsN",
+        "birthday": "2018-10-15"
+      },
+      {
+        "name": "Noah Hansen",
+        "classId": "qqdH0wmbyNaFxvk6P1jy",
+        "birthday": "2019-12-20"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Laura Petersen",
+        "phone": "45678901",
+        "email": "laura@example.com"
+      },
+      {
+        "name": "Andreas Madsen",
+        "phone": "56789012",
+        "email": "andreas@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Maja Jensen",
+        "classId": "1SQCbli5ByGUHHdstWAU",
+        "birthday": "2020-02-25"
+      },
+      {
+        "name": "Nikolaj Christoffersen",
+        "classId": "8dzcQJ0v6hNEeWpZvwRK",
+        "birthday": "2021-04-10"
+      }
+    ]
+  },
+  {
+    "parents": [
+      {
+        "name": "Camilla Sørensen",
+        "phone": "65432109",
+        "email": "camilla@example.com"
+      },
+      {
+        "name": "Jens Christensen",
+        "phone": "76543210",
+        "email": "jens@example.com"
+      },
+      {
+        "name": "Mette Rasmussen",
+        "phone": "87654321",
+        "email": "mette@example.com"
+      }
+    ],
+    "students": [
+      {
+        "name": "Oliver Mikkelsen",
+        "classId": "Y1lzso2ntN1CyyRemzaL",
+        "birthday": "2022-06-28"
+      },
+      {
+        "name": "Isabella Olsen",
+        "classId": "z2WT087zmNdc6ZQ1NeBK",
+        "birthday": "2023-08-10"
+      }
+    ]
+  }
+]

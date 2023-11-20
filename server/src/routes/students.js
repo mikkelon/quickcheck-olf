@@ -1,6 +1,8 @@
 import express from "express";
 import { db } from "../firebase.js";
+
 import { addDoc, collection, doc, deleteDoc, updateDoc, getDoc, query, where, getDocs, setDoc, DocumentReference } from "firebase/firestore";
+
 
 const router = express.Router();
 
@@ -33,6 +35,7 @@ router.get("/:classId", async (req, res) => {
     res.status(400).send("Fejl ved hentning af elever");
   }
 });
+
 
 /* Opret elev */
 router.post("/", async (req, res) => {
@@ -107,8 +110,28 @@ router.put("/toggleCheckedIn/:id", async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(404).send("Fejl - kunne ikke opdatere elev.");
+
     }
+    await batch.commit(); // Commit batch to database
+
+    res.status(201).send(studentIds);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.toString());
+  }
 });
 
+/* Slet elev */
+router.delete("/:id", async (req, res) => {
+  let id = req.params.id;
+
+  try {
+    const docDelete = await deleteDoc(doc(db, "students", id));
+    res.status(200).send("Elev slettet");
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - eleven findes ikke.");
+  }
+});
 
 export default router;
