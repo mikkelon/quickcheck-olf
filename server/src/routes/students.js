@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import { db } from "../firebase.js";
 import {
   addDoc,
@@ -7,19 +7,132 @@ import {
   deleteDoc,
   updateDoc,
   getDoc,
+  query,
+  where,
+  getDocs,
+  setDoc,
+  DocumentReference,
+  writeBatch,
 } from "firebase/firestore";
 const router = express.Router();
 
-/* Opret elev */
-router.post("/", async (req, res) => {
-  console.log(req.body);
-
+router.get("/", async (req, res) => {
   try {
-    const doc = await addDoc(collection(db, "students"), req.body);
-    res.status(201).send("Elev oprettet");
+    const studentsDocs = await getDocs(collection(db, "students"));
+    const students = studentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    res.status(200).send(students);
   } catch (error) {
     console.log(error);
-    res.status(400).send("Fejl ved oprettelse af elev");
+    res.status(400).send("Fejl ved hentning af elever");
+  }
+});
+
+/* Hent elever i en klasse */
+// TODO: classId er ikke en attribut på student endnu
+router.get("/:classId", async (req, res) => {
+  const classId = req.params.classId;
+  console.log(classId);
+  try {
+    const firebaseQuery = query(
+      collection(db, "students"),
+      where("classId", "==", classId)
+    );
+    const studentsDocs = await getDocs(firebaseQuery);
+    const students = studentsDocs.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af elever");
+  }
+});
+
+/* Opret elev(er) */
+/**
+ * Takes an object containing an array of students and an array of parents
+ * Adds the students and the parents to the database
+ * Links the students to the parents and vice versa
+ */
+router.post("/", async (req, res) => {
+  console.log(req.body);
+  // Rough data validation
+  if (!req.body) {
+    throw new Error("Fejl - manglende data");
+  } else if (!req.body.students || !req.body.parents) {
+    throw new Error("Fejl - manglende data");
+  }
+
+  const students = req.body.students;
+  const parents = req.body.parents;
+
+  try {
+    // Add children to database
+    const studentIds = []; // Array to hold the IDs of the students - will be added to parent object later
+
+    let batch = writeBatch(db); // Use batch to write all students at once
+
+    // TODO: Maybe add further validation of student data
+    for (const student of students) {
+      // If any of the required fields are missing, return an error
+      if (!student.name || !student.classId || !student.birthday) {
+        throw new Error("Fejl - manglende data");
+      }
+      student.checkedIn = false; // Checked in status is false by default
+      student.parents = ""; // ID of parent object will be added after parent creation
+      const studentRef = doc(collection(db, "students")); // Create reference to student object
+      batch.set(studentRef, student); // Add student to batch
+      studentIds.push(studentRef.id); // Add student ID to array
+    }
+
+    await batch.commit(); // Commit batch to database
+
+    // Add parents to database
+    const parentId = ""; // ID of parent object will be added to student after parent creation
+
+    // Format for parent object:
+    // {
+    //   students: [
+    //     "studentId1",
+    //     "studentId2",
+    //     ...
+    //   ],
+    //   parents: [
+    //     {
+    //       name: "Parent Name",
+    //       phone: "12345678",
+    //       email: ""
+    //     },
+    //     ...
+    //   ],
+    // }
+
+    const parentObject = {
+      students: studentIds,
+      parents: parents,
+    };
+    console.log(parentObject);
+
+    const parentDoc = await addDoc(collection(db, "parents"), parentObject); // Add parent to database
+    const parentDocId = parentDoc.id; // Get ID of parent object
+
+    // Add parent ID to students
+
+    batch = writeBatch(db); // Use batch to update all students at once
+
+    for (const studentId of studentIds) {
+      const studentDoc = doc(collection(db, "students"), studentId); // Create reference to student object
+      // Update parents array in student object
+      batch.update(studentDoc, {
+        parents: parentDocId,
+      });
+    }
+    await batch.commit(); // Commit batch to database
+
+    res.status(201).send(studentIds);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.toString());
   }
 });
 
@@ -36,58 +149,39 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-/* Opdater elev */
-router.put("/:id", async (req, res) => {
+/* Hent elever tilstede*/
+router.get("/checkedIn", async (req, res) => {
   try {
-    let id = req.params.id;
-
-    if (!id && typeof id !== "string") {
-      throw new Error("Id should be string and not be empty");
-    }
-    let student = req.body;
-    const docRef = doc(db, "students", id);
-
-    const docSnapshot = await getDoc(docRef);
-    if (!docSnapshot.exists()) {
-      throw new Error("Student id not found");
-    }
-
-    if (student.name) {
-      if (typeof student.name !== "string") {
-        throw new Error("Name should be a string");
-      }
-    }
-
-    if (student.classId) {
-      if (typeof student.classId !== "string") {
-        throw new Error("classId should be a string");
-      }
-      const classes = await getDoc(collection(db, "classes"));
-      const classFound = classes.some((doc) => doc.id === student.classId);
-      if (!classFound) {
-        throw new Error("Class not found");
-      }
-    }
-
-    if (student.birthday) {
-      if (
-        typeof student.birthday !== "string" ||
-        student.birthday.trim().length !== 8
-      ) {
-        throw new Error("Birthday should be a string with 8 digits (MMDDYYYY)");
-      }
-    }
-
-    if (student.checkedIn) {
-      if (typeof student.checkedIn !== "boolean") {
-        throw new Error("checkedIn should be a boolean");
-      }
-    }
-    await updateDoc(docRef, student);
-    res.status(200).send("Elev opdateret");
+    const querySnapshot = await getDocs(
+      query(collection(db, "students"), where("checkedIn", "==", true))
+    );
+    const students = querySnapshot.docs.map((doc) => doc.data());
+    res.status(200).send(students);
   } catch (error) {
     console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
+    res.status(404).send("Fejl - elever ikke fundet.");
+  }
+});
+
+/* Opdater elev tilstedeværelse */
+router.put("/toggleCheckedIn/:id", async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    const docRef = doc(db, "students", studentId);
+    const studentDoc = await getDoc(docRef);
+
+    if (!studentDoc.exists()) {
+      throw new Error("Eleven findes ikke.");
+    }
+    const currentCheckedInStatus = studentDoc.data().checkedIn;
+    const updatedCheckedInStatus = !currentCheckedInStatus;
+    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
+    res
+      .status(200)
+      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - kunne ikke opdatere elev.");
   }
 });
 
