@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Playpen+Sans");
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Architects Daughter", sans-serif;
+    font-family: "Playpen Sans", sans-serif;
 }
 
 header {
@@ -11,6 +13,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+#back-icon {
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 
 header img {
