@@ -1,15 +1,9 @@
 import express from "express";
 import { db } from "../firebase.js";
-import {
-  addDoc,
-  collection,
-  doc,
-  deleteDoc,
-  getDocs,
-  query,
-  where,
-  writeBatch,
-} from "firebase/firestore";
+
+import { addDoc, collection, doc, deleteDoc, updateDoc, getDoc, query, where, getDocs, setDoc, DocumentReference } from "firebase/firestore";
+
+
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -42,84 +36,81 @@ router.get("/:classId", async (req, res) => {
   }
 });
 
-/* Opret elev(er) */
-/**
- * Takes an object containing an array of students and an array of parents
- * Adds the students and the parents to the database
- * Links the students to the parents and vice versa
- */
+
+/* Opret elev */
 router.post("/", async (req, res) => {
   console.log(req.body);
-  // Rough data validation
-  if (!req.body) {
-    throw new Error("Fejl - manglende data");
-  } else if (!req.body.students || !req.body.parents) {
-    throw new Error("Fejl - manglende data");
-  }
-
-  const students = req.body.students;
-  const parents = req.body.parents;
 
   try {
-    // Add children to database
-    const studentIds = []; // Array to hold the IDs of the students - will be added to parent object later
+    const doc = await addDoc(collection(db, "students"), req.body);
+    res.status(201).send("Elev oprettet");
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved oprettelse af elev");
+  }
+});
 
-    let batch = writeBatch(db); // Use batch to write all students at once
+/* Slet elev */
+router.delete("/:id", async (req, res) => {
+  let id = req.params.id;
 
-    // TODO: Maybe add further validation of student data
-    for (const student of students) {
-      // If any of the required fields are missing, return an error
-      if (!student.name || !student.classId || !student.birthday) {
-        throw new Error("Fejl - manglende data");
-      }
-      student.checkedIn = false; // Checked in status is false by default
-      student.parentsId = ""; // ID of parent object will be added after parent creation
-      const studentRef = doc(collection(db, "students")); // Create reference to student object
-      batch.set(studentRef, student); // Add student to batch
-      studentIds.push(studentRef.id); // Add student ID to array
+  try {
+    const docDelete = await deleteDoc(doc(db, "students", id));
+    res.status(200).send("Elev slettet");
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - eleven findes ikke.");
+  }
+});
+
+/* Opdater elev */
+router.put("/:id", async (req, res) => {
+    let id = req.params.id;
+
+    try {
+        const docRef = doc(db, "students", id);
+        await updateDoc(docRef, req.body);
+        res.status(200).send("Elev opdateret");
     }
+    catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - eleven findes ikke.");
+    }
+});
 
-    await batch.commit(); // Commit batch to database
+/* Hent elever tilstede*/
+router.get("/checkedIn", async (req, res) => {
+    try {
+        const querySnapshot = await getDocs(query(collection(db, "students"), where("checkedIn", "==", true)));
+        const students = querySnapshot.docs.map(doc => doc.data());
+        res.status(200).send(students);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - elever ikke fundet.");
+    }
+});
 
-    // Add parents to database
-    const parentId = ""; // ID of parent object will be added to student after parent creation
 
-    // Format for parent object:
-    // {
-    //   students: [
-    //     "studentId1",
-    //     "studentId2",
-    //     ...
-    //   ],
-    //   parents: [
-    //     {
-    //       name: "Parent Name",
-    //       phone: "12345678",
-    //       email: ""
-    //     },
-    //     ...
-    //   ],
-    // }
+/* Opdater elev tilstedeværelse */
+router.put("/toggleCheckedIn/:id", async (req, res) => {
 
-    const parentObject = {
-      students: studentIds,
-      parents: parents,
-    };
-    console.log(parentObject);
 
-    const parentDoc = await addDoc(collection(db, "parents"), parentObject); // Add parent to database
-    const parentDocId = parentDoc.id; // Get ID of parent object
+    try {
+        const studentId = req.params.id;
+        const docRef = doc(db, "students", studentId);
+        const studentDoc = await getDoc(docRef);
 
-    // Add parent ID to students
+        if (!studentDoc.exists()) {
+            throw new Error("Eleven findes ikke.");
+        }
+        const currentCheckedInStatus = studentDoc.data().checkedIn;
+        const updatedCheckedInStatus = !currentCheckedInStatus;
+        await updateDoc(docRef, { "checkedIn": updatedCheckedInStatus });
+        res.status(200).send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+    } catch (error) {
+        console.log(error);
+        res.status(404).send("Fejl - kunne ikke opdatere elev.");
 
-    batch = writeBatch(db); // Use batch to update all students at once
-
-    for (const studentId of studentIds) {
-      const studentDoc = doc(collection(db, "students"), studentId); // Create reference to student object
-      // Update parents array in student object
-      batch.update(studentDoc, {
-        parentsId: parentDocId,
-      });
     }
     await batch.commit(); // Commit batch to database
 
