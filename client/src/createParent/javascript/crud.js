@@ -1,5 +1,5 @@
 // crud.js
-import { createParents } from "../../datahandler.js";
+import { createStudentsAndParents } from "../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
@@ -13,25 +13,14 @@ function createParent(name, phone, email) {
 }
 
 function submitToDatabase() {
-  return createParents(parentsData, childrenData);
+  console.log("submitting to database");
+  console.log(childrenData, parentsData);
+  return createStudentsAndParents(childrenData, parentsData);
 }
 
 // Function to create a new child
-function createChild(name, grade, birthday) {
-  if (!name || typeof name !== "string") {
-    throw new Error("Invalid name. Provide a valid string.");
-  }
-
-  if (!grade || typeof grade !== "string") {
-    throw new Error("Invalid grade. Provide a valid string.");
-  }
-
-  if (!birthday || typeof birthday !== "string" || birthday.length !== 8) {
-    throw new Error(
-      "Invalid birthday. Provide a valid 8 digits string (YYYYMMDD)."
-    );
-  }
-  const newChild = { name, grade, birthday };
+function createChild(name, classId, birthday) {
+  const newChild = { name, classId, birthday };
   childrenData.push(newChild);
   return newChild;
 }
