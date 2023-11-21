@@ -24,8 +24,8 @@ const fetchStudents = async (parentId) => {
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
-const renderCards = () => {
-  fetchStudents("3QxFpQ1tZditbIjTkziG");
+const renderCards = async () => {
+  await fetchStudents("3QxFpQ1tZditbIjTkziG");
   børn.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
