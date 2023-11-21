@@ -1,13 +1,28 @@
+import { getStudentsByParentId } from "../../../datahandler.js";
+
 const backBtn = document.querySelector(".back-btn");
 
 backBtn.addEventListener("click", () => {
   window.location.href = "../";
 });
 
-let børn = [
-  { name: "Børge", checkedIn: true },
-  { name: "Sofie", checkedIn: false },
-];
+let børn = [];
+
+const fetchStudents = async (parentId) => {
+  try {
+    børn = await getStudentsByParentId(parentId);
+    børn = børn.map((student) => ({
+      id: student.id,
+      name: student.name,
+      checkedIn: student.checkedIn,
+    }));
+    renderCards();
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+fetchStudents("3QxFpQ1tZditbIjTkziG");
 
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
@@ -73,5 +88,3 @@ const renderCards = () => {
     });
   });
 };
-
-renderCards();
