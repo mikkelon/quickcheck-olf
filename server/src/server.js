@@ -3,19 +3,21 @@ import express from "express";
 import auth from "./routes/auth.js";
 import students from "./routes/students.js";
 import classes from "./routes/classes.js";
+import notes from "./routes/notes.js";
 
 const app = express();
 const port = 6969;
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 app.use("/auth", auth);
 app.use("/students", students);
 app.use("/classes", classes);
+app.use("/notes", notes);
 
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}...`);
+  console.log(`Server listening on port ${port}...`);
 });
