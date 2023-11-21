@@ -16,3 +16,35 @@ const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
     window.location.href = "../../dashboard/index.html";
 });
+
+const noteModal = document.getElementById("note-modal");
+
+const addNote = document.querySelector(".add-note-btn");
+addNote.addEventListener("click", () => {
+    noteModal.style.display = "block";
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById("closeBtn")
+
+    closeBtn.addEventListener("click", () => {
+        noteModal.style.display = "none";
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
