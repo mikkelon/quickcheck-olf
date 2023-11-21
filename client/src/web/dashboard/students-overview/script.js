@@ -47,7 +47,13 @@ const renderStudent = (student) => {
   });
   studentElement.appendChild(studentCheckBtn);
 
+  studentElement.addEventListener("click", () => {
+    localStorage.setItem("child", JSON.stringify(student));
+    window.location.href = "component/student.html";
+  });
+
   studentContainer.appendChild(studentElement);
+
 };
 
 function sortByClassThenCheckedInStatus(a, b) {
@@ -245,9 +251,8 @@ const addFilter = (filterType, filterValue) => {
       filterValue === "checkedIn" ? "#00C853" : "#FF5656";
     activeFilterText.dataset.filterValue =
       filterValue === "checkedIn" ? "checkedIn" : "checkedOut";
-    activeFilterText.innerHTML = `Tjekket ${
-      filterValue === "checkedIn" ? "ind" : "ud"
-    }`;
+    activeFilterText.innerHTML = `Tjekket ${filterValue === "checkedIn" ? "ind" : "ud"
+      }`;
 
     console.log(activeFilters);
   }

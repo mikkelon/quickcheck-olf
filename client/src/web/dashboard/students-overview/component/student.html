@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='../global.styles.css' />
-    <link rel="stylesheet" href="modal.styles.css" />
+    <link rel='stylesheet' href='../../../../global.styles.css' />
+    <link rel="stylesheet" href="student.styles.css" />
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet'>
-    <script type="module" src="modal.js" defer></script>
+    <script type="module" src="student.js" defer></script>
     <title>Modal</title>
 </head>
 
@@ -42,24 +42,24 @@
                     </div>
 
                     <!-- Tjek -->
-                    <button class="tjek-ud-btn">Tjek ud</button>
+                    <button class="tjek-ud-btn" id="checkInOutBtn">{checkInOut}</button>
                 </div>
 
                 <!-- Details -->
                 <div class="details">
                     <!-- Name -->
-                    <h1>Arne Bjarne</h1>
+                    <h1 id="name-header">{name}</h1>
                     <div class="forms-container" id="login-container">
                         <!-- Birthday -->
                         <div class="form-container">
                             <label class="forms-label">Fødselsdag</label>
-                            <input class="forms-input" type="text" />
+                            <input class="forms-input" type="date" id="birthday" />
                         </div>
 
                         <!-- Grade -->
                         <div class="form-container">
                             <label class="forms-label">Klasse</label>
-                            <input class="forms-input" type="text" />
+                            <input class="forms-input" type="text" id="class" />
                         </div>
                     </div>
                 </div>
@@ -69,7 +69,6 @@
             <div class="notes-container">
                 <h2>Noter</h2>
                 <div id="notes">
-                    k
                 </div>
                 <button class="add-note-btn">
                     Tilføj
@@ -83,26 +82,23 @@
         <div class="parents">
             <h1>Forældre</h1>
 
-            <div class="parents-container">
-                <div class="parent">
-                    <div class="forms-container" id="login-container">
-                        <div class="form-container">
-                            <label class="forms-label">Navn</label>
-                            <input class="forms-input" type="text" />
-                        </div>
+            <div id="parents-container">
+                <div class="forms-container" id="login-container">
+                    <div class="form-container">
+                        <label class="forms-label">Navn</label>
+                        <input class="forms-input" type="text" />
+                    </div>
 
-                        <div class="form-container">
-                            <label class="forms-label">Email</label>
-                            <input class="forms-input" type="text" />
-                        </div>
+                    <div class="form-container">
+                        <label class="forms-label">Email</label>
+                        <input class="forms-input" type="text" />
+                    </div>
 
-                        <div class="form-container">
-                            <label class="forms-label">Phone</label>
-                            <input class="forms-input" type="text" />
-                        </div>
+                    <div class="form-container">
+                        <label class="forms-label">Phone</label>
+                        <input class="forms-input" type="text" />
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
