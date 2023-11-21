@@ -1,4 +1,5 @@
 import { toggleStudentCheckIn } from "../../../datahandler.js";
+import { getStudentsByParentId } from "../../../datahandler.js";
 
 const backBtn = document.querySelector(".back-btn");
 
@@ -6,15 +7,26 @@ backBtn.addEventListener("click", () => {
     window.location.href = "../";
 });
 
-let børn = [
-    { name: "Børge", checkedIn: true },
-    { name: "Sofie", checkedIn: false },
-];
+let børn = [];
+
+const fetchStudents = async parentId => {
+    try {
+        børn = await getStudentsByParentId(parentId);
+        børn = børn.map(student => ({
+            id: student.id,
+            name: student.name,
+            checkedIn: student.checkedIn,
+        }));
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+};
 
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
-const renderCards = () => {
+const renderCards = async () => {
+    await fetchStudents("3QxFpQ1tZditbIjTkziG");
     børn.forEach(student => {
         const card = document.createElement("div");
         card.classList.add("card");
@@ -51,7 +63,7 @@ const renderCards = () => {
         const cardStatus = document.createElement("p");
         cardStatus.classList.add("status");
         let checkedIn = student.checkedIn;
-        cardStatus.textContent = checkedIn ? "Tjekket ud" : "Tjekket ind";
+        cardStatus.textContent = checkedIn ? "Tjekket ind" : "Tjekket ud";
         card.classList.add(checkedIn ? "checked-in" : "checked-out");
         textContainer.appendChild(cardStatus);
 
@@ -67,11 +79,11 @@ const renderCards = () => {
             if (card.classList.contains("checked-in")) {
                 card.classList.remove("checked-in");
                 card.classList.add("checked-out");
-                status.innerHTML = "Tjekket ind";
+                status.innerHTML = "Tjekket ud";
             } else {
                 card.classList.add("checked-in");
                 card.classList.remove("checked-out");
-                status.innerHTML = "Tjekket ud";
+                status.innerHTML = "Tjekket ind";
             }
         });
     });
