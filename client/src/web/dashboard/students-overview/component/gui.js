@@ -1,5 +1,5 @@
 import { getParentsById } from "../../../../datahandler.js";
-import { createParent, deleteParent } from "./crud.js";
+import { createParent, deleteParent, getAllParents } from "./crud.js";
 
 let child;
 
@@ -22,6 +22,13 @@ async function initGUI() {
     clazz.value = child.class.colorLabel;
 
     setStatus(child.checkedIn);
+
+    await getParentsById(child.parents).then((res) => {
+        res.parents.map((parent) => {
+            createParent(parent.name, parent.phone, parent.email);
+        });
+    }
+    );
     setParents();
 }
 
@@ -38,10 +45,9 @@ async function setParents() {
     const parentsContainer = document.getElementById("parents-container");
     parentsContainer.innerHTML = "";
 
-    const parents = await getParentsById(child.parents);
+    const parents = getAllParents();
 
-    console.log(parents);
-    parents.parents.forEach((parent, index) => {
+    parents.forEach((parent, index) => {
         const parentDiv = createParentElement(parent, index);
         parentsContainer.appendChild(parentDiv);
     });

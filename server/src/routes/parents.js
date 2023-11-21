@@ -27,7 +27,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    console.log("parentsId " + id);
     const docRef = doc(db, "parents", id);
     const docSnap = await getDoc(docRef);
     const parent = docSnap.data();
