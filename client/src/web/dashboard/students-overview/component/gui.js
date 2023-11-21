@@ -1,8 +1,7 @@
 import { getParentsById } from "../../../../datahandler.js";
-import { createParent, deleteParent } from "./crud.js";
+import { createParent, deleteParent, getAllParents } from "./crud.js";
 
 let child;
-let parentsData = [];
 
 const checkMark = "/client/assets/icons/check.svg";
 const crossMark = "/client/assets/icons/cross.svg";
@@ -24,7 +23,12 @@ async function initGUI() {
 
     setStatus(child.checkedIn);
 
-    parentsData = await getParentsById(child.parents).parents;
+    await getParentsById(child.parents).then((res) => {
+        res.parents.map((parent) => {
+            createParent(parent.name, parent.phone, parent.email);
+        });
+    }
+    );
     setParents();
 }
 
@@ -41,7 +45,9 @@ async function setParents() {
     const parentsContainer = document.getElementById("parents-container");
     parentsContainer.innerHTML = "";
 
-    parentsData.forEach((parent, index) => {
+    const parents = getAllParents();
+
+    parents.forEach((parent, index) => {
         const parentDiv = createParentElement(parent, index);
         parentsContainer.appendChild(parentDiv);
     });
@@ -53,7 +59,7 @@ async function setParents() {
             // Handle the click event for adding a child
             // You can show a form or perform any other action
             console.log("Add Parent button clicked");
-            parentsData.push(createParent("", "", ""));
+            createParent("", "", "");
             setParents();
         }
     );
