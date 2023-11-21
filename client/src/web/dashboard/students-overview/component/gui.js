@@ -1,4 +1,5 @@
 import { getParentsById } from "../../../../datahandler.js";
+import { createParent, deleteParent } from "./crud.js";
 
 let child;
 
@@ -35,11 +36,12 @@ function setStatus(checkedIn) {
 
 async function setParents() {
     const parentsContainer = document.getElementById("parents-container");
-    parents.innerHTML = "";
+    parentsContainer.innerHTML = "";
 
-    const parents = await getParentsById(child.parentId);
+    const parents = await getParentsById(child.parents);
 
-    parents.forEach((parent, index) => {
+    console.log(parents);
+    parents.parents.forEach((parent, index) => {
         const parentDiv = createParentElement(parent, index);
         parentsContainer.appendChild(parentDiv);
     });
@@ -198,6 +200,15 @@ function createParentElement(parent, index) {
 
     return parentDiv;
 }
+
+// Event handler for deleting a parent
+function deleteParentHandler(index) {
+    const deletedParent = deleteParent(index);
+    console.log("Deleted Parent:", deletedParent);
+  
+    // Update the UI
+    setParents();
+  }
 
 const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
