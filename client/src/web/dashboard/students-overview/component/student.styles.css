@@ -83,7 +83,7 @@ body {
   position: absolute;
   top: 0px;
   right: 10px;
-  background-color: #4bb14e;
+  /* background-color: #4bb14e; */
   padding: 10px;
   border-radius: 50%;
 }
@@ -135,11 +135,41 @@ body {
   justify-content: start;
 }
 
-.parents-container {
+#parents-container {
   display: flex;
   flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.parent {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+  height: 360px;
+  /* shadow */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.createBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  /* add border */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
 }
 
 /* Stil for Modal */

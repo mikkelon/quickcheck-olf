@@ -6,6 +6,7 @@ import {
   doc,
   deleteDoc,
   getDocs,
+  getDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -22,18 +23,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* Hent forælder */
-router.get("/:classId", async (req, res) => {
-  const classId = req.params.classId;
-  console.log(classId);
+/* Hent forældre med id */
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
   try {
-    const firebaseQuery = query(
-      collection(db, "parents"),
-      where("uid", "==", classId)
-    );
-    const parentsDocs = await getDocs(firebaseQuery);
-    const parents = parentsDocs.docs.map((doc) => doc.data());
-    res.status(200).send(parents);
+    console.log("parentsId " + id);
+    const docRef = doc(db, "parents", id);
+    const docSnap = await getDoc(docRef);
+    const parent = docSnap.data();
+    res.status(200).send(parent);
   } catch (error) {
     console.log(error);
     res.status(400).send("Fejl ved hentning af forælder");
