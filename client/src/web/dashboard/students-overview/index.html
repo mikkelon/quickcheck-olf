@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" type="module" defer></script>
+    <title>QuickCheck</title>
+  </head>
+  <body>
+    <header>
+      <img src="../../../../assets/logo.png" />
+    </header>
+    <main>
+      <h1 class="title">Elevoversigt</h1>
+      <div class="container search">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Søg efter elev" />
+          <img src="../../../../assets/icons/magnifer.svg" />
+        </div>
+      </div>
+      <h2 class="subheader">Filtre</h2>
+      <div class="container filter-options">
+        <select id="class-select">
+          <option value="0">Vælg klasse...</option>
+        </select>
+        <button id="checked-in-btn">Tjekket ind</button>
+        <button id="checked-out-btn">Tjekket ud</button>
+      </div>
+      <div id="active-filters-wrapper">
+        <h2 class="subheader">Aktive filtre</h2>
+        <div class="container" id="active-filters"></div>
+      </div>
+      <div class="container students-table">
+        <div class="student-column-titles">
+          <p>Navn</p>
+          <p>Klasse</p>
+          <p>Status</p>
+        </div>
+        <div class="students">
+          <!-- <div class="student">
+          <p>Fabian Andersen</p>
+          <p class="class-text">Rød</p>
+          <div class="check-btn checked-in"></div>
+        </div> -->
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
