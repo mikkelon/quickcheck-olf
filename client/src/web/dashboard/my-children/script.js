@@ -63,7 +63,7 @@ const renderCards = async () => {
         const cardStatus = document.createElement("p");
         cardStatus.classList.add("status");
         let checkedIn = student.checkedIn;
-        cardStatus.textContent = checkedIn ? "Tjekket ud" : "Tjekket ind";
+        cardStatus.textContent = checkedIn ? "Tjekket ind" : "Tjekket ud";
         card.classList.add(checkedIn ? "checked-in" : "checked-out");
         textContainer.appendChild(cardStatus);
 
@@ -79,11 +79,11 @@ const renderCards = async () => {
             if (card.classList.contains("checked-in")) {
                 card.classList.remove("checked-in");
                 card.classList.add("checked-out");
-                status.innerHTML = "Tjekket ind";
+                status.innerHTML = "Tjekket ud";
             } else {
                 card.classList.add("checked-in");
                 card.classList.remove("checked-out");
-                status.innerHTML = "Tjekket ud";
+                status.innerHTML = "Tjekket ind";
             }
         });
     });
