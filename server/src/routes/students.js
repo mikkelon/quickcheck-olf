@@ -13,7 +13,7 @@ import {
   query,
   where,
   writeBatch,
-  DocumentReference
+  DocumentReference,
 } from "firebase/firestore";
 
 const router = express.Router();
@@ -68,9 +68,12 @@ router.post("/", async (req, res) => {
   const students = req.body.students;
   const parents = req.body.parents;
 
+  let transactionError = null; // Variable to hold error from transaction
+  let parentDocId = null; // Variable to hold ID of parent object
+  const studentIds = []; // Array to hold the IDs of the students - will be added to parent object later
+
   try {
     // Add children to database
-    const studentIds = []; // Array to hold the IDs of the students - will be added to parent object later
 
     let batch = writeBatch(db); // Use batch to write all students at once
 
@@ -90,8 +93,6 @@ router.post("/", async (req, res) => {
     await batch.commit(); // Commit batch to database
 
     // Add parents to database
-    const parentId = ""; // ID of parent object will be added to student after parent creation
-
     // Format for parent object:
     // {
     //   students: [
@@ -131,10 +132,57 @@ router.post("/", async (req, res) => {
     }
     await batch.commit(); // Commit batch to database
 
-    res.status(201).send(studentIds);
+    // If everything went well, create a new user using the /signup/parent route
+    await fetch("http://localhost:6969/signup/parent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: parents[0].email,
+        parentId: parentDocId,
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        console.log("User created");
+      } else {
+        throw new Error("Fejl - bruger kunne ikke oprettes");
+      }
+    });
   } catch (error) {
     console.log(error);
+    transactionError = error;
     res.status(400).send("Fejl ved oprettelse af elev");
+  } finally {
+    if (transactionError) {
+      // TODO: Rollback doesn't work properly yet
+      // Handle the rollback here
+      console.log("Rolling back changes...");
+      console.log("ParentDocId:", parentDocId);
+
+      // Delete the parent and associated students
+      if (parentDocId !== null) {
+        const deletePromises = [
+          deleteDoc(doc(db, "parents", parentDocId)),
+          ...studentIds.map((studentId) => {
+            if (studentId) {
+              // Ensure studentId is valid
+              return deleteDoc(doc(db, "students", studentId));
+            }
+            return null; // Return null for invalid studentId
+          }),
+        ];
+
+        await Promise.all(deletePromises);
+      } else {
+        console.log("ParentDocId is null, skipping deletion.");
+      }
+
+      console.log("Changes rolled back.");
+    } else {
+      // Transaction was successful
+      res.status(201).send(studentIds);
+    }
   }
 });
 
@@ -216,50 +264,52 @@ router.delete("/:id", async (req, res) => {
 
 /* Opdater elev */
 router.put("/:id", async (req, res) => {
-    let id = req.params.id;
+  let id = req.params.id;
 
-    try {
-        const docRef = doc(db, "students", id);
-        await updateDoc(docRef, req.body);
-        res.status(200).send("Elev opdateret");
-    }
-    catch (error) {
-        console.log(error);
-        res.status(404).send("Fejl - eleven findes ikke.");
-    }
+  try {
+    const docRef = doc(db, "students", id);
+    await updateDoc(docRef, req.body);
+    res.status(200).send("Elev opdateret");
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - eleven findes ikke.");
+  }
 });
 
 /* Hent elever tilstede*/
 router.get("/checkedIn", async (req, res) => {
-    try {
-        const querySnapshot = await getDocs(query(collection(db, "students"), where("checkedIn", "==", true)));
-        const students = querySnapshot.docs.map(doc => doc.data());
-        res.status(200).send(students);
-    } catch (error) {
-        console.log(error);
-        res.status(404).send("Fejl - elever ikke fundet.");
-    }
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, "students"), where("checkedIn", "==", true))
+    );
+    const students = querySnapshot.docs.map((doc) => doc.data());
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - elever ikke fundet.");
+  }
 });
-
 
 /* Opdater elev tilstedeværelse */
 router.put("/toggleCheckedIn/:id", async (req, res) => {
-    try {
-        const studentId = req.params.id;
-        const docRef = doc(db, "students", studentId);
-        const studentDoc = await getDoc(docRef);
+  try {
+    const studentId = req.params.id;
+    const docRef = doc(db, "students", studentId);
+    const studentDoc = await getDoc(docRef);
 
-        if (!studentDoc.exists()) {
-            throw new Error("Eleven findes ikke.");
-        }
-        const currentCheckedInStatus = studentDoc.data().checkedIn;
-        const updatedCheckedInStatus = !currentCheckedInStatus;
-        await updateDoc(docRef, { "checkedIn": updatedCheckedInStatus });
-        res.status(200).send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
-    } catch (error) {
-        console.log(error);
-        res.status(404).send("Fejl - kunne ikke opdatere elev.");
+    if (!studentDoc.exists()) {
+      throw new Error("Eleven findes ikke.");
     }
+    const currentCheckedInStatus = studentDoc.data().checkedIn;
+    const updatedCheckedInStatus = !currentCheckedInStatus;
+    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
+    res
+      .status(200)
+      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - kunne ikke opdatere elev.");
+  }
 });
 
 export default router;
