@@ -18,8 +18,8 @@ const renderCards = async () => {
 
         card.style.backgroundColor = classData.color;
 
-        const main = document.querySelector("main");
-        main.appendChild(card);
+        const section = document.querySelector("section");
+        section.appendChild(card);
         card.addEventListener("click", () => {
             const classColor = card.getAttribute("data-class-id");
             window.location.href = `class/?classId=${classColor}`;
