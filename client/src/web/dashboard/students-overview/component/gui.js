@@ -205,10 +205,10 @@ function createParentElement(parent, index) {
 function deleteParentHandler(index) {
     const deletedParent = deleteParent(index);
     console.log("Deleted Parent:", deletedParent);
-  
+
     // Update the UI
     setParents();
-  }
+}
 
 const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
@@ -222,3 +222,19 @@ checkInOutBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", initGUI);
+
+
+const noteModal = document.getElementById("note-modal");
+
+const addNote = document.querySelector(".add-note-btn");
+addNote.addEventListener("click", () => {
+    noteModal.style.display = "block";
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn = document.getElementById("closeBtn")
+
+    closeBtn.addEventListener("click", () => {
+        noteModal.style.display = "none";
+    });
+});
