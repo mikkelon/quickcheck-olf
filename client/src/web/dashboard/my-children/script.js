@@ -1,4 +1,5 @@
 import { toggleStudentCheckIn } from "../../../datahandler.js";
+import { getStudentsByParentId } from "../../../datahandler.js";
 
 const backBtn = document.querySelector(".back-btn");
 
@@ -6,15 +7,26 @@ backBtn.addEventListener("click", () => {
     window.location.href = "../";
 });
 
-let børn = [
-    { name: "Børge", checkedIn: true },
-    { name: "Sofie", checkedIn: false },
-];
+let børn = [];
+
+const fetchStudents = async parentId => {
+    try {
+        børn = await getStudentsByParentId(parentId);
+        børn = børn.map(student => ({
+            id: student.id,
+            name: student.name,
+            checkedIn: student.checkedIn,
+        }));
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+};
 
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
-const renderCards = () => {
+const renderCards = async () => {
+    await fetchStudents("3QxFpQ1tZditbIjTkziG");
     børn.forEach(student => {
         const card = document.createElement("div");
         card.classList.add("card");

@@ -23,6 +23,26 @@ export const getStudentsByClassId = async (classId) => {
   }
 };
 
+export const getStudentsByParentId = async (parentId) => {
+  const url = `http://localhost:6969/parents/${parentId}/students`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
 /**
  * Get all classes
  * @returns {Array} Array of classes
@@ -101,7 +121,6 @@ export const getStudents = async () => {
     console.error("Error fetching students:", error);
     throw error; // Rethrow the error for the caller to handle
   }
-
 };
 
 /**
