@@ -1,28 +1,30 @@
 import { getClasses } from "../datahandler.js";
 
 const renderCards = async () => {
-  const data = await getClasses();
-  console.log(data);
+    const data = await getClasses();
+    console.log(data);
 
-  data.forEach((classData) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.setAttribute("data-class-id", classData.id);
+    data.sort((a, b) => a.class - b.class);
 
-    const cardText = document.createElement("p");
-    cardText.innerText = classData.colorLabel;
+    data.forEach(classData => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.setAttribute("data-class-id", classData.id);
 
-    card.appendChild(cardText);
+        const cardText = document.createElement("p");
+        cardText.innerText = classData.colorLabel;
 
-    card.style.backgroundColor = classData.color;
+        card.appendChild(cardText);
 
-    const main = document.querySelector("main");
-    main.appendChild(card);
-    card.addEventListener("click", () => {
-      const classColor = card.getAttribute("data-class-id");
-      window.location.href = `class/?classId=${classColor}`;
+        card.style.backgroundColor = classData.color;
+
+        const section = document.querySelector("section");
+        section.appendChild(card);
+        card.addEventListener("click", () => {
+            const classColor = card.getAttribute("data-class-id");
+            window.location.href = `class/?classId=${classColor}`;
+        });
     });
-  });
 };
 
 renderCards();

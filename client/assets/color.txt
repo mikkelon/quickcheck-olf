@@ -1,0 +1,10 @@
+Rød (Red): #FF4D4D
+Orange: #FF9933
+Turkis (Turquoise): #33CCCC
+Grøn (Green): #4CAF50
+Pink: #FFB6C1
+Hvid (White): #FFFFFF
+Rosa (Rose): #FF66B2
+Lilla (Purple): #B266B2
+Blå (Blue): #3399FF
+Gul (Yellow): #FFFF66
