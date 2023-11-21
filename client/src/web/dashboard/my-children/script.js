@@ -16,18 +16,16 @@ const fetchStudents = async (parentId) => {
       name: student.name,
       checkedIn: student.checkedIn,
     }));
-    renderCards();
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 };
 
-fetchStudents("3QxFpQ1tZditbIjTkziG");
-
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
 
 const renderCards = () => {
+  fetchStudents("3QxFpQ1tZditbIjTkziG");
   børn.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
@@ -88,3 +86,5 @@ const renderCards = () => {
     });
   });
 };
+
+renderCards();
