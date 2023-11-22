@@ -77,15 +77,18 @@ router.delete("/:id", async (req, res) => {
 });
 
 /* Se børn */
-router.get("/:parentsID/students", async (req, res) => {
-  const parentsID = req.params.parentsID;
+router.get("/:parentsId/students", async (req, res) => {
+  const parents = req.params.parentsId;
   try {
     const firebaseQuery = query(
       collection(db, "students"),
-      where("parentsID", "==", parentsID)
+      where("parents", "==", parents)
     );
     const studentsDocs = await getDocs(firebaseQuery);
-    const students = studentsDocs.docs.map((doc) => doc.data());
+    const students = studentsDocs.docs.map((doc) => ({
+      id: doc.id, // Include the student ID
+      ...doc.data(),
+    }));
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
