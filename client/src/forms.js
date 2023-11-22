@@ -74,11 +74,12 @@ function createDropdownFormElement(
     return formContainer;
 }
 
-function createTextButton(id, text, onClick) {
+function createTextButton(id, text, onClick, bgColor) {
     const button = document.createElement("button");
     button.classList.add("forms-button");
     button.setAttribute("id", id);
     button.innerHTML = text ?? "";
+    button.style.backgroundColor = bgColor ?? "";
     button.addEventListener("click", onClick);
 
     return button;

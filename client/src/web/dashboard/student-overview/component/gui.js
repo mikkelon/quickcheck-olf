@@ -10,7 +10,7 @@ let editing = false;
 const child = {
     "checkedIn": false,
     "name": "Mads Jensen",
-    "parentsId": "jqzQiXeNiOcZMdZcTNwN",
+    "parentsId": "O54vmYal7owjuwVFuOHo",
     "birthday": "2005-02-15",
     "classId": "0777Ja1ckgt5F6XcaxZR",
     "class": {
@@ -59,24 +59,24 @@ function addButtons() {
         const saveBtn = createTextButton("save", "Gem", () => {
             editing = !editing;
             setState(editing);
-        });
+        }, "#4bb14e");
 
         const cancelbtn = createTextButton("cancel", "Annuller", () => {
             editing = !editing;
             setState(editing);
-        });
+        }, "#FF5656");
 
         customizeButtons.appendChild(cancelbtn);
         customizeButtons.appendChild(saveBtn);
     } else {
         const deleteBtn = createTextButton("delete", "Slet", () => {
             console.log("Delete button clicked");
-        });
+        }, "#FF5656");
 
         const editBtn = createTextButton("edit", "Rediger", () => {
             editing = !editing;
             setState(editing);
-        });
+        }, "#4bb14e");
 
         customizeButtons.appendChild(deleteBtn);
         customizeButtons.appendChild(editBtn);
