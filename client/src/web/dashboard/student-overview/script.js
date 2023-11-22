@@ -8,6 +8,11 @@ import {
 const studentContainer = document.querySelector(".students");
 
 let studentArray = [];
+let activeFilters;
+
+const updateActiveFiltersStorage = () => {
+  localStorage.setItem("activeFilters", JSON.stringify(activeFilters));
+};
 
 const renderStudent = (student) => {
   const studentElement = document.createElement("div");
@@ -49,6 +54,7 @@ const renderStudent = (student) => {
 
   studentElement.addEventListener("click", () => {
     localStorage.setItem("child", JSON.stringify(student));
+    updateActiveFiltersStorage();
     window.location.href = "component/student.html";
   });
 
@@ -56,7 +62,6 @@ const renderStudent = (student) => {
 };
 
 function sortByClassThenCheckedInStatus(a, b) {
-  console.log("sorting");
   // First, compare the class IDs
   const classComparison = a.class.id.localeCompare(b.class.id);
 
@@ -86,8 +91,6 @@ const fetchStudents = async () => {
   renderStudents();
 };
 
-fetchStudents();
-
 // #--- Class select ---#
 let classArray = [];
 
@@ -104,19 +107,12 @@ const renderClassOptions = () => {
 
 const fetchClasses = async () => {
   classArray = await getClasses();
+  console.log(classArray);
 
   renderClassOptions();
 };
 
-fetchClasses();
-
 // #--- Active filters ---#
-let activeFilters = {
-  classes: [],
-  checkedIn: false,
-  checkedOut: false,
-  name: "",
-};
 
 const filterStudents = () => {
   console.log("filtering students");
@@ -292,6 +288,8 @@ const removeFilter = (filterType, filterValue) => {
     activeFilters.checkedOut = false;
   }
 
+  updateActiveFiltersStorage();
+
   const activeFiltersContainer = document.querySelector("#active-filters");
   const filterDivs = activeFiltersContainer.querySelectorAll(".active-filter");
   filterDivs.forEach((filterDiv) => {
@@ -317,7 +315,6 @@ const removeFilter = (filterType, filterValue) => {
 
   checkActiveFilters();
   filterStudents();
-  console.log(activeFilters);
 };
 
 const checkActiveFilters = () => {
@@ -362,3 +359,44 @@ function updateClearFiltersButtonVisibility() {
     clearFiltersBtn.style.display = "none";
   }
 }
+const initActiveFiltersFromLocalStorage = () => {
+  activeFilters = JSON.parse(localStorage.getItem("activeFilters"));
+  // local storage returns undefined as a string
+  if (activeFilters === "undefined") {
+    activeFilters = {
+      classes: [],
+      checkedIn: false,
+      checkedOut: false,
+      name: "",
+    };
+  }
+  console.log(activeFilters);
+};
+
+const renderFilterCards = () => {
+  activeFilters.classes.forEach((classId) => {
+    addFilter("class", classId);
+  });
+
+  if (activeFilters.checkedIn) {
+    addFilter("checkedStatus", "checkedIn");
+  }
+
+  if (activeFilters.checkedOut) {
+    addFilter("checkedStatus", "checkedOut");
+  }
+
+  if (activeFilters.name !== "") {
+    addFilter("name", activeFilters.name);
+  }
+};
+
+const initOverview = async () => {
+  await fetchClasses();
+  await fetchStudents();
+  initActiveFiltersFromLocalStorage();
+  renderFilterCards();
+  filterStudents();
+};
+
+initOverview();

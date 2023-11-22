@@ -3,7 +3,7 @@
  * @param {*} classId The id of the class (firebase document id)
  * @returns {Array} Array of students
  */
-export const getStudentsByClassId = async (classId) => {
+export const getStudentsByClassId = async classId => {
   const url = `http://localhost:6969/students/${classId}`;
 
   try {
@@ -23,7 +23,7 @@ export const getStudentsByClassId = async (classId) => {
   }
 };
 
-export const getStudentsByParentId = async (parentId) => {
+export const getStudentsByParentId = async parentId => {
   const url = `http://localhost:6969/parents/${parentId}/students`;
 
   try {
@@ -97,7 +97,7 @@ export const createStudentsAndParents = async (students, parents) => {
   }
 };
 
-export const createEmployee = async (employee) => {
+export const createEmployee = async employee => {
   const url = "http://localhost:6969/signup/employee";
   console.log(employee);
   const options = {
@@ -157,15 +157,13 @@ export const getStudentsWithClass = async () => {
   const classes = await getClasses();
 
   // Add class information to students
-  const studentsWithClass = students.map((student) => {
-    const studentClass = classes.find((c) => c.id === student.classId);
+  const studentsWithClass = students.map(student => {
+    const studentClass = classes.find(c => c.id === student.classId);
     return {
       ...student,
       class: studentClass,
     };
   });
-
-  console.log(studentsWithClass);
 
   return studentsWithClass;
 };
@@ -174,7 +172,7 @@ export const getStudentsWithClass = async () => {
  * Toggles the checked in status of a student
  * @param {*} studentId The id of the student (firebase document id)
  */
-export const toggleStudentCheckIn = async (studentId) => {
+export const toggleStudentCheckIn = async studentId => {
   const url = `http://localhost:6969/students/toggleCheckedIn/${studentId}`;
   const options = {
     method: "PUT",
@@ -193,7 +191,7 @@ export const toggleStudentCheckIn = async (studentId) => {
   }
 };
 
-export const getParentsById = async (parentsId) => {
+export const getParentsById = async parentsId => {
   const url = `http://localhost:6969/parents/${parentsId}`;
   const options = {
     method: "GET",
