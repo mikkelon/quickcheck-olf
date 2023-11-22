@@ -3,6 +3,7 @@ import { createStudentsAndParents } from "../../../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
+let notes = [];
 
 // Function to create a new parent
 function createParent(name, phone, email) {
@@ -14,6 +15,29 @@ function createParent(name, phone, email) {
 // Function to read all parents
 function getAllParents() {
   return parentsData;
+
+}
+
+function getAllNotes() {
+  return notes;
+}
+
+function createNewNote(title, description, startDate, endDate) {
+  const note = {
+    title,
+    description,
+    startDate,
+    endDate,
+  }
+
+  notes.push(note);
+  return note;
+}
+
+//Function to delete note by index
+function deleteNote(index) {
+  const deletedNote = notes.splice(index, 1);
+  return deletedNote[0];
 }
 
 // Function to update parent by index
@@ -39,4 +63,7 @@ export {
   updateParent,
   deleteParent,
   clear,
+  createNewNote,
+  getAllNotes,
+  deleteNote
 };

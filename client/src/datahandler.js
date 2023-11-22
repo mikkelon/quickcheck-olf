@@ -173,3 +173,26 @@ export const getParentsById = async (parentsId) => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+export const createNote = async (studentId, note) => {
+  const url = `http://localhost:6969/notes/${studentId}`;
+  const options = {
+    method: "POST",
+    body: JSON.stringify(note)
+  }
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+}

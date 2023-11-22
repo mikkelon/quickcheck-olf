@@ -1,5 +1,5 @@
-import { getParentsById } from "../../../../datahandler.js";
-import { createParent, deleteParent } from "./crud.js";
+import { createNote, getParentsById } from "../../../../datahandler.js";
+import { createNewNote, createParent, deleteNote, deleteParent, getAllNotes } from "./crud.js";
 
 let child;
 
@@ -210,6 +210,15 @@ function deleteParentHandler(index) {
     setParents();
 }
 
+// Event handler for deleting a note
+function deleteNoteHandler(index) {
+    const deletedNote = deleteNote(index);
+    console.log("Deleted note:", deletedNote);
+
+    // Update the UI
+    createNotesGui();
+}
+
 const goBack = document.getElementById("back-icon");
 goBack.addEventListener("click", () => {
     window.location.href = "../index.html";
@@ -238,3 +247,109 @@ document.addEventListener("DOMContentLoaded", function () {
         noteModal.style.display = "none";
     });
 });
+
+const saveNote = document.querySelector(".note-save-btn");
+saveNote.addEventListener("click", async () => {
+
+    const titleField = document.getElementById("note-title")
+    const title = titleField.value;
+
+    const descriptionField = document.getElementById("note-description")
+    const description = descriptionField.value;
+
+    const startDateField = document.getElementById("start-date")
+    const startDate = startDateField.value;
+
+    const endDateField = document.getElementById("end-date")
+    const endDate = endDateField.value;
+
+    createNewNote(title, description, startDate, endDate);
+    createNotesGui();
+
+    titleField.value = "";
+    descriptionField.value = "";
+    startDateField.value = "";
+    endDateField.value = "";
+
+    noteModal.style.display = "none";
+
+})
+
+
+function createNotesGui() {
+    const notes = getAllNotes();
+    const noteContainer = document.getElementById("notes")
+
+    noteContainer.innerHTML = "";
+
+
+    notes.forEach((note, index) => {
+        const noteElm = createNoteElement(note, index);
+        noteContainer.appendChild(noteElm);
+    })
+}
+
+function createNoteElement(note, index) {
+    // Opret hovedelementet <div class="note">
+    const noteDiv = document.createElement("div");
+    noteDiv.classList.add("note");
+
+    // Opret dropdown-containeren <div class="dropdown">
+    const dropdownDiv = document.createElement("div");
+    dropdownDiv.classList.add("dropdown");
+
+    // Opret <p>-elementer for titel, startdato og slutdato
+    const titleP = document.createElement("p");
+    titleP.innerHTML = note.title;
+
+    const startDateP = document.createElement("p");
+    startDateP.innerHTML = note.startDate;
+
+    const endDateP = document.createElement("p");
+    endDateP.innerHTML = note.endDate;
+
+    // Opret dropdown-indholdet <div class="dropdown-content">
+    const dropdownContentDiv = document.createElement("div");
+    dropdownContentDiv.classList.add("dropdown-content");
+
+    // Opret <p>-element for beskrivelse
+    const descriptionP = document.createElement("p");
+    descriptionP.innerHTML = note.description;
+
+    // Tilføj <p>-elementet til dropdown-indholdet
+    dropdownContentDiv.appendChild(descriptionP);
+
+    // Tilføj <p>-elementerne til dropdown-containeren
+    dropdownDiv.appendChild(titleP);
+    dropdownDiv.appendChild(startDateP);
+    dropdownDiv.appendChild(endDateP);
+    dropdownDiv.appendChild(dropdownContentDiv);
+
+    // Opret delete-knappen <div class="note-delete">
+    const deleteBtnDiv = document.createElement("div");
+    deleteBtnDiv.classList.add("note-delete");
+    deleteBtnDiv.innerHTML = "X";
+
+    // Tilføj en event listener til delete-knappen
+    deleteBtnDiv.addEventListener("click", () => {
+        console.log("Førklik")
+        deleteNoteHandler(index); // Kald din slettenote-handler med det aktuelle index
+        console.log("Klikc")
+    });
+
+    // Tilføj dropdown-containeren og delete-knappen til hovedelementet
+    noteDiv.appendChild(dropdownDiv);
+    noteDiv.appendChild(deleteBtnDiv);
+
+    return noteDiv;
+}
+
+const index = 0; // Dette skal være det aktuelle index for noten
+const noteElement = createNoteElement(note, index);
+noteContainer.appendChild(noteElement);
+
+
+
+
+
+
