@@ -332,9 +332,7 @@ function createNoteElement(note, index) {
 
     // Tilføj en event listener til delete-knappen
     deleteBtnDiv.addEventListener("click", () => {
-        console.log("Førklik")
-        deleteNoteHandler(index); // Kald din slettenote-handler med det aktuelle index
-        console.log("Klikc")
+        deleteNoteHandler(index);
     });
 
     // Tilføj dropdown-containeren og delete-knappen til hovedelementet
