@@ -96,4 +96,16 @@ router.get("/:parentsId/students", async (req, res) => {
   }
 });
 
+export const createParents = (parents) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const docRef = await addDoc(collection(db, "parents"), parents);
+      resolve(docRef.id);
+    } catch (error) {
+      console.log(error);
+      reject("Fejl ved oprettelse af forælder");
+    }
+  });
+};
+
 export default router;

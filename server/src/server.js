@@ -6,6 +6,7 @@ import classes from "./routes/classes.js";
 import notes from "./routes/notes.js";
 import parents from "./routes/parents.js";
 import signup from "./routes/signup.js";
+import family from "./routes/family.js";
 
 import cors from "cors";
 
@@ -24,6 +25,7 @@ app.use("/classes", classes);
 app.use("/notes", notes);
 app.use("/parents", parents);
 app.use("/signup", signup);
+app.use("/family", family);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);
