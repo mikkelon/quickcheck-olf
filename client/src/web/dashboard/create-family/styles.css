@@ -109,10 +109,15 @@ body > h1 {
   opacity: 0.8;
 }
 
+.delete {
+  background-size: cover;
+  height: 2rem;
+  aspect-ratio: 1;
+}
+
 .delete:hover {
-  background-color: #ff565632;
   cursor: pointer;
-  border-radius: 4px;
+  opacity: 0.8;
 }
 
 #back-icon:hover {
