@@ -44,4 +44,30 @@ router.post("/parent", (req, res) => {
     });
 });
 
+router.post("/employee", (req, res) => {
+  const { email, password } = req.body;
+  adminAuth
+    .createUser({
+      email,
+      password,
+    })
+    .then((userRecord) => {
+      console.log("Successfully created new user:", userRecord.uid);
+      res.status(200).send({
+        message: "Successfully created new user",
+        data: {
+          uid: userRecord.uid,
+        },
+      });
+    })
+    .catch((error) => {
+      console.log("Error creating new user:", error);
+      res.status(500).send({
+        message: "Error creating new user",
+        data: {
+          error,
+        },
+      });
+    });
+});
 export default router;

@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: Playpen Sans, sans-serif;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+#logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+body>h1 {
+    text-align: center;
+}
+#logout {
+    background-color: rgba(239, 27, 27, 0.321);
+    color: #FF5656;
+    font-weight: bold;
+}
+#logout:hover{
+    cursor: pointer;
+    transform:scale(1.05);
+}
+#back-icon:hover{
+    cursor: pointer;
+    transform:scale(1.05);
+}
+
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 10px;
+}
+#cancel{
+    background-color: #ff56569e;
+}
+
+#submit{
+    background-color: #4CAF509e;
+}
+#cancel:hover {
+    cursor: pointer;
+    background-color: #ff5656;
+}
+
+#submit:hover {
+    cursor: pointer;
+    background-color: #4CAF50;
+}
+
+.employeeBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    /* shadow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
+}
+
+/* .employeeBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    margin: 1rem 0;
+} */
+
+
+
+
+    
+
