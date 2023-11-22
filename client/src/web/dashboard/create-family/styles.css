@@ -92,21 +92,21 @@ body > h1 {
 }
 
 #cancel {
-  background-color: #ff56569e;
+  background-color: #ff5656;
 }
 
 #submit {
-  background-color: #4caf509e;
+  background-color: #56e87f;
 }
 
 #cancel:hover {
   cursor: pointer;
-  background-color: #ff5656;
+  opacity: 0.8;
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: #4caf50;
+  opacity: 0.8;
 }
 
 .delete:hover {
@@ -116,11 +116,6 @@ body > h1 {
 }
 
 #back-icon:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-
-#logout:hover {
   cursor: pointer;
   transform: scale(1.05);
 }
