@@ -311,7 +311,7 @@ function updateChildData(index, field, value) {
   console.log("Updated Child:", updatedChild);
 }
 
-function forælderOprettet(family) {
+function forælderOprettet(success) {
   const informationContainer = document.getElementById("information");
   // scroll to top
   window.scrollTo(0, 0);
@@ -319,13 +319,12 @@ function forælderOprettet(family) {
   //   window.location.href = './index.html';
   // }, 1500);
 
-  clear();
-  displayParents();
-  displayChildren();
-
-  if (family) {
+  if (success) {
     informationContainer.innerHTML = `<p>Familie oprettet</p>`;
     informationContainer.classList.add("success");
+    clear();
+    displayParents();
+    displayChildren();
   } else {
     informationContainer.innerHTML = `<p>Kunne ikke oprette familie</p>`;
     informationContainer.classList.add("error");
@@ -346,8 +345,8 @@ async function initGUI() {
 
   const submit = document.getElementById("submit");
   submit.addEventListener("click", () => {
-    const family = submitToDatabase();
-    forælderOprettet(family);
+    const success = submitToDatabase();
+    forælderOprettet(success);
   });
 
   const cancel = document.getElementById("cancel");
