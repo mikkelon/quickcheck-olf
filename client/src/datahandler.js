@@ -97,6 +97,28 @@ export const createStudentsAndParents = async (students, parents) => {
   }
 };
 
+export const createEmployee = async (employee) => {
+  const url = "http://localhost:6969/signup/employee";
+  console.log(employee);
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(employee),
+  };
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+    if (!response.ok) {
+      console.log(data.data.error.code);
+      throw new Error(data.data.error.code);
+    }
+  } catch (error) {
+    console.error("Error creating employee:", error);
+    throw error;
+  }
+};
 /**
  * Get all students
  * @returns {Array} Array of students
@@ -167,6 +189,28 @@ export const toggleStudentCheckIn = async (studentId) => {
   } catch (error) {
     // Handle errors appropriately, e.g., log or throw them
     console.error("Error toggling student check in:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+export const getParentsById = async (parentsId) => {
+  const url = `http://localhost:6969/parents/${parentsId}`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching parents:", error);
     throw error; // Rethrow the error for the caller to handle
   }
 };
