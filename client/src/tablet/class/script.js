@@ -18,6 +18,7 @@ const renderClassName = async () => {
   try {
     const classInfo = await getClassesById(classId);
     const classColor = classInfo.colorLabel;
+    document.body.style.backgroundColor = classInfo.color += "29";
     classNameElement.textContent = `${classColor}`;
   } catch (error) {
     console.error("Error fetching class name:", error);
