@@ -1,4 +1,5 @@
 import {
+  getClassesById,
   getStudentsByClassId,
   toggleStudentCheckIn,
 } from "../../datahandler.js";
@@ -9,8 +10,20 @@ backBtn.addEventListener("click", () => {
   window.location.href = "../";
 });
 
+const classNameElement = document.querySelector("#class-color");
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
+
+const renderClassName = async () => {
+  try {
+    const classInfo = await getClassesById(classId);
+    const classColor = classInfo.colorLabel;
+    classNameElement.textContent = `${classColor}`;
+  } catch (error) {
+    console.error("Error fetching class name:", error);
+  }
+}
+
 
 const renderCards = async () => {
   const students = await getStudentsByClassId(classId);
@@ -46,13 +59,6 @@ const renderCards = async () => {
     cardName.textContent = student.name;
     textContainer.appendChild(cardName);
 
-    const cardLocation = document.createElement("p");
-    cardLocation.classList.add("location");
-    cardLocation.textContent = student.location
-      ? student.location
-      : "Ukendt lokation";
-    textContainer.appendChild(cardLocation);
-
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
@@ -83,3 +89,5 @@ const renderCards = async () => {
 };
 
 renderCards();
+renderClassName();
+
