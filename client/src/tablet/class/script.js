@@ -23,8 +23,7 @@ const renderClassName = async () => {
   } catch (error) {
     console.error("Error fetching class name:", error);
   }
-}
-
+};
 
 const renderCards = async () => {
   const students = await getStudentsByClassId(classId);
@@ -91,4 +90,3 @@ const renderCards = async () => {
 
 renderCards();
 renderClassName();
-
