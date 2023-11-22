@@ -352,7 +352,8 @@ async function initGUI() {
 
   const cancel = document.getElementById("cancel");
   cancel.addEventListener("click", () => {
-    window.location.href = "../index.html";
+    // Clear all data
+    clear();
   });
 }
 
