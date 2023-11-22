@@ -35,6 +35,7 @@ body > h1 {
   height: 360px;
   /* shadow */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .createBtn {
@@ -113,6 +114,10 @@ body > h1 {
   background-size: cover;
   height: 2rem;
   aspect-ratio: 1;
+  position: absolute;
+  /* Fix in top right corner */
+  top: 1rem;
+  right: 1rem;
 }
 
 .delete:hover {
