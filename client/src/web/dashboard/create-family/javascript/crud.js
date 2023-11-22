@@ -15,7 +15,13 @@ function createParent(name, phone, email) {
 function submitToDatabase() {
   console.log("submitting to database");
   console.log(childrenData, parentsData);
-  return createStudentsAndParents(childrenData, parentsData);
+  createStudentsAndParents(childrenData, parentsData)
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 }
 
 // Function to create a new child
