@@ -129,12 +129,12 @@ main {
 .remove-filter {
   width: 1rem;
   height: 1rem;
-  background-image: url("../../assets/icons/close-square-thin.svg");
+  background-image: url("../../../../assets/icons/close-square-thin.svg");
   background-size: cover;
 }
 
 .remove-filter:hover {
-  background-image: url("../../assets/icons/close-square-bold.svg");
+  background-image: url("../../../../assets/icons/close-square-bold.svg");
   cursor: pointer;
 }
 

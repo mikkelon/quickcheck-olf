@@ -53,7 +53,6 @@ const renderStudent = (student) => {
   });
 
   studentContainer.appendChild(studentElement);
-
 };
 
 function sortByClassThenCheckedInStatus(a, b) {
@@ -251,8 +250,9 @@ const addFilter = (filterType, filterValue) => {
       filterValue === "checkedIn" ? "#00C853" : "#FF5656";
     activeFilterText.dataset.filterValue =
       filterValue === "checkedIn" ? "checkedIn" : "checkedOut";
-    activeFilterText.innerHTML = `Tjekket ${filterValue === "checkedIn" ? "ind" : "ud"
-      }`;
+    activeFilterText.innerHTML = `Tjekket ${
+      filterValue === "checkedIn" ? "ind" : "ud"
+    }`;
 
     console.log(activeFilters);
   }
@@ -276,6 +276,7 @@ const addFilter = (filterType, filterValue) => {
     "#active-filters-wrapper"
   );
   activeFiltersWrapper.style.display = "flex";
+  updateClearFiltersButtonVisibility();
 };
 
 const removeFilter = (filterType, filterValue) => {
@@ -321,6 +322,7 @@ const removeFilter = (filterType, filterValue) => {
 
 const checkActiveFilters = () => {
   const activeFiltersContainer = document.querySelector("#active-filters");
+  updateClearFiltersButtonVisibility();
   if (activeFiltersContainer.childElementCount < 1) {
     const activeFiltersWrapper = document.querySelector(
       "#active-filters-wrapper"
@@ -328,3 +330,35 @@ const checkActiveFilters = () => {
     activeFiltersWrapper.style.display = "none";
   }
 };
+
+// #--- Clear filters ---#
+const clearFiltersBtn = document.querySelector("#clear-filters-btn");
+
+clearFiltersBtn.addEventListener("click", () => {
+  const activeFiltersContainer = document.querySelector("#active-filters");
+  activeFilters = {
+    classes: [],
+    checkedIn: false,
+    checkedOut: false,
+    name: "",
+  };
+  searchInput.value = "";
+  filterStudents();
+  const activeFiltersWrapper = document.querySelector(
+    "#active-filters-wrapper"
+  );
+  activeFiltersWrapper.style.display = "none";
+});
+
+function updateClearFiltersButtonVisibility() {
+  const clearFiltersBtn = document.querySelector("#clear-filters-btn");
+  const hasActiveFilters = Object.values(activeFilters).some(
+    (filter) => filter
+  );
+
+  if (hasActiveFilters) {
+    clearFiltersBtn.style.display = "block";
+  } else {
+    clearFiltersBtn.style.display = "none";
+  }
+}
