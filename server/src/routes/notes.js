@@ -1,6 +1,6 @@
 import express from "express";
 import { db } from "../firebase.js";
-import { addDoc, collection, updateDoc, getDoc, doc } from "firebase/firestore";
+import { addDoc, collection, updateDoc, getDoc, doc, getDocs } from "firebase/firestore";
 
 const router = express.Router();
 
@@ -28,5 +28,27 @@ router.post("/:studentId", async (req, res) => {
     res.status(400).send("Fejl ved oprettelse af note");
   }
 });
+
+
+router.get("/:studentId", async (req, res) => {
+  try {
+    const studentId = req.params.studentId;
+
+    console.log(studentId)
+
+
+    const docSnap = await getDoc(doc(db, "students", studentId));
+
+    console.log(docSnap.data().notes)
+
+    const noteIds = docSnap.data().notes
+
+    res.status(200).send(noteIds);
+  } catch (error) {
+    console.error("Fejl: ", error);
+    res.status(500).send({ error: "Fejl ved hentning af noter" });
+  }
+});
+
 
 export default router;

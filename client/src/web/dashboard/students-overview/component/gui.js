@@ -276,8 +276,8 @@ saveNote.addEventListener("click", async () => {
 })
 
 
-function createNotesGui() {
-    const notes = getAllNotes();
+async function createNotesGui() {
+    const notes = await getAllNotes();
     const noteContainer = document.getElementById("notes")
 
     noteContainer.innerHTML = "";

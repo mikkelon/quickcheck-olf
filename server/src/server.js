@@ -22,7 +22,6 @@ app.use("/auth", auth);
 app.use("/students", students);
 app.use("/classes", classes);
 app.use("/notes", notes);
-
 app.use("/parents", parents);
 
 
