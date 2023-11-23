@@ -23,6 +23,11 @@ export const getStudentsByClassId = async (classId) => {
   }
 };
 
+/**
+ * Gets all students based on parentId
+ * @param {string} parentId ID of the parents object in firebase
+ * @returns
+ */
 export const getStudentsByParentId = async (parentId) => {
   const url = `http://localhost:6969/parents/${parentId}/students`;
 
@@ -74,8 +79,8 @@ export const getClasses = async () => {
  * @param {*} students
  * @param {*} parents
  */
-export const createStudentsAndParents = async (students, parents) => {
-  const url = "http://localhost:6969/students";
+export const createFamily = async (students, parents) => {
+  const url = "http://localhost:6969/family/create";
   const options = {
     method: "POST",
     headers: {
@@ -87,6 +92,8 @@ export const createStudentsAndParents = async (students, parents) => {
   try {
     const response = await fetch(url, options);
 
+    console.log(response);
+
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -97,6 +104,10 @@ export const createStudentsAndParents = async (students, parents) => {
   }
 };
 
+/**
+ * Creates a new employee user in firebase
+ * @param {Object} employee And object containing the employee data
+ */
 export const createEmployee = async (employee) => {
   const url = "http://localhost:6969/signup/employee";
   const options = {
@@ -118,6 +129,7 @@ export const createEmployee = async (employee) => {
     throw error;
   }
 };
+
 /**
  * Get all students
  * @returns {Array} Array of students
@@ -190,6 +202,10 @@ export const toggleStudentCheckIn = async (studentId) => {
   }
 };
 
+/**
+ * Get all parents
+ * @returns {Array} Array of parents
+ */
 export const getParentsById = async (parentsId) => {
   const url = `http://localhost:6969/parents/${parentsId}`;
   const options = {
@@ -212,23 +228,26 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
-
-export const getClassesById = async (classId) =>{
+/**
+ * Gets a class based on the classId
+ * @param {string} classId
+ * @returns {Object} Class object
+ */
+export const getClassById = async (classId) => {
   const url = `http://localhost:6969/classes/${classId}`;
   const options = {
-    method: "GET" ,
+    method: "GET",
   };
 
   try {
     const response = await fetch(url, options);
     if (!response.ok) {
-      throw new Error ("Network response was not ok");
+      throw new Error("Network response was not ok");
     }
-    
+
     const data = await response.json();
     return data;
   } catch (error) {
-
     console.error("Error fetching classes:", error);
     throw error;
   }

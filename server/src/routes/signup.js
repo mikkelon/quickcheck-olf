@@ -3,71 +3,62 @@ import { adminAuth, adminDB } from "../firebase-admin.js";
 const router = express.Router();
 
 /**
- * Route for signing up a new parent user.
- * POST body should contain:
- * - email
- * - parentId
+ * Create a new parents user in firebase
+ * @param {string} email The email
+ * @param {string} parentsId The parents id
+ * @returns {Promise} A promise that resolves with the new user's data
  */
-router.post("/parent", (req, res) => {
-  const { email, parentId } = req.body;
-  console.log("Creating user:", email, parentId);
+export const createParentUserWithEmailAndId = async (email, parentsId) => {
+  if (!email || !parentsId) {
+    throw new Error("Fejl - manglende data");
+  }
 
-  adminAuth
-    .createUser({
+  try {
+    const userRecord = await adminAuth.createUser({
       email,
-      password: "password",
-    })
-    .then((userRecord) => {
-      console.log("Successfully created new user:", userRecord.uid);
-      // Update parent in parents collection
-      const parentRef = adminDB.collection("parents").doc(parentId);
-
-      parentRef.update({
-        uid: userRecord.uid,
-      });
-
-      res.status(200).send({
-        message: "Successfully created new user",
-        data: {
-          uid: userRecord.uid,
-        },
-      });
-    })
-    .catch((error) => {
-      console.log("Error creating new user:", error);
-      res.status(500).send({
-        message: "Error creating new user",
-        data: {
-          error,
-        },
-      });
+      password: "123456", // TODO: Generate random password and send email to user
     });
-});
 
-router.post("/employee", (req, res) => {
+    console.log("Successfully created new user:", userRecord.uid);
+
+    // Add new document to users collection
+    await adminDB.collection("users").doc(userRecord.uid).set({
+      parentsId,
+      role: "parents",
+    });
+
+    return userRecord;
+  } catch (error) {
+    console.log("Error creating new user:", error);
+    throw error; // This will allow the caller to catch the error
+  }
+};
+
+router.post("/employee", async (req, res) => {
   const { email, password } = req.body;
-  adminAuth
-    .createUser({
+
+  try {
+    const userRecord = await adminAuth.createUser({
       email,
       password,
-    })
-    .then((userRecord) => {
-      console.log("Successfully created new user:", userRecord.uid);
-      res.status(200).send({
-        message: "Successfully created new user",
-        data: {
-          uid: userRecord.uid,
-        },
-      });
-    })
-    .catch((error) => {
-      console.log("Error creating new user:", error);
-      res.status(500).send({
-        message: "Error creating new user",
-        data: {
-          error,
-        },
-      });
     });
+
+    console.log("Successfully created new user:", userRecord.uid);
+    res.status(200).send({
+      message: "Successfully created new user",
+      data: {
+        uid: userRecord.uid,
+      },
+    });
+  } catch (error) {
+    console.error("Error creating new user:", error);
+    res.status(500).send({
+      message: "Error creating new user",
+      data: {
+        error: error.message, // Sending only the error message for better client-side handling
+      },
+    });
+  }
 });
+
 export default router;
