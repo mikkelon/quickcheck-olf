@@ -19,7 +19,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const studentsDocs = await getDocs(collection(db, "students"));
-    const students = studentsDocs.docs.map(doc => doc.data());
+    const students = studentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -37,7 +39,7 @@ router.get("/:classId", async (req, res) => {
       where("classId", "==", classId)
     );
     const studentsDocs = await getDocs(firebaseQuery);
-    const students = studentsDocs.docs.map(doc => {
+    const students = studentsDocs.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
     res.status(200).send(students);
@@ -139,7 +141,7 @@ router.post("/", async (req, res) => {
         email: parents[0].email,
         parentId: parentDocId,
       }),
-    }).then(response => {
+    }).then((response) => {
       if (response.status === 200) {
         console.log("User created");
       } else {
@@ -161,7 +163,7 @@ router.post("/", async (req, res) => {
       if (parentDocId !== null) {
         const deletePromises = [
           deleteDoc(doc(db, "parents", parentDocId)),
-          ...studentIds.map(studentId => {
+          ...studentIds.map((studentId) => {
             if (studentId) {
               // Ensure studentId is valid
               return deleteDoc(doc(db, "students", studentId));
@@ -216,7 +218,7 @@ router.get("/checkedIn", async (req, res) => {
     const querySnapshot = await getDocs(
       query(collection(db, "students"), where("checkedIn", "==", true))
     );
-    const students = querySnapshot.docs.map(doc => doc.data());
+    const students = querySnapshot.docs.map((doc) => doc.data());
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -279,7 +281,7 @@ router.get("/checkedIn", async (req, res) => {
     const querySnapshot = await getDocs(
       query(collection(db, "students"), where("checkedIn", "==", true))
     );
-    const students = querySnapshot.docs.map(doc => doc.data());
+    const students = querySnapshot.docs.map((doc) => doc.data());
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -291,6 +293,7 @@ router.get("/checkedIn", async (req, res) => {
 router.put("/toggleCheckedIn/:id", async (req, res) => {
   try {
     const studentId = req.params.id;
+    console.log(studentId);
     const docRef = doc(db, "students", studentId);
     const studentDoc = await getDoc(docRef);
 
@@ -342,7 +345,7 @@ router.get("/checkedIn", async (req, res) => {
     const querySnapshot = await getDocs(
       query(collection(db, "students"), where("checkedIn", "==", true))
     );
-    const students = querySnapshot.docs.map(doc => doc.data());
+    const students = querySnapshot.docs.map((doc) => doc.data());
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
