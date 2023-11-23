@@ -1,6 +1,12 @@
-const header = document.createElement("div");
-header.id = "header";
-header.innerHTML = `
+class headerComponent extends HTMLElement {
+  constructor() {
+    super();
+    // element created
+  }
+
+  connectedCallback() {
+    this.innerHTML = `
+    <header id="header">
     <a id="back-icon" href="../">
       <svg
         width="48px"
@@ -22,5 +28,9 @@ header.innerHTML = `
       <!-- Logo -->
       <img src="/client/assets/logo.png" width="64" />
     </div>
+    </header>
     `;
-document.body.prepend(header);
+  }
+}
+
+customElements.define("header-component", headerComponent);

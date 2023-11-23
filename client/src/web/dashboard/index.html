@@ -10,15 +10,12 @@
       rel="stylesheet"
     />
     <script type="module" src="gui.js" defer></script>
+    <script src="../../../components/header.js" defer></script>
     <title>Dashboard</title>
   </head>
   <body>
-    <div class="header">
-      <div class="logo">
-        <img src="/client/assets/logo.png" width="48" height="48" />
-      </div>
-      <button id="logout">Log ud</button>
-    </div>
+    <header-component></header-component> 
+    <button id="logout">Log ud</button>
     <h1>Dashboard</h1>
     <div class="buttons">
       <a href="student-overview/"
