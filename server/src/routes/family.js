@@ -18,9 +18,11 @@ router.post("/create", async (req, res) => {
     throw new Error("Fejl - manglende data");
   }
 
+  // Get data from HTTP request
   const students = req.body.students;
   const parents = req.body.parents;
 
+  // Variables for cleanup if error
   const studentIds = [];
   let parentsId = "";
   let userId = "";
@@ -39,6 +41,7 @@ router.post("/create", async (req, res) => {
     );
     userId = userRecord.uid;
 
+    // Send response back to client
     res.status(201).send({
       message: "Familie oprettet",
       data: {
@@ -48,6 +51,7 @@ router.post("/create", async (req, res) => {
   } catch (error) {
     console.log(error.message);
 
+    // #-- Cleanup if error --#
     // Delete parents, if created
     if (parentsId) {
       await deleteDoc(doc(db, "parents", parentsId));
@@ -68,6 +72,7 @@ router.post("/create", async (req, res) => {
       console.log("user deleted");
     }
 
+    // Send error response back to client
     res.status(500).send({
       message: "Fejl ved oprettelse af familie",
       data: {
