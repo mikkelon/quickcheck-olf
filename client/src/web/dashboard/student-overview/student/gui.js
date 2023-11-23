@@ -1,4 +1,4 @@
-import { deleteStudent, getClasses, getParentsById, getStudentById } from "../../../../datahandler.js";
+import { deleteStudent, getClasses, getParentsById, getStudentById, toggleStudentCheckIn } from "../../../../datahandler.js";
 import { createParent, deleteParent, getAllParents } from "./crud.js";
 import { createDropdownFormElement, createFormElement, createFormsContainer, createIconButton, createTextButton } from "../../../../forms.js";
 
@@ -12,12 +12,16 @@ async function initGUI() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
 
+    console.log("Student ID:", id);
+
     child = await getStudentById(id);
+
+    console.log(child);
 
     const colorLabels = await getClasses();
 
     const clazzDropdown = document.getElementById("class-dropdown");
-    const dropdown = createDropdownFormElement("Klasse", "class", colorLabels, "color-id", child.class.id);
+    const dropdown = createDropdownFormElement("Klasse", "class", colorLabels, "color-id", child.classId);
     clazzDropdown.appendChild(dropdown);
 
     const avatar = document.getElementById("avatar");
@@ -37,7 +41,7 @@ async function initGUI() {
     });
 
     setParents();
-    setState(false);
+    setEditing(false);
 
     const closeBtn = document.getElementById("closeBtn")
     closeBtn.addEventListener("click", () => {
@@ -52,12 +56,12 @@ function addButtons() {
     if (editing) {
         const saveBtn = createTextButton("save", "Gem", () => {
             editing = !editing;
-            setState(editing);
+            setEditing(editing);
         }, "#4bb14e");
 
         const cancelbtn = createTextButton("cancel", "Annuller", () => {
             editing = !editing;
-            setState(editing);
+            setEditing(editing);
         }, "#FF5656");
 
         customizeButtons.appendChild(cancelbtn);
@@ -69,7 +73,7 @@ function addButtons() {
 
         const editBtn = createTextButton("edit", "Rediger", () => {
             editing = !editing;
-            setState(editing);
+            setEditing(editing);
         }, "#4bb14e");
 
         customizeButtons.appendChild(deleteBtn);
@@ -77,7 +81,7 @@ function addButtons() {
     }
 }
 
-function setState(editing) {
+function setEditing(editing) {
     const forms = document.querySelectorAll(".forms-input");
 
     forms.forEach((form) => {
@@ -203,7 +207,7 @@ checkInOutBtn.addEventListener("click", () => {
 
     toggleStudentCheckIn(child.id);
 
-    alert(checkedIn ? "Barnet er tjekket ind" : "Barnet er tjekket ud");
+    alert(child.checkedIn ? "Barnet er tjekket ind" : "Barnet er tjekket ud");
 });
 
 const noteModal = document.getElementById("note-modal");

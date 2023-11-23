@@ -1,4 +1,3 @@
-
 import {
   getStudentsWithClass,
   getClasses,
@@ -49,7 +48,8 @@ const renderStudent = (student) => {
   studentElement.appendChild(studentCheckBtn);
 
   studentElement.addEventListener("click", () => {
-    window.location.href = `student/student.html?id=${student.id}`;
+    // goto student page with id student.id
+    window.location.href = `./student/index.html?id=${student.id}`;
   });
 
   studentContainer.appendChild(studentElement);
