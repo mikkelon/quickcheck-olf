@@ -97,7 +97,7 @@ const fireConfetti = () => {
   const confettiContainer = document.getElementById("confetti-container");
   const confettiColors = ["#ff5656", "#8774ff", "#56e87f"];
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 40; i++) {
     const confetti = document.createElement("div");
     confetti.className = "confetti";
     confetti.style.left = Math.random() * 100 + "vw";
