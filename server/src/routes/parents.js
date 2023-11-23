@@ -96,11 +96,12 @@ router.delete("/:id", async (req, res) => {
 
 /* Se børn */
 router.get("/:parentsId/students", async (req, res) => {
-  const parents = req.params.parentsId;
+  const parentsId = req.params.parentsId;
+  console.log("getting students by parentid:", parentsId);
   try {
     const firebaseQuery = query(
       collection(db, "students"),
-      where("parents", "==", parents)
+      where("parentsId", "==", parentsId)
     );
     const studentsDocs = await getDocs(firebaseQuery);
     const students = studentsDocs.docs.map((doc) => ({

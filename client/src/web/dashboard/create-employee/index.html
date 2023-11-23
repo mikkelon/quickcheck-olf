@@ -38,14 +38,13 @@
         <!-- Logo -->
         <img src="/client/assets/logo.png" width="64" />
       </div>
-      <!-- Log Ud -->
-      <button id="logout">Log ud</button>
     </div>
     <!--Opret ansat-->
     <h1>Opret ansat</h1>
+    <div id="alert"></div>
     <div class="employeeBox">
       <div class="container">
-        <form>
+        <form id="create-employee-form">
           <div class="forms-container">
             <label class="forms-label">Fulde navn</label>
             <input class="forms-input" type="text" id="name" />
@@ -70,7 +69,7 @@
       </div>
     </div>
     <div class="btn-container">
-      <button id="cancel" class="btn">Annullér</button>
+      <button id="cancel" class="btn">Ryd</button>
       <button id="submit" class="btn">Opret</button>
     </div>
   </body>

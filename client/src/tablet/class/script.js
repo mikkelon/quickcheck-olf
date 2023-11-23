@@ -1,4 +1,5 @@
 import {
+  getClassesById,
   getStudentsByClassId,
   toggleStudentCheckIn,
 } from "../../datahandler.js";
@@ -9,8 +10,20 @@ backBtn.addEventListener("click", () => {
   window.location.href = "../";
 });
 
+const classNameElement = document.querySelector("#class-color");
 const params = new URLSearchParams(window.location.search);
 const classId = params.get("classId");
+
+const renderClassName = async () => {
+  try {
+    const classInfo = await getClassesById(classId);
+    const classColor = classInfo.colorLabel;
+    document.body.style.backgroundColor = classInfo.color += "29";
+    classNameElement.textContent = `${classColor}`;
+  } catch (error) {
+    console.error("Error fetching class name:", error);
+  }
+};
 
 const renderCards = async () => {
   const students = await getStudentsByClassId(classId);
@@ -46,13 +59,6 @@ const renderCards = async () => {
     cardName.textContent = student.name;
     textContainer.appendChild(cardName);
 
-    const cardLocation = document.createElement("p");
-    cardLocation.classList.add("location");
-    cardLocation.textContent = student.location
-      ? student.location
-      : "Ukendt lokation";
-    textContainer.appendChild(cardLocation);
-
     const cardStatus = document.createElement("p");
     cardStatus.classList.add("status");
     let checkedIn = student.checkedIn;
@@ -69,6 +75,10 @@ const renderCards = async () => {
     card.addEventListener("click", () => {
       toggleStudentCheckIn(student.id);
       const status = card.querySelector(".status");
+
+      /* Confetti */
+      fireConfetti();
+
       if (card.classList.contains("checked-in")) {
         card.classList.remove("checked-in");
         card.classList.add("checked-out");
@@ -82,4 +92,25 @@ const renderCards = async () => {
   });
 };
 
+/* Confetti */
+const fireConfetti = () => {
+  const confettiContainer = document.getElementById("confetti-container");
+  const confettiColors = ["#ff5656", "#8774ff", "#56e87f"];
+
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+    confetti.style.animationDelay = Math.random() * 2 + "s";
+
+    // Randomly select a color from the confettiColors array
+    const randomColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    confetti.style.backgroundColor = randomColor;
+
+    confettiContainer.appendChild(confetti);
+  }
+};
+
 renderCards();
+renderClassName();

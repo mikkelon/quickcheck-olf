@@ -110,7 +110,6 @@ export const createFamily = async (students, parents) => {
  */
 export const createEmployee = async (employee) => {
   const url = "http://localhost:6969/signup/employee";
-  console.log(employee);
   const options = {
     method: "POST",
     headers: {
@@ -177,8 +176,6 @@ export const getStudentsWithClass = async () => {
     };
   });
 
-  console.log(studentsWithClass);
-
   return studentsWithClass;
 };
 
@@ -229,4 +226,46 @@ export const getParentsById = async (parentsId) => {
     console.error("Error fetching parents:", error);
     throw error; // Rethrow the error for the caller to handle
   }
+};
+
+/**
+ * Gets a class based on the classId
+ * @param {string} classId
+ * @returns {Object} Class object
+ */
+export const getClassById = async (classId) => {
+  const url = `http://localhost:6969/classes/${classId}`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching classes:", error);
+    throw error;
+  }
+};
+
+/**
+ * FOR TESTING PURPOSES ONLY
+ *
+ * Gets a random parent's students
+ * @returns {Array} Array of students
+ */
+export const getRandomParentStudents = async () => {
+  const parents = await fetch("http://localhost:6969/parents").then((res) =>
+    res.json()
+  );
+
+  const randomParent = parents[Math.floor(Math.random() * parents.length)];
+  const students = await getStudentsByParentId(randomParent.id);
+
+  return students;
 };
