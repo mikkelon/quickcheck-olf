@@ -81,7 +81,7 @@ router.delete("/:id", async (req, res) => {
 /* Se børn */
 router.get("/:parentsId/students", async (req, res) => {
   const parentsId = req.params.parentsId;
-  console.log(parentsId);
+  console.log("getting students by parentid:", parentsId);
   try {
     const firebaseQuery = query(
       collection(db, "students"),
