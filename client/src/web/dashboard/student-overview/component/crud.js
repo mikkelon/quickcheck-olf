@@ -1,5 +1,4 @@
 // crud.js
-import { createStudentsAndParents } from "../../../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
@@ -33,10 +32,4 @@ function clear() {
   createParent("", "", "");
 }
 
-export {
-  createParent,
-  getAllParents,
-  updateParent,
-  deleteParent,
-  clear,
-};
+export { createParent, getAllParents, updateParent, deleteParent, clear };
