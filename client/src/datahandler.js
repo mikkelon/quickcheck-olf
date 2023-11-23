@@ -228,6 +228,10 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
+/**
+ * Delete a student with a given studentId
+ * @param {string} studentId 
+ */
 export const deleteStudent = async (studentId) => {
   const url = `http://localhost:6969/students/${studentId}`;
   const options = {
@@ -247,6 +251,10 @@ export const deleteStudent = async (studentId) => {
   }
 };
 
+/**
+ * Get a student with a given studentId
+ * @param {string} studentId 
+ */
 export const getStudentById = async (studentId) => {
   const url = `http://localhost:6969/students/${studentId}`;
   const options = {
