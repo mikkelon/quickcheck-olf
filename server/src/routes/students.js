@@ -19,7 +19,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const studentsDocs = await getDocs(collection(db, "students"));
-    const students = studentsDocs.docs.map((doc) => doc.data());
+    const students = studentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -80,7 +82,9 @@ router.get("/checkedIn", async (req, res) => {
     const querySnapshot = await getDocs(
       query(collection(db, "students"), where("checkedIn", "==", true))
     );
-    const students = querySnapshot.docs.map((doc) => doc.data());
+    const students = querySnapshot.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -103,133 +107,9 @@ router.put("/toggleCheckedIn/:id", async (req, res) => {
     await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
     res
       .status(200)
-      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - kunne ikke opdatere elev.");
-  }
-});
-
-/* Slet elev */
-router.delete("/:id", async (req, res) => {
-  let id = req.params.id;
-
-  try {
-    const docDelete = await deleteDoc(doc(db, "students", id));
-    res.status(200).send("Elev slettet");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
-  }
-});
-
-/* Opdater elev */
-router.put("/:id", async (req, res) => {
-  let id = req.params.id;
-
-  try {
-    const docRef = doc(db, "students", id);
-    await updateDoc(docRef, req.body);
-    res.status(200).send("Elev opdateret");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
-  }
-});
-
-/* Hent elever tilstede*/
-router.get("/checkedIn", async (req, res) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, "students"), where("checkedIn", "==", true))
-    );
-    const students = querySnapshot.docs.map((doc) => doc.data());
-    res.status(200).send(students);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - elever ikke fundet.");
-  }
-});
-
-/* Opdater elev tilstedeværelse */
-router.put("/toggleCheckedIn/:id", async (req, res) => {
-  try {
-    const studentId = req.params.id;
-    const docRef = doc(db, "students", studentId);
-    const studentDoc = await getDoc(docRef);
-
-    if (!studentDoc.exists()) {
-      throw new Error("Eleven findes ikke.");
-    }
-    const currentCheckedInStatus = studentDoc.data().checkedIn;
-    const updatedCheckedInStatus = !currentCheckedInStatus;
-    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
-    res
-      .status(200)
-      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - kunne ikke opdatere elev.");
-  }
-});
-
-/* Slet elev */
-router.delete("/:id", async (req, res) => {
-  let id = req.params.id;
-
-  try {
-    const docDelete = await deleteDoc(doc(db, "students", id));
-    res.status(200).send("Elev slettet");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
-  }
-});
-
-/* Opdater elev */
-router.put("/:id", async (req, res) => {
-  let id = req.params.id;
-
-  try {
-    const docRef = doc(db, "students", id);
-    await updateDoc(docRef, req.body);
-    res.status(200).send("Elev opdateret");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - eleven findes ikke.");
-  }
-});
-
-/* Hent elever tilstede*/
-router.get("/checkedIn", async (req, res) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, "students"), where("checkedIn", "==", true))
-    );
-    const students = querySnapshot.docs.map((doc) => doc.data());
-    res.status(200).send(students);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - elever ikke fundet.");
-  }
-});
-
-/* Opdater elev tilstedeværelse */
-router.put("/toggleCheckedIn/:id", async (req, res) => {
-  try {
-    const studentId = req.params.id;
-    const docRef = doc(db, "students", studentId);
-    const studentDoc = await getDoc(docRef);
-
-    if (!studentDoc.exists()) {
-      throw new Error("Eleven findes ikke.");
-    }
-    const currentCheckedInStatus = studentDoc.data().checkedIn;
-    const updatedCheckedInStatus = !currentCheckedInStatus;
-    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
-    res
-      .status(200)
-      .send(`Elevens checkedIn opdateres: ${updatedCheckedInStatus}`);
+      .send(
+        `Elevens (${studentId}) checkedIn opdateres til: ${updatedCheckedInStatus}`
+      );
   } catch (error) {
     console.log(error);
     res.status(404).send("Fejl - kunne ikke opdatere elev.");
