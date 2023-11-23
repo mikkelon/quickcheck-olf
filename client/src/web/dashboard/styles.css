@@ -22,7 +22,8 @@ body {
   background-color: rgba(239, 27, 27, 0.321);
   color: #ff5656;
   font-weight: bold;
-  right: 1em;
+  top: 2em;
+  right: 2em;
   transition: all 0.2s ease;
 }
 
@@ -39,8 +40,8 @@ body {
   margin: 0 auto;
 }
 
-.buttons button {
-  width: calc(100% - 20px); /* Calculate the width with margin */
+.buttons a {
+  width: calc(100% - 200px); /* Calculate the width with margin */
   margin: 10px 10px;
   color: #fff;
   padding: 75px;
@@ -48,16 +49,11 @@ body {
   font-family: Playpen Sans, sans-serif;
   border-radius: 25px;
   transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
 }
 
-.buttons button:hover {
+.buttons a:hover {
   cursor: pointer;
   transform: scale(1.05);
-}
-
-@media screen and (max-width: 600px) {
-  .buttons button {
-    width: calc(100% - 10px);
-    margin: 0 5px;
-  }
 }

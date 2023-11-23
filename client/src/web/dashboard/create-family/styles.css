@@ -48,12 +48,6 @@ body > h1 {
   padding: 15px;
 }
 
-#logout {
-  background-color: rgba(239, 27, 27, 0.321);
-  color: #ff5656;
-  font-weight: bold;
-}
-
 .sectionsContainer {
   display: flex;
   flex-direction: column;
@@ -91,22 +85,9 @@ body > h1 {
   background-color: #cccccc38;
 }
 
-#cancel {
-  background-color: #ff5656;
-}
-
+#cancel,
 #submit {
-  background-color: #56e87f;
-}
-
-#cancel:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-#submit:hover {
-  cursor: pointer;
-  opacity: 0.8;
+  font-size: x-large;
 }
 
 .delete {

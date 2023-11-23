@@ -16,21 +16,10 @@ body > h1 {
   padding: 20px;
   gap: 10px;
 }
-#cancel {
-  background-color: #ff5656;
-}
 
+#cancel,
 #submit {
-  background-color: #4caf50;
-}
-#cancel:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-#submit:hover {
-  cursor: pointer;
-  opacity: 0.8;
+  font-size: x-large;
 }
 
 .employeeBox {
