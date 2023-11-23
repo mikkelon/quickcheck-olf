@@ -1,5 +1,5 @@
 import {
-  getClassesById,
+  getClassById,
   getStudentsByClassId,
   toggleStudentCheckIn,
 } from "../../datahandler.js";
@@ -16,7 +16,7 @@ const classId = params.get("classId");
 
 const renderClassName = async () => {
   try {
-    const classInfo = await getClassesById(classId);
+    const classInfo = await getClassById(classId);
     const classColor = classInfo.colorLabel;
     document.body.style.backgroundColor = classInfo.color += "29";
     classNameElement.textContent = `${classColor}`;
@@ -105,7 +105,8 @@ const fireConfetti = () => {
     confetti.style.animationDelay = Math.random() * 2 + "s";
 
     // Randomly select a color from the confettiColors array
-    const randomColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+    const randomColor =
+      confettiColors[Math.floor(Math.random() * confettiColors.length)];
     confetti.style.backgroundColor = randomColor;
 
     confettiContainer.appendChild(confetti);
