@@ -4,13 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-        />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel='stylesheet' href='../../../../global.styles.css' />
     <link rel="stylesheet" href="student.styles.css" />
     <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet'>
@@ -25,8 +21,6 @@
         </div>
 
         <div id="header-right">
-            <!-- <button class="delete-btn">Slet Elev</button>
-            <button class="save-btn">Gem</button> -->
         </div>
     </div>
 
@@ -60,10 +54,7 @@
                         </div>
 
                         <!-- Grade -->
-                        <div class="form-container">
-                            <label class="forms-label">Klasse</label>
-                            <input class="forms-input" type="text" id="class" />
-                        </div>
+                        <div id="class-dropdown"></div>
                     </div>
                 </div>
             </div>
@@ -72,7 +63,7 @@
             <div class="notes-container">
                 <h2>Noter</h2>
                 <div id="notes">
-                    
+
                 </div>
                 <button class="add-note-btn">
                     Tilføj ny note
@@ -92,42 +83,50 @@
     </div>
 
     <!-- Modal -->
-<div id="note-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" id="closeBtn">&times;</span>
-        <h2>Ny Note</h2>
-        
-        <!-- Notetitel -->
-        <div class="form-container">
-            <label class="forms-label" for="note-title">Titel:</label>
-            <input class="forms-input" type="text" id="note-title" placeholder="Indtast notetitel">
-        </div>
+    <div id="note-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <h2>Ny Note</h2>
 
-        <!-- Beskrivelse -->
-        <div class="form-container">
-            <label class="forms-label" for="note-description">Beskrivelse:</label>
-            <textarea class="forms-input" id="note-description" placeholder="Indtast notebeskrivelse"></textarea>
-        </div>
+            <!-- Notetitel -->
+            <div class="form-container">
+                <label class="forms-label" for="note-title">Titel:</label>
+                <input class="forms-input" type="text" id="note-title" placeholder="Indtast notetitel">
+            </div>
 
-        <!-- Startdato -->
-        <div class="form-container">
-            <label class="forms-label" for="start-date">Startdato:</label>
-            <input class="forms-input" type="date" id="start-date">
-        </div>
+            <!-- Beskrivelse -->
+            <div class="form-container">
+                <label class="forms-label" for="note-description">Beskrivelse:</label>
+                <textarea class="forms-input" id="note-description" placeholder="Indtast notebeskrivelse"></textarea>
+            </div>
 
-        <!-- Slutdato -->
-        <div class="form-container">
-            <label class="forms-label" for="end-date">Slutdato:</label>
-            <input class="forms-input" type="date" id="end-date">
-        </div>
+            <!-- Startdato -->
+            <div class="form-container">
+                <label class="forms-label" for="start-date">Startdato:</label>
+                <input class="forms-input" type="date" id="start-date">
+            </div>
 
-        <!-- Gem knap -->
-        <div class="form-container">
-            <button class="note-save-btn">Gem Note</button>
+            <!-- Slutdato -->
+            <div class="form-container">
+                <label class="forms-label" for="end-date">Slutdato:</label>
+                <input class="forms-input" type="date" id="end-date">
+            </div>
+
+            <!-- Gem knap -->
+            <div class="form-container">
+                <button class="note-save-btn">Gem Note</button>
+            </div>
+
         </div>
-        
     </div>
-</div>
+
+    <div id="delete-modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeDeleteBtn">&times;</span>
+            <h2>Er du sikker på du vil slette denne elev?</h2>
+            <button id="delete-child-btn">Slet Elev</button>
+        </div>
+    </div>
 
 </body>
 

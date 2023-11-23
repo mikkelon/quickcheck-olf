@@ -1,38 +1,32 @@
-import { getParentsById } from "../../../../datahandler.js";
+import { deleteStudent, getClasses, getParentsById, getStudentById } from "../../../../datahandler.js";
 import { createParent, deleteParent, getAllParents } from "./crud.js";
-import { createFormElement, createFormsContainer, createIconButton, createTextButton } from "../../../../forms.js";
+import { createDropdownFormElement, createFormElement, createFormsContainer, createIconButton, createTextButton } from "../../../../forms.js";
 
 const checkMark = "/client/assets/icons/check.svg";
 const crossMark = "/client/assets/icons/cross.svg";
 
 let editing = false;
-
-const child = {
-    "checkedIn": false,
-    "name": "Mads Jensen",
-    "parentsId": "O54vmYal7owjuwVFuOHo",
-    "birthday": "2005-02-15",
-    "classId": "0777Ja1ckgt5F6XcaxZR",
-    "class": {
-        "id": "0777Ja1ckgt5F6XcaxZR",
-        "class": 2,
-        "colorLabel": "Rød",
-        "color": "#FF4D4D"
-    }
-};
+let child;
 
 async function initGUI() {
-    // const objStr = localStorage.getItem("child");
-    // child = JSON.parse(objStr);
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
+
+    child = await getStudentById(id);
+
+    const colorLabels = await getClasses();
+
+    const clazzDropdown = document.getElementById("class-dropdown");
+    const dropdown = createDropdownFormElement("Klasse", "class", colorLabels, "color-id", child.class.id);
+    clazzDropdown.appendChild(dropdown);
+
     const avatar = document.getElementById("avatar");
     const nameHeader = document.getElementById("name-header");
     const birthdayElement = document.getElementById("birthday");
-    const clazzElement = document.getElementById("class");
 
     nameHeader.innerHTML = child.name;
 
     birthdayElement.value = child.birthday;
-    clazzElement.value = child.class.colorLabel;
 
     setStatus(child.checkedIn);
 
@@ -70,7 +64,7 @@ function addButtons() {
         customizeButtons.appendChild(saveBtn);
     } else {
         const deleteBtn = createTextButton("delete", "Slet", () => {
-            console.log("Delete button clicked");
+            document.getElementById("delete-modal").style.display = "block";
         }, "#FF5656");
 
         const editBtn = createTextButton("edit", "Rediger", () => {
@@ -206,6 +200,10 @@ const checkInOutBtn = document.getElementById("checkInOutBtn");
 checkInOutBtn.addEventListener("click", () => {
     child.checkedIn = !child.checkedIn;
     setStatus(child.checkedIn);
+
+    toggleStudentCheckIn(child.id);
+
+    alert(checkedIn ? "Barnet er tjekket ind" : "Barnet er tjekket ud");
 });
 
 const noteModal = document.getElementById("note-modal");
@@ -213,6 +211,18 @@ const noteModal = document.getElementById("note-modal");
 const addNote = document.querySelector(".add-note-btn");
 addNote.addEventListener("click", () => {
     noteModal.style.display = "block";
+});
+
+const closeDeleteBtn = document.getElementById("closeDeleteBtn");
+closeDeleteBtn.addEventListener("click", () => {
+    document.getElementById("delete-modal").style.display = "none";
+});
+
+const deleteBtn = document.getElementById("delete-child-btn");
+deleteBtn.addEventListener("click", () => {
+    console.log("Delete child and go to previous page");
+    deleteStudent(child.id);
+    window.location.href = "../index.html";
 });
 
 document.addEventListener("DOMContentLoaded", initGUI);

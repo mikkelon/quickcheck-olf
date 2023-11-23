@@ -214,3 +214,44 @@ export const getParentsById = async (parentsId) => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+export const deleteStudent = async (studentId) => {
+  const url = `http://localhost:6969/students/${studentId}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error deleting student:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+export const getStudentById = async (studentId) => {
+  const url = `http://localhost:6969/students/${studentId}`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching student:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+}
