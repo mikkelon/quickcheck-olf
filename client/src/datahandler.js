@@ -23,6 +23,11 @@ export const getStudentsByClassId = async (classId) => {
   }
 };
 
+/**
+ * Gets all students based on parentId
+ * @param {string} parentId ID of the parents object in firebase
+ * @returns
+ */
 export const getStudentsByParentId = async (parentId) => {
   const url = `http://localhost:6969/parents/${parentId}/students`;
 
@@ -99,6 +104,10 @@ export const createFamily = async (students, parents) => {
   }
 };
 
+/**
+ * Creates a new employee user in firebase
+ * @param {Object} employee And object containing the employee data
+ */
 export const createEmployee = async (employee) => {
   const url = "http://localhost:6969/signup/employee";
   console.log(employee);
@@ -121,6 +130,7 @@ export const createEmployee = async (employee) => {
     throw error;
   }
 };
+
 /**
  * Get all students
  * @returns {Array} Array of students
@@ -195,6 +205,10 @@ export const toggleStudentCheckIn = async (studentId) => {
   }
 };
 
+/**
+ * Get all parents
+ * @returns {Array} Array of parents
+ */
 export const getParentsById = async (parentsId) => {
   const url = `http://localhost:6969/parents/${parentsId}`;
   const options = {
