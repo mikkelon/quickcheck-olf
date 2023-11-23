@@ -99,7 +99,6 @@ export const createStudentsAndParents = async (students, parents) => {
 
 export const createEmployee = async (employee) => {
   const url = "http://localhost:6969/signup/employee";
-  console.log(employee);
   const options = {
     method: "POST",
     headers: {
@@ -164,8 +163,6 @@ export const getStudentsWithClass = async () => {
       class: studentClass,
     };
   });
-
-  console.log(studentsWithClass);
 
   return studentsWithClass;
 };

@@ -3,19 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Opret Ansat</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="../../../global.styles.css" />
-    <script src="script.js" type="module" defer></script>
-
     <link
       href="https://fonts.googleapis.com/css?family=Playpen+Sans"
       rel="stylesheet"
     />
+    <script type="module" src="javascript/gui.js" defer></script>
+    <script type="module" src="javascript/app.js" defer></script>
+    <title>Opret Forældre</title>
   </head>
+
   <body>
     <!-- Header -->
-    <div class="header">
+    <header class="header">
       <!-- Return Button Icon -->
       <a id="back-icon" href="../">
         <svg
@@ -34,40 +42,26 @@
         </svg>
       </a>
 
-      <div id="logo">
-        <!-- Logo -->
-        <img src="/client/assets/logo.png" width="64" />
-      </div>
+      <!-- Logo -->
+      <img src="/client/assets/logo.png" width="64" />
+    </header>
+    <h1 id="title">Opret familie</h1>
+    <div id="information"></div>
+    <div class="sectionsContainer">
+      <section>
+        <h1>Forældre</h1>
+        <div id="parents" class="nodeContainer"></div>
+        <!-- <div id="createBtn" /> -->
+      </section>
+
+      <div class="horizontal-line"></div>
+
+      <section>
+        <h1 id="children-title">Børn</h1>
+        <div id="children" class="nodeContainer"></div>
+      </section>
     </div>
-    <!--Opret ansat-->
-    <h1>Opret ansat</h1>
-    <div id="alert"></div>
-    <div class="employeeBox">
-      <div class="container">
-        <form id="create-employee-form">
-          <div class="forms-container">
-            <label class="forms-label">Fulde navn</label>
-            <input class="forms-input" type="text" id="name" />
-          </div>
-          <div class="forms-container">
-            <label class="forms-label">Email</label>
-            <input class="forms-input" type="email" id="email" />
-          </div>
-          <div class="forms-container">
-            <label class="forms-label">Telefon</label>
-            <input class="forms-input" type="text" id="phone" />
-          </div>
-          <div class="forms-container">
-            <label class="forms-label">Adgangskode</label>
-            <input class="forms-input" type="password" id="password" />
-          </div>
-          <div class="forms-container">
-            <label class="forms-label">Gentag adgangskode</label>
-            <input class="forms-input" type="password" id="repeatPassword" />
-          </div>
-        </form>
-      </div>
-    </div>
+
     <div class="btn-container">
       <button id="cancel" class="btn">Ryd</button>
       <button id="submit" class="btn">Opret</button>
