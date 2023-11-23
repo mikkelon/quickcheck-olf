@@ -6,6 +6,8 @@ import {
 
 // #--- Student list ---#
 const studentContainer = document.querySelector(".students");
+const activeFiltersWrapper = document.querySelector("#active-filters-wrapper");
+const activeFiltersContainer = document.querySelector("#active-filters");
 
 let studentArray = [];
 let activeFilters;
@@ -43,12 +45,12 @@ const renderStudent = (student) => {
   studentCheckBtn.classList.add(
     student.checkedIn ? "checked-in" : "checked-out"
   );
-  studentCheckBtn.addEventListener("click", () => {
-    console.log("Toggling check in status", student.id);
+  studentCheckBtn.addEventListener("click", (event) => {
     toggleStudentCheckIn(student.id);
     student.checkedIn = !student.checkedIn;
     studentCheckBtn.classList.toggle("checked-in");
     studentCheckBtn.classList.toggle("checked-out");
+    event.stopPropagation();
   });
   studentElement.appendChild(studentCheckBtn);
 
@@ -107,7 +109,6 @@ const renderClassOptions = () => {
 
 const fetchClasses = async () => {
   classArray = await getClasses();
-  console.log(classArray);
 
   renderClassOptions();
 };
@@ -115,7 +116,6 @@ const fetchClasses = async () => {
 // #--- Active filters ---#
 
 const filterStudents = () => {
-  console.log("filtering students");
   const filteredStudents = studentArray.filter((student) => {
     const classFilter =
       activeFilters.classes.length === 0 ||
@@ -173,7 +173,6 @@ checkedOutBtn.addEventListener("click", () => {
 
 // #--- Render active filter boxes ---#
 const addFilter = (filterType, filterValue) => {
-  const activeFiltersContainer = document.querySelector("#active-filters");
   const activeFilterDiv = document.createElement("div");
   activeFilterDiv.classList.add("active-filter");
   const activeFilterText = document.createElement("p");
@@ -249,8 +248,6 @@ const addFilter = (filterType, filterValue) => {
     activeFilterText.innerHTML = `Tjekket ${
       filterValue === "checkedIn" ? "ind" : "ud"
     }`;
-
-    console.log(activeFilters);
   }
 
   // Add text
@@ -268,11 +265,9 @@ const addFilter = (filterType, filterValue) => {
   activeFiltersContainer.appendChild(activeFilterDiv);
 
   // Show or hide active filters container
-  const activeFiltersWrapper = document.querySelector(
-    "#active-filters-wrapper"
-  );
   activeFiltersWrapper.style.display = "flex";
   updateClearFiltersButtonVisibility();
+  updateActiveFiltersStorage();
 };
 
 const removeFilter = (filterType, filterValue) => {
@@ -290,7 +285,6 @@ const removeFilter = (filterType, filterValue) => {
 
   updateActiveFiltersStorage();
 
-  const activeFiltersContainer = document.querySelector("#active-filters");
   const filterDivs = activeFiltersContainer.querySelectorAll(".active-filter");
   filterDivs.forEach((filterDiv) => {
     if (
@@ -318,12 +312,8 @@ const removeFilter = (filterType, filterValue) => {
 };
 
 const checkActiveFilters = () => {
-  const activeFiltersContainer = document.querySelector("#active-filters");
   updateClearFiltersButtonVisibility();
-  if (activeFiltersContainer.childElementCount < 1) {
-    const activeFiltersWrapper = document.querySelector(
-      "#active-filters-wrapper"
-    );
+  if (activeFiltersContainer.childElementCount < 2) {
     activeFiltersWrapper.style.display = "none";
   }
 };
@@ -332,19 +322,17 @@ const checkActiveFilters = () => {
 const clearFiltersBtn = document.querySelector("#clear-filters-btn");
 
 clearFiltersBtn.addEventListener("click", () => {
-  const activeFiltersContainer = document.querySelector("#active-filters");
   activeFilters = {
     classes: [],
     checkedIn: false,
     checkedOut: false,
     name: "",
   };
+  updateActiveFiltersStorage();
   searchInput.value = "";
   filterStudents();
-  const activeFiltersWrapper = document.querySelector(
-    "#active-filters-wrapper"
-  );
   activeFiltersWrapper.style.display = "none";
+  removeFilterCards();
 });
 
 function updateClearFiltersButtonVisibility() {
@@ -359,10 +347,19 @@ function updateClearFiltersButtonVisibility() {
     clearFiltersBtn.style.display = "none";
   }
 }
+
+const removeFilterCards = () => {
+  while (activeFiltersContainer.children.length > 1) {
+    activeFiltersContainer.removeChild(activeFiltersContainer.lastChild);
+  }
+};
+
+// store filters in local storage
+
 const initActiveFiltersFromLocalStorage = () => {
   activeFilters = JSON.parse(localStorage.getItem("activeFilters"));
   // local storage returns undefined as a string
-  if (activeFilters === "undefined") {
+  if (!activeFilters) {
     activeFilters = {
       classes: [],
       checkedIn: false,
@@ -370,7 +367,6 @@ const initActiveFiltersFromLocalStorage = () => {
       name: "",
     };
   }
-  console.log(activeFilters);
 };
 
 const renderFilterCards = () => {
