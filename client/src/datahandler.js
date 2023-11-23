@@ -212,6 +212,28 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
+
+export const getClassesById = async (classId) =>{
+  const url = `http://localhost:6969/classes/${classId}`;
+  const options = {
+    method: "GET" ,
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error ("Network response was not ok");
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+
+    console.error("Error fetching classes:", error);
+    throw error;
+  }
+};
+
 /**
  * FOR TESTING PURPOSES ONLY
  *
