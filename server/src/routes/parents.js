@@ -96,16 +96,25 @@ router.get("/:parentsId/students", async (req, res) => {
   }
 });
 
-export const createParents = (parents) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const docRef = await addDoc(collection(db, "parents"), parents);
-      resolve(docRef.id);
-    } catch (error) {
-      console.log(error);
-      reject("Fejl ved oprettelse af forælder");
+export const createParents = async (parents) => {
+  if (!parents || parents.length === 0) {
+    throw new Error("Fejl - manglende data");
+  }
+
+  parents.forEach((parent) => {
+    if (!parent.name || !parent.email || !parent.phone) {
+      throw new Error("Fejl - manglende data");
     }
   });
+
+  try {
+    const docRef = await addDoc(collection(db, "parents"), { parents });
+    console.log("Parents object created with ID: ", docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Fejl ved oprettelse af forælder");
+  }
 };
 
 export default router;

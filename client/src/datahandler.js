@@ -74,8 +74,8 @@ export const getClasses = async () => {
  * @param {*} students
  * @param {*} parents
  */
-export const createStudentsAndParents = async (students, parents) => {
-  const url = "http://localhost:6969/students";
+export const createFamily = async (students, parents) => {
+  const url = "http://localhost:6969/family/create";
   const options = {
     method: "POST",
     headers: {
@@ -86,6 +86,8 @@ export const createStudentsAndParents = async (students, parents) => {
 
   try {
     const response = await fetch(url, options);
+
+    console.log(response);
 
     if (!response.ok) {
       throw new Error("Network response was not ok");
