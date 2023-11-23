@@ -15,7 +15,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const parentsDocs = await getDocs(collection(db, "parents"));
-    const parents = parentsDocs.docs.map((doc) => doc.data());
+    const parents = parentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
     res.status(200).send(parents);
   } catch (error) {
     console.log(error);
@@ -29,7 +31,7 @@ router.get("/:id", async (req, res) => {
   try {
     const docRef = doc(db, "parents", id);
     const docSnap = await getDoc(docRef);
-    const parent = docSnap.data();
+    const parent = { id: docSnap.id, ...docSnap.data() };
     res.status(200).send(parent);
   } catch (error) {
     console.log(error);
@@ -78,11 +80,12 @@ router.delete("/:id", async (req, res) => {
 
 /* Se børn */
 router.get("/:parentsId/students", async (req, res) => {
-  const parents = req.params.parentsId;
+  const parentsId = req.params.parentsId;
+  console.log("getting students by parentid:", parentsId);
   try {
     const firebaseQuery = query(
       collection(db, "students"),
-      where("parents", "==", parents)
+      where("parentsId", "==", parentsId)
     );
     const studentsDocs = await getDocs(firebaseQuery);
     const students = studentsDocs.docs.map((doc) => ({

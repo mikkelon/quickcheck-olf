@@ -212,6 +212,7 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
+
 export const getClassesById = async (classId) =>{
   const url = `http://localhost:6969/classes/${classId}`;
   const options = {
@@ -231,4 +232,21 @@ export const getClassesById = async (classId) =>{
     console.error("Error fetching classes:", error);
     throw error;
   }
+};
+
+/**
+ * FOR TESTING PURPOSES ONLY
+ *
+ * Gets a random parent's students
+ * @returns {Array} Array of students
+ */
+export const getRandomParentStudents = async () => {
+  const parents = await fetch("http://localhost:6969/parents").then((res) =>
+    res.json()
+  );
+
+  const randomParent = parents[Math.floor(Math.random() * parents.length)];
+  const students = await getStudentsByParentId(randomParent.id);
+
+  return students;
 };
