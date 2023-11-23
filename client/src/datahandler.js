@@ -214,3 +214,20 @@ export const getParentsById = async (parentsId) => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+/**
+ * FOR TESTING PURPOSES ONLY
+ *
+ * Gets a random parent's students
+ * @returns {Array} Array of students
+ */
+export const getRandomParentStudents = async () => {
+  const parents = await fetch("http://localhost:6969/parents").then((res) =>
+    res.json()
+  );
+
+  const randomParent = parents[Math.floor(Math.random() * parents.length)];
+  const students = await getStudentsByParentId(randomParent.id);
+
+  return students;
+};
