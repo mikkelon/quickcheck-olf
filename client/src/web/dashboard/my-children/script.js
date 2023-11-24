@@ -129,6 +129,7 @@ const createButtons = (student) => {
   // Create notes button
   const notesBtn = document.createElement("button");
   notesBtn.innerText = "Noter";
+  notesBtn.style.backgroundColor = "#8774FF";
 
   // Add event listener to notes button
   notesBtn.addEventListener("click", () => {

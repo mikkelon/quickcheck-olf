@@ -37,8 +37,8 @@ main {
 
 .avatar {
   width: 75px;
-  /* keep aspect ratio */
   height: 75px;
+  object-fit: cover;
   border-radius: 50%;
 }
 
@@ -84,19 +84,15 @@ main {
   background-color: #56e87f;
 }
 
-.check-in:hover {
-  opacity: 0.8;
-}
-
 .check-out {
   background-color: #ff5656;
-  color: white;
-}
-
-.check-out:hover {
-  opacity: 0.8;
 }
 
 button:hover {
   cursor: pointer;
+  opacity: 0.8;
+}
+
+button {
+  color: white;
 }
