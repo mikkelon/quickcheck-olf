@@ -318,3 +318,47 @@ export const getRandomParentStudents = async () => {
 
   return students;
 };
+
+export const updateStudent = async (student) => {
+  const url = `http://localhost:6969/students/${student.id}`;
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(student),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error updating student:", error);
+    throw error;
+  }
+}
+
+export const updateParents = async (id, parents) => {
+  const url = `http://localhost:6969/parents/${id}`;
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(parents),
+  };
+
+  console.log("Updating parents:", parents);
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error updating parents:", error);
+    throw error;
+  }
+}

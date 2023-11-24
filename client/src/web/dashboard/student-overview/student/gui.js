@@ -1,5 +1,5 @@
-import { deleteStudent, getClasses, getParentsById, getStudentById, toggleStudentCheckIn } from "../../../../datahandler.js";
-import { createParent, deleteParent, getAllParents } from "./crud.js";
+import { deleteStudent, getClasses, getParentsById, getStudentById, toggleStudentCheckIn, updateStudent, updateParents } from "../../../../datahandler.js";
+import { createParent, deleteParent, getAllParents, updateParent } from "./crud.js";
 import { createDropdownFormElement, createFormElement, createFormsContainer, createIconButton, createTextButton } from "../../../../forms.js";
 
 const checkMark = "/client/assets/icons/check.svg";
@@ -57,6 +57,8 @@ function addButtons() {
         const saveBtn = createTextButton("save", "Gem", () => {
             editing = !editing;
             setEditing(editing);
+
+            save();
         }, "#4bb14e");
 
         const cancelbtn = createTextButton("cancel", "Annuller", () => {
@@ -162,20 +164,23 @@ function createParentElement(parent, index) {
         const deleteIcon = createIconButton("delete", "<i class='fas fa-trash'></i>", () => {
             deleteParentHandler(index);
         });
+        deleteIcon.style.backgroundColor = "#FF5656";
         headerDiv.appendChild(deleteIcon);
     }
 
-    const nameForm = createFormElement("Fulde navn", "text", "name", parent.name, () => {
-        updateParentData(index, "name", nameInput.value);
+    const nameForm = createFormElement("Fulde navn", "text", "name", parent.name, (input) => {
+        console.log("Name changed to:", input);
+        updateParent(index, "name", input);
     });
 
-    const phoneForm = createFormElement("Telefonnummer", "text", "phone", parent.phone, () => {
-        updateParentData(index, "phone", phoneInput.value);
-    }
-    );
+    const phoneForm = createFormElement("Telefonnummer", "text", "phone", parent.phone, (input) => {
+        console.log("Phone changed to:", input);
+        updateParent(index, "phone", input);
+    });
 
-    const emailForm = createFormElement("E-mail", "text", "email", parent.email, () => {
-        updateParentData(index, "email", emailInput.value);
+    const emailForm = createFormElement("E-mail", "text", "email", parent.email, (input) => {
+        console.log("Email changed to:", input);
+        updateParent(index, "email", input);
     });
 
     const formsContainer = createFormsContainer([nameForm, phoneForm, emailForm]);
@@ -193,6 +198,25 @@ function deleteParentHandler(index) {
 
     // Update the UI
     setParents();
+}
+
+function save() {
+    const birthday = document.getElementById("birthday").value;
+
+    const dropdown = document.getElementById("class");
+    const classId = dropdown.options[dropdown.selectedIndex].getAttribute("color-id");
+
+    console.log(birthday, classId, child.parentsId);
+
+    child.birthday = birthday;
+    child.classId = classId;
+
+    const parents = getAllParents();
+
+    updateStudent(child);
+    updateParents(child.parentsId, { parents });
+
+    console.log("Saved");
 }
 
 const goBack = document.getElementById("back-icon");

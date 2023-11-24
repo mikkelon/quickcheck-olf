@@ -115,6 +115,24 @@ router.get("/:parentsId/students", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const docRef = doc(db, "parents", id);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      throw new Error("Fejl - forælder findes ikke");
+    }
+
+    await updateDoc(docRef, req.body);
+    res.status(200).send("Forælder opdateret");
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send("Fejl ved opdatering af forælder");
+  }
+});
+
 export const createParents = async (parents) => {
   if (!parents || parents.length === 0) {
     throw new Error("Fejl - manglende data");

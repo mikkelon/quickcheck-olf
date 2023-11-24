@@ -30,7 +30,8 @@ function createFormElement(labelText, inputType, inputId, inputValue, onChange) 
     formContainer.appendChild(label);
     formContainer.appendChild(input);
     
-    onChange && input.addEventListener("change", onChange);
+
+    onChange && input.addEventListener("blur", () => onChange(input.value));
     
     return formContainer;
 }
