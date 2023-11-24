@@ -1,3 +1,5 @@
+@import "../../../global.styles.css";
+
 * {
   margin: 0;
   box-shadow: none;
@@ -18,7 +20,7 @@ main {
 
 .card {
   position: relative;
-  border-radius: 0.5rem;
+  border-radius: var(--default-border-radius);
   padding: 1rem;
   width: 300px;
   height: 150px;
