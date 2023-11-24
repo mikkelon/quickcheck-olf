@@ -11,12 +11,6 @@ body {
   display: none;
 }
 
-.logo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 #logout {
   position: absolute;
   background-color: rgba(239, 27, 27, 0.321);

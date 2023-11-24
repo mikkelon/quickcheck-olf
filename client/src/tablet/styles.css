@@ -4,17 +4,12 @@
   box-sizing: border-box;
 }
 
-header {
-  background-color: #fff;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+#header {
+  height: 93.33px;
 }
 
-header img {
-  width: 3rem;
-  margin: 0 auto;
+#back-icon {
+  display: none;
 }
 
 main {
