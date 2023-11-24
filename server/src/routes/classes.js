@@ -32,4 +32,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+/* Hent elever i en klasse */
+// TODO: classId er ikke en attribut på student endnu
+router.get("/:classId/students", async (req, res) => {
+  const classId = req.params.classId;
+  try {
+    const firebaseQuery = query(
+      collection(db, "students"),
+      where("classId", "==", classId)
+    );
+    const studentsDocs = await getDocs(firebaseQuery);
+    const students = studentsDocs.docs.map((doc) => {
+      return { id: doc.id, ...doc.data() };
+    });
+    res.status(200).send(students);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af elever");
+  }
+});
+
 export default router;
