@@ -55,9 +55,9 @@ const renderStudent = (student) => {
   studentElement.appendChild(studentCheckBtn);
 
   studentElement.addEventListener("click", () => {
-    localStorage.setItem("child", JSON.stringify(student));
+    // localStorage.setItem("child", JSON.stringify(student));
     updateActiveFiltersStorage();
-    window.location.href = "component/student.html";
+    window.location.href = `student/index.html?id=${student.id}`;
   });
 
   studentContainer.appendChild(studentElement);

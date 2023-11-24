@@ -4,7 +4,7 @@
  * @returns {Array} Array of students
  */
 export const getStudentsByClassId = async (classId) => {
-  const url = `http://localhost:6969/students/${classId}`;
+  const url = `http://localhost:6969/classes/${classId}/students`;
 
   try {
     const response = await fetch(url, {
@@ -229,6 +229,55 @@ export const getParentsById = async (parentsId) => {
 };
 
 /**
+ * Delete a student with a given studentId
+ * @param {string} studentId 
+ */
+export const deleteStudent = async (studentId) => {
+  const url = `http://localhost:6969/students/${studentId}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error deleting student:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+/**
+ * Get a student with a given studentId
+ * @param {string} studentId 
+ */
+export const getStudentById = async (studentId) => {
+  const url = `http://localhost:6969/students/${studentId}`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching student:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+}
+
+/**
  * Gets a class based on the classId
  * @param {string} classId
  * @returns {Object} Class object
@@ -269,3 +318,47 @@ export const getRandomParentStudents = async () => {
 
   return students;
 };
+
+export const updateStudent = async (student) => {
+  const url = `http://localhost:6969/students/${student.id}`;
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(student),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error updating student:", error);
+    throw error;
+  }
+}
+
+export const updateParents = async (id, parents) => {
+  const url = `http://localhost:6969/parents/${id}`;
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(parents),
+  };
+
+  console.log("Updating parents:", parents);
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error updating parents:", error);
+    throw error;
+  }
+}
