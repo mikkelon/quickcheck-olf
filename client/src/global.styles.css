@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css?family=Playpen+Sans");
+
+* {
+  font-family: "Playpen Sans", sans-serif;
+}
+
 #header {
   display: flex;
   justify-content: space-between;
@@ -78,12 +84,4 @@ button {
 .submit-btn:hover {
   cursor: pointer;
   opacity: 0.8;
-}
-
-section {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }

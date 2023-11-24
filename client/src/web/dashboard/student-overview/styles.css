@@ -1,10 +1,7 @@
-@import url("https://fonts.googleapis.com/css?family=Playpen+Sans");
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Playpen Sans", sans-serif;
 }
 
 main {
