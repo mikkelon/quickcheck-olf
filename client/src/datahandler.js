@@ -4,7 +4,7 @@
  * @returns {Array} Array of students
  */
 export const getStudentsByClassId = async (classId) => {
-  const url = `http://localhost:6969/students/${classId}`;
+  const url = `http://localhost:6969/classes/${classId}/students`;
 
   try {
     const response = await fetch(url, {
