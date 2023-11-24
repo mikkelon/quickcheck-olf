@@ -1,37 +1,11 @@
 body {
   margin: 0;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  font-family: Playpen Sans, sans-serif;
-}
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-#logo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 body > h1 {
   text-align: center;
-}
-#logout {
-  background-color: rgba(239, 27, 27, 0.321);
-  color: #ff5656;
-  font-weight: bold;
-}
-#logout:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-#back-icon:hover {
-  cursor: pointer;
-  transform: scale(1.05);
 }
 
 .btn-container {
@@ -41,21 +15,10 @@ body > h1 {
   padding: 20px;
   gap: 10px;
 }
-#cancel {
-  background-color: #ff5656;
-}
 
+#cancel,
 #submit {
-  background-color: #4caf50;
-}
-#cancel:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-#submit:hover {
-  cursor: pointer;
-  opacity: 0.8;
+  font-size: x-large;
 }
 
 .employeeBox {

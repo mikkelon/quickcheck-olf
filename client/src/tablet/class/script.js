@@ -4,7 +4,7 @@ import {
   toggleStudentCheckIn,
 } from "../../datahandler.js";
 
-const backBtn = document.querySelector(".back-btn");
+const backBtn = document.getElementById("back-icon");
 
 backBtn.addEventListener("click", () => {
   window.location.href = "../";
@@ -40,7 +40,7 @@ const renderCards = async () => {
   });
 
   console.log(students);
-  students.forEach((student) => {
+  students.forEach(student => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
