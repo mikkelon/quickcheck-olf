@@ -121,6 +121,7 @@ export const getStudentsWithClass = async () => {
     return {
       ...student,
       class: studentClass,
+      id: student.id
     };
   });
 
@@ -174,12 +175,18 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
+// Create note
 export const createNote = async (studentId, note) => {
-  const url = `http://localhost:6969/notes/${studentId}`;
+  const url = `http://localhost:6969/notes`;
   const options = {
     method: "POST",
-    body: JSON.stringify(note)
+    body: JSON.stringify({ studentId, ...note }),
+    headers: {
+      "Content-Type": "application/json",
+    },
   }
+
+  console.log("prepost: " + JSON.stringify({ studentId, note }))
 
   try {
     const response = await fetch(url, options);
@@ -196,3 +203,49 @@ export const createNote = async (studentId, note) => {
     throw error; // Rethrow the error for the caller to handle
   }
 }
+
+
+export const deleteNoteById = async (noteId) => {
+  const url = `http://localhost:6969/notes/${noteId}`;
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+}
+
+// GET notes til en elev
+export const getNotesById = async (studentId) => {
+  const url = `http://localhost:6969/notes/${studentId}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};

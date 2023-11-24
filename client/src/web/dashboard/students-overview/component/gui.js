@@ -1,4 +1,4 @@
-import { createNote, getParentsById } from "../../../../datahandler.js";
+import { createNote, getParentsById, getNotesById } from "../../../../datahandler.js";
 import { createNewNote, createParent, deleteNote, deleteParent, getAllNotes } from "./crud.js";
 
 let child;
@@ -23,6 +23,7 @@ async function initGUI() {
 
     setStatus(child.checkedIn);
     setParents();
+    createNotesGui();
 }
 
 function setStatus(checkedIn) {
@@ -257,19 +258,18 @@ saveNote.addEventListener("click", async () => {
     const descriptionField = document.getElementById("note-description")
     const description = descriptionField.value;
 
-    const startDateField = document.getElementById("start-date")
-    const startDate = startDateField.value;
+    /*     const startDateField = document.getElementById("start-date")
+        const startDate = startDateField.value; */
 
-    const endDateField = document.getElementById("end-date")
-    const endDate = endDateField.value;
+    /*     const endDateField = document.getElementById("end-date")
+        const endDate = endDateField.value; */
 
-    createNewNote(title, description, startDate, endDate);
+    createNewNote(child.id, title, description);
     createNotesGui();
+
 
     titleField.value = "";
     descriptionField.value = "";
-    startDateField.value = "";
-    endDateField.value = "";
 
     noteModal.style.display = "none";
 
@@ -277,7 +277,7 @@ saveNote.addEventListener("click", async () => {
 
 
 async function createNotesGui() {
-    const notes = await getAllNotes();
+    const notes = await getAllNotes(child.id);
     const noteContainer = document.getElementById("notes")
 
     noteContainer.innerHTML = "";
@@ -302,11 +302,11 @@ function createNoteElement(note, index) {
     const titleP = document.createElement("p");
     titleP.innerHTML = note.title;
 
-    const startDateP = document.createElement("p");
-    startDateP.innerHTML = note.startDate;
+    /* const startDateP = document.createElement("p");
+    startDateP.innerHTML = note.startDate; */
 
-    const endDateP = document.createElement("p");
-    endDateP.innerHTML = note.endDate;
+    /*   const endDateP = document.createElement("p");
+      endDateP.innerHTML = note.endDate; */
 
     // Opret dropdown-indholdet <div class="dropdown-content">
     const dropdownContentDiv = document.createElement("div");
@@ -320,9 +320,10 @@ function createNoteElement(note, index) {
     dropdownContentDiv.appendChild(descriptionP);
 
     // Tilføj <p>-elementerne til dropdown-containeren
+    /*   dropdownDiv.appendChild(startDateP);
+    dropdownDiv.appendChild(endDateP); */
+
     dropdownDiv.appendChild(titleP);
-    dropdownDiv.appendChild(startDateP);
-    dropdownDiv.appendChild(endDateP);
     dropdownDiv.appendChild(dropdownContentDiv);
 
     // Opret delete-knappen <div class="note-delete">
@@ -342,11 +343,9 @@ function createNoteElement(note, index) {
     return noteDiv;
 }
 
-const index = 0; // Dette skal være det aktuelle index for noten
-const noteElement = createNoteElement(note, index);
-noteContainer.appendChild(noteElement);
-
-
+// const index = 0; // Dette skal være det aktuelle index for noten
+// const noteElement = createNoteElement(note, index);
+// noteContainer.appendChild(noteElement);
 
 
 
