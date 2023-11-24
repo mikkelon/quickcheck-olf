@@ -1,3 +1,5 @@
+@import "../../../global.styles.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +13,10 @@ main {
   display: flex;
   flex-direction: column;
   /* gap: 1rem; */
+}
+
+p {
+  font-size: 13.33px;
 }
 
 .title {
@@ -40,7 +46,6 @@ main {
 
 .search-bar input {
   border: 1px solid #ccc;
-  border-radius: 5px;
   padding: 0.5rem;
   width: 100%;
 }
@@ -65,7 +70,6 @@ main {
 #clear-filters-btn {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
   background-color: #fff;
   cursor: pointer;
 }
@@ -78,7 +82,6 @@ main {
 #class-select {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
   background-color: #fff;
 }
 
@@ -89,7 +92,7 @@ main {
 
 #active-filters {
   outline: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: var(--small-border-radius);
   min-height: 3rem;
   margin-bottom: 1rem;
   display: flex;
@@ -99,11 +102,12 @@ main {
 
 .active-filter {
   outline: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: var(--small-border-radius);
   padding: 0.25rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 8px;
 }
 
 .remove-filter {
@@ -119,8 +123,7 @@ main {
 }
 
 .students-table {
-  outline: 2px solid black;
-  border-radius: 2px;
+  border-radius: var(--small-border-radius);
   padding: 1rem;
   flex-direction: column;
 }
@@ -135,7 +138,7 @@ main {
 .student-class {
   width: 100px;
   padding: 0.25rem 0.5rem;
-  border-radius: 5px;
+  border-radius: var(--small-border-radius);
 }
 
 .student-column-titles {
@@ -153,14 +156,14 @@ main {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   /* gap: 1rem; */
-  outline: 2px solid black;
-  border-radius: 2px;
+  outline: 1px solid #acacac;
+  border-radius: var(--small-border-radius);
   width: 100%;
   /* padding: 0.25rem 0.5rem; */
   text-align: center;
   justify-items: center;
   align-items: center;
-  padding: 0.1rem;
+  padding: 3px 0;
 }
 
 .student:hover {
