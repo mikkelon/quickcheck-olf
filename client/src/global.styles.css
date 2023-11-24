@@ -1,53 +1,88 @@
+@import url("https://fonts.googleapis.com/css?family=Playpen+Sans");
+
+* {
+  font-family: "Playpen Sans", sans-serif;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 20px;
+  background: transparent;
+}
+
+#back-icon:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+#logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+h1 {
+  margin: 20px 0;
+  text-align: center;
+}
+
 .forms-container {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-    justify-content: space-between;
-    /*      T    R   B    L */
-    margin: 20px 0px 20px 0px;
-    /* GAP BETWEEN INPUTS */
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  justify-content: space-between;
+  /*      T    R   B    L */
+  margin: 20px 0px 20px 0px;
+  /* GAP BETWEEN INPUTS */
+  gap: 1rem;
 }
 
 .form-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2px
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .forms-input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 12px 12px;
-    box-sizing: border-box;
-    width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px 12px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .forms-label {
-    font-weight: bold;
-    margin-left: 1rem;
-}
-
-.btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 16px 32px;
-    font-size: x-large;
+  font-weight: bold;
+  margin-left: 1rem;
 }
 
 button {
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 32px;
+  border-radius: 4px;
+  border: none;
 }
 
-section {
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.submit-btn,
+.cancel-btn {
+  color: white;
+}
+
+.submit-btn {
+  background-color: #4caf50;
+}
+
+.cancel-btn {
+  background-color: #f44336;
+}
+
+.cancel-btn:hover,
+.submit-btn:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }

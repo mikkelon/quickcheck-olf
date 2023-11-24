@@ -1,67 +1,53 @@
 body {
-    margin: 0;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    font-family: Playpen Sans, sans-serif;
+  margin: 0;
+  font-family: Playpen Sans, sans-serif;
 }
 
-h1 {
-    text-align: center;
+#header {
+  height: 53.33px;
 }
 
-.header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo {
-    justify-self: center;
+#back-icon {
+  display: none;
 }
 
 #logout {
-    position: absolute;
-    background-color: rgba(239, 27, 27, 0.321);
-    color: #ff5656;
-    font-weight: bold;
-    right: 1em;
-    transition: all 0.2s ease;
+  position: absolute;
+  background-color: rgba(239, 27, 27, 0.321);
+  color: #ff5656;
+  font-weight: bold;
+  top: 2em;
+  right: 2em;
+  transition: all 0.2s ease;
 }
 
 #logout:hover {
-    cursor: pointer;
-    transform: scale(1.05);
+  cursor: pointer;
+  transform: scale(1.05);
 }
 
 .buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 3fr));
-    gap: 20px;
-    width: 75vw;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 3fr));
+  gap: 20px;
+  width: 75vw;
+  margin: 0 auto;
 }
 
-.buttons button {
-    width: calc(100% - 20px); /* Calculate the width with margin */
-    margin: 10px 10px;
-    color: #fff;
-    padding: 75px;
-    font-size: x-large;
-    font-family: Playpen Sans, sans-serif;
-    border-radius: 25px;
-    transition: all 0.2s ease;
+.buttons a {
+  width: calc(100% - 200px); /* Calculate the width with margin */
+  margin: 10px 10px;
+  color: #fff;
+  padding: 75px;
+  font-size: x-large;
+  font-family: Playpen Sans, sans-serif;
+  border-radius: 25px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
 }
 
-.buttons button:hover {
-    cursor: pointer;
-    transform: scale(1.05);
-}
-
-@media screen and (max-width: 600px) {
-    .buttons button {
-        width: calc(100% - 10px);
-        margin: 0 5px;
-    }
+.buttons a:hover {
+  cursor: pointer;
+  transform: scale(1.05);
 }

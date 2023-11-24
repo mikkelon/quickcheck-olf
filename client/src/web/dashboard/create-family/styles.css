@@ -1,10 +1,8 @@
 body {
   margin: 0;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  font-family: Playpen Sans, sans-serif;
 }
 
 .header {
@@ -15,6 +13,14 @@ body {
 
 body > h1 {
   text-align: center;
+}
+
+section {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .nodeContainer {
@@ -47,12 +53,6 @@ body > h1 {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 15px;
-}
-
-#logout {
-  background-color: rgba(239, 27, 27, 0.321);
-  color: #ff5656;
-  font-weight: bold;
 }
 
 .sectionsContainer {
@@ -92,22 +92,9 @@ body > h1 {
   background-color: #cccccc38;
 }
 
-#cancel {
-  background-color: #ff5656;
-}
-
+#cancel,
 #submit {
-  background-color: #56e87f;
-}
-
-#cancel:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-#submit:hover {
-  cursor: pointer;
-  opacity: 0.8;
+  font-size: x-large;
 }
 
 .delete {
@@ -152,10 +139,6 @@ body > h1 {
 
 section {
   padding: 0 !important;
-}
-
-#title {
-  margin: 0;
 }
 
 #children-title {

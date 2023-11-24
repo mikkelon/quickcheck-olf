@@ -1,51 +1,8 @@
 * {
   margin: 0;
-  padding: 0;
   box-shadow: none;
   box-sizing: border-box;
-  font-family: "Playpen Sans", sans-serif;
   user-select: none;
-}
-
-body {
-  padding: 10px;
-}
-
-header {
-  background-color: #fff;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* border-bottom: 1px solid #ccc; */
-  position: relative;
-}
-
-header img {
-  width: 3rem;
-}
-
-header .logo {
-  width: 3rem;
-  justify-self: center;
-}
-
-#back-icon {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-}
-
-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-header h1 {
-  text-align: center;
-  padding: 30px;
 }
 
 main {
