@@ -344,8 +344,9 @@ async function initGUI() {
     });
 
   const submit = document.getElementById("submit");
-  submit.addEventListener("click", () => {
-    const success = submitToDatabase();
+  submit.addEventListener("click", async () => {
+    const success = await submitToDatabase();
+    console.log("Success:", success);
     forælderOprettet(success);
   });
 
