@@ -5,6 +5,7 @@ class headerComponent extends HTMLElement {
   }
 
   connectedCallback() {
+    const logoPath = new URL("../assets/logo.png", import.meta.url).href;
     this.innerHTML = `
     <header id="header">
     <a id="back-icon" href="../">
@@ -26,7 +27,7 @@ class headerComponent extends HTMLElement {
 
     <div id="logo">
       <!-- Logo -->
-      <img src="/client/assets/logo.png" width="64" />
+      <img src="${logoPath}" width="64" />
     </div>
     </header>
     `;

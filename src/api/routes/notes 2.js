@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../firebase.js";
+import { db } from "../../config/firebase.js";
 import { addDoc, collection, updateDoc, getDoc, doc } from "firebase/firestore";
 
 const router = express.Router();

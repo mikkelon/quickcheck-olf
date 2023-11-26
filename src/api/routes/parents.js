@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../firebase.js";
+import { db } from "../../config/firebase.js";
 import {
   addDoc,
   collection,
@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const parentsDocs = await getDocs(collection(db, "parents"));
-    const parents = parentsDocs.docs.map((doc) => {
+    const parents = parentsDocs.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     });
     res.status(200).send(parents);
@@ -104,7 +104,7 @@ router.get("/:parentsId/students", async (req, res) => {
       where("parentsId", "==", parentsId)
     );
     const studentsDocs = await getDocs(firebaseQuery);
-    const students = studentsDocs.docs.map((doc) => ({
+    const students = studentsDocs.docs.map(doc => ({
       id: doc.id, // Include the student ID
       ...doc.data(),
     }));
@@ -133,12 +133,12 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-export const createParents = async (parents) => {
+export const createParents = async parents => {
   if (!parents || parents.length === 0) {
     throw new Error("Fejl - manglende data");
   }
 
-  parents.forEach((parent) => {
+  parents.forEach(parent => {
     if (!parent.name || !parent.email || !parent.phone) {
       throw new Error("Fejl - manglende data");
     }

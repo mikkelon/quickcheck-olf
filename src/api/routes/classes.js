@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../firebase.js";
+import { db } from "../../config/firebase.js";
 import {
   collection,
   doc,
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const classesDocs = await getDocs(collection(db, "classes"));
-    const classes = classesDocs.docs.map((doc) => {
+    const classes = classesDocs.docs.map(doc => {
       return {
         id: doc.id,
         ...doc.data(),
@@ -49,7 +49,7 @@ router.get("/:classId/students", async (req, res) => {
       where("classId", "==", classId)
     );
     const studentsDocs = await getDocs(firebaseQuery);
-    const students = studentsDocs.docs.map((doc) => {
+    const students = studentsDocs.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     });
     res.status(200).send(students);

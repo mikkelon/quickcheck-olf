@@ -1,5 +1,5 @@
 import express from "express";
-import { adminAuth, adminDB } from "../firebase-admin.js";
+import { adminAuth, adminDB } from "../../config/firebase-admin.js";
 const router = express.Router();
 
 /**

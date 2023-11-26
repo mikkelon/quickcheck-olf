@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../firebase.js";
+import { db } from "../../config/firebase.js";
 import {
   addDoc,
   collection,
@@ -19,7 +19,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const studentsDocs = await getDocs(collection(db, "students"));
-    const students = studentsDocs.docs.map((doc) => {
+    const students = studentsDocs.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     });
     res.status(200).send(students);
@@ -78,7 +78,7 @@ router.get("/checkedIn", async (req, res) => {
     const querySnapshot = await getDocs(
       query(collection(db, "students"), where("checkedIn", "==", true))
     );
-    const students = querySnapshot.docs.map((doc) => {
+    const students = querySnapshot.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     });
     res.status(200).send(students);
@@ -119,7 +119,7 @@ export const createStudentsWithParentsId = async (students, parentsId) => {
 
   try {
     const batch = writeBatch(db);
-    students.forEach((student) => {
+    students.forEach(student => {
       if (!student.name || !student.classId) {
         throw new Error("Fejl - manglende data");
       }

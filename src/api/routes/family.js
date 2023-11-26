@@ -2,8 +2,8 @@ import express from "express";
 import { createParents } from "./parents.js";
 import { createStudentsWithParentsId } from "./students.js";
 import { createParentUserWithEmailAndId } from "./signup.js";
-import { adminAuth } from "../firebase-admin.js";
-import { db } from "../firebase.js";
+import { adminAuth } from "../../config/firebase-admin.js";
+import { db } from "../../config/firebase.js";
 import { deleteDoc, doc } from "firebase/firestore";
 
 const router = express.Router();
@@ -60,7 +60,7 @@ router.post("/create", async (req, res) => {
 
     // Delete students, if created
     if (studentIds.length > 0) {
-      studentIds.forEach(async (studentId) => {
+      studentIds.forEach(async studentId => {
         await deleteDoc(doc(db, "students", studentId));
       });
       console.log("students deleted");
