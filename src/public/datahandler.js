@@ -1,10 +1,12 @@
+const apiUrl = "http://localhost:6969/api";
+
 /**
  * Get all students based on classId
  * @param {*} classId The id of the class (firebase document id)
  * @returns {Array} Array of students
  */
-export const getStudentsByClassId = async (classId) => {
-  const url = `http://localhost:6969/classes/${classId}/students`;
+export const getStudentsByClassId = async classId => {
+  const url = `${apiUrl}/classes/${classId}/students`;
 
   try {
     const response = await fetch(url, {
@@ -28,8 +30,8 @@ export const getStudentsByClassId = async (classId) => {
  * @param {string} parentId ID of the parents object in firebase
  * @returns
  */
-export const getStudentsByParentId = async (parentId) => {
-  const url = `http://localhost:6969/parents/${parentId}/students`;
+export const getStudentsByParentId = async parentId => {
+  const url = `${apiUrl}/parents/${parentId}/students`;
 
   try {
     const response = await fetch(url, {
@@ -53,7 +55,7 @@ export const getStudentsByParentId = async (parentId) => {
  * @returns {Array} Array of classes
  */
 export const getClasses = async () => {
-  const url = "http://localhost:6969/classes";
+  const url = apiUrl + "/classes";
   const options = {
     method: "GET",
   };
@@ -80,7 +82,7 @@ export const getClasses = async () => {
  * @param {*} parents
  */
 export const createFamily = async (students, parents) => {
-  const url = "http://localhost:6969/family/create";
+  const url = apiUrl + "/family/create";
   const options = {
     method: "POST",
     headers: {
@@ -108,8 +110,8 @@ export const createFamily = async (students, parents) => {
  * Creates a new employee user in firebase
  * @param {Object} employee And object containing the employee data
  */
-export const createEmployee = async (employee) => {
-  const url = "http://localhost:6969/signup/employee";
+export const createEmployee = async employee => {
+  const url = apiUrl + "/signup/employee";
   const options = {
     method: "POST",
     headers: {
@@ -135,7 +137,7 @@ export const createEmployee = async (employee) => {
  * @returns {Array} Array of students
  */
 export const getStudents = async () => {
-  const url = "http://localhost:6969/students";
+  const url = apiUrl + "/students";
   const options = {
     method: "GET",
   };
@@ -168,8 +170,8 @@ export const getStudentsWithClass = async () => {
   const classes = await getClasses();
 
   // Add class information to students
-  const studentsWithClass = students.map((student) => {
-    const studentClass = classes.find((c) => c.id === student.classId);
+  const studentsWithClass = students.map(student => {
+    const studentClass = classes.find(c => c.id === student.classId);
     return {
       ...student,
       class: studentClass,
@@ -183,8 +185,8 @@ export const getStudentsWithClass = async () => {
  * Toggles the checked in status of a student
  * @param {*} studentId The id of the student (firebase document id)
  */
-export const toggleStudentCheckIn = async (studentId) => {
-  const url = `http://localhost:6969/students/toggleCheckedIn/${studentId}`;
+export const toggleStudentCheckIn = async studentId => {
+  const url = `${apiUrl}/students/toggleCheckedIn/${studentId}`;
   const options = {
     method: "PUT",
   };
@@ -206,8 +208,8 @@ export const toggleStudentCheckIn = async (studentId) => {
  * Get all parents
  * @returns {Array} Array of parents
  */
-export const getParentsById = async (parentsId) => {
-  const url = `http://localhost:6969/parents/${parentsId}`;
+export const getParentsById = async parentsId => {
+  const url = `${apiUrl}/parents/${parentsId}`;
   const options = {
     method: "GET",
   };
@@ -230,10 +232,10 @@ export const getParentsById = async (parentsId) => {
 
 /**
  * Delete a student with a given studentId
- * @param {string} studentId 
+ * @param {string} studentId
  */
-export const deleteStudent = async (studentId) => {
-  const url = `http://localhost:6969/students/${studentId}`;
+export const deleteStudent = async studentId => {
+  const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "DELETE",
   };
@@ -253,10 +255,10 @@ export const deleteStudent = async (studentId) => {
 
 /**
  * Get a student with a given studentId
- * @param {string} studentId 
+ * @param {string} studentId
  */
-export const getStudentById = async (studentId) => {
-  const url = `http://localhost:6969/students/${studentId}`;
+export const getStudentById = async studentId => {
+  const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "GET",
   };
@@ -275,15 +277,15 @@ export const getStudentById = async (studentId) => {
     console.error("Error fetching student:", error);
     throw error; // Rethrow the error for the caller to handle
   }
-}
+};
 
 /**
  * Gets a class based on the classId
  * @param {string} classId
  * @returns {Object} Class object
  */
-export const getClassById = async (classId) => {
-  const url = `http://localhost:6969/classes/${classId}`;
+export const getClassById = async classId => {
+  const url = `${apiUrl}/classes/${classId}`;
   const options = {
     method: "GET",
   };
@@ -309,9 +311,7 @@ export const getClassById = async (classId) => {
  * @returns {Array} Array of students
  */
 export const getRandomParentStudents = async () => {
-  const parents = await fetch("http://localhost:6969/parents").then((res) =>
-    res.json()
-  );
+  const parents = await fetch(apiUrl + "/parents").then(res => res.json());
 
   const randomParent = parents[Math.floor(Math.random() * parents.length)];
   const students = await getStudentsByParentId(randomParent.id);
@@ -319,8 +319,8 @@ export const getRandomParentStudents = async () => {
   return students;
 };
 
-export const updateStudent = async (student) => {
-  const url = `http://localhost:6969/students/${student.id}`;
+export const updateStudent = async student => {
+  const url = `${apiUrl}/${student.id}`;
   const options = {
     method: "PUT",
     headers: {
@@ -338,10 +338,10 @@ export const updateStudent = async (student) => {
     console.error("Error updating student:", error);
     throw error;
   }
-}
+};
 
 export const updateParents = async (id, parents) => {
-  const url = `http://localhost:6969/parents/${id}`;
+  const url = `${apiUrl}/parents/${id}`;
   const options = {
     method: "PUT",
     headers: {
@@ -361,4 +361,4 @@ export const updateParents = async (id, parents) => {
     console.error("Error updating parents:", error);
     throw error;
   }
-}
+};
