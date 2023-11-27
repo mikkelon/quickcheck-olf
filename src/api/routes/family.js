@@ -1,10 +1,8 @@
 import express from "express";
-import { createParents } from "./parents.js";
-import { createStudentsWithParentsId } from "./students.js";
-import { createParentUserWithEmailAndId } from "./signup.js";
-import { adminAuth } from "../../config/firebase-admin.js";
-import { db } from "../../config/firebase.js";
-import { deleteDoc, doc } from "firebase/firestore";
+import {
+  createFamily,
+  rollbackFamilyCreation,
+} from "../controllers/familyController.js";
 
 const router = express.Router();
 
@@ -22,25 +20,8 @@ router.post("/create", async (req, res) => {
   const students = req.body.students;
   const parents = req.body.parents;
 
-  // Variables for cleanup if error
-  const studentIds = [];
-  let parentsId = "";
-  let userId = "";
-
   try {
-    // Create parents
-    parentsId = await createParents(parents);
-
-    // Create students
-    await createStudentsWithParentsId(students, parentsId);
-
-    // Create parent user
-    const userRecord = await createParentUserWithEmailAndId(
-      parents[0].email,
-      parentsId
-    );
-    userId = userRecord.uid;
-
+    const parentsId = await createFamily(parents, students);
     // Send response back to client
     res.status(201).send({
       message: "Familie oprettet",
@@ -50,27 +31,6 @@ router.post("/create", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-
-    // #-- Cleanup if error --#
-    // Delete parents, if created
-    if (parentsId) {
-      await deleteDoc(doc(db, "parents", parentsId));
-      console.log("parents deleted");
-    }
-
-    // Delete students, if created
-    if (studentIds.length > 0) {
-      studentIds.forEach(async studentId => {
-        await deleteDoc(doc(db, "students", studentId));
-      });
-      console.log("students deleted");
-    }
-
-    // Delete user, if created
-    if (userId) {
-      await adminAuth.deleteUser(userId);
-      console.log("user deleted");
-    }
 
     // Send error response back to client
     res.status(500).send({

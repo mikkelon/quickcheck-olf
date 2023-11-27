@@ -1,24 +1,16 @@
 import express from "express";
-import { db } from "../../config/firebase.js";
 import {
-  addDoc,
-  collection,
-  doc,
-  deleteDoc,
-  updateDoc,
-  getDocs,
-  getDoc,
-  query,
-  where,
-} from "firebase/firestore";
+  getParents,
+  getParentById,
+  getStudentsByParentsId,
+  deleteParents,
+  addParent,
+} from "../controllers/parentsController.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const parentsDocs = await getDocs(collection(db, "parents"));
-    const parents = parentsDocs.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    });
+    const parents = await getParents();
     res.status(200).send(parents);
   } catch (error) {
     console.log(error);
@@ -30,9 +22,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const docRef = doc(db, "parents", id);
-    const docSnap = await getDoc(docRef);
-    const parent = { id: docSnap.id, ...docSnap.data() };
+    const parent = await getParentById(id);
     res.status(200).send(parent);
   } catch (error) {
     console.log(error);
@@ -65,15 +55,7 @@ router.post("/", async (req, res) => {
 
   // Check if parents object exists
   try {
-    const docRef = doc(db, "parents", parentsId);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      throw new Error("Fejl - forælder findes ikke");
-    }
-
-    const parents = docSnap.data().parents;
-    parents.push(newParent);
-    await updateDoc(docRef, { parents });
+    await addParent(parentsId, newParent);
     res.status(201).send("Forælder oprettet");
   } catch (error) {
     console.log(error.message);
@@ -86,7 +68,7 @@ router.delete("/:id", async (req, res) => {
   let id = req.params.id;
 
   try {
-    const docDelete = await deleteDoc(doc(db, "parents", id));
+    await deleteParents(id);
     res.status(200).send("Forælder slettet");
   } catch (error) {
     console.log(error);
@@ -99,15 +81,7 @@ router.get("/:parentsId/students", async (req, res) => {
   const parentsId = req.params.parentsId;
   console.log("getting students by parentid:", parentsId);
   try {
-    const firebaseQuery = query(
-      collection(db, "students"),
-      where("parentsId", "==", parentsId)
-    );
-    const studentsDocs = await getDocs(firebaseQuery);
-    const students = studentsDocs.docs.map(doc => ({
-      id: doc.id, // Include the student ID
-      ...doc.data(),
-    }));
+    const students = await getStudentsByParentsId(parentsId);
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -119,39 +93,12 @@ router.put("/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
-    const docRef = doc(db, "parents", id);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) {
-      throw new Error("Fejl - forælder findes ikke");
-    }
-
-    await updateDoc(docRef, req.body);
+    await updateParents(id, req.body);
     res.status(200).send("Forælder opdateret");
   } catch (error) {
     console.log(error.message);
     res.status(400).send("Fejl ved opdatering af forælder");
   }
 });
-
-export const createParents = async parents => {
-  if (!parents || parents.length === 0) {
-    throw new Error("Fejl - manglende data");
-  }
-
-  parents.forEach(parent => {
-    if (!parent.name || !parent.email || !parent.phone) {
-      throw new Error("Fejl - manglende data");
-    }
-  });
-
-  try {
-    const docRef = await addDoc(collection(db, "parents"), { parents });
-    console.log("Parents object created with ID: ", docRef.id);
-    return docRef.id;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Fejl ved oprettelse af forælder");
-  }
-};
 
 export default router;

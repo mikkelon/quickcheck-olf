@@ -1,27 +1,16 @@
 import express from "express";
-import { db } from "../../config/firebase.js";
 import {
-  addDoc,
-  collection,
-  doc,
-  deleteDoc,
-  updateDoc,
-  getDoc,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  writeBatch,
-  DocumentReference,
-} from "firebase/firestore";
+  getStudents,
+  getStudentById,
+  deleteStudent,
+  updateStudent,
+  toggleCheckedInStatus,
+} from "../controllers/studentsController.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const studentsDocs = await getDocs(collection(db, "students"));
-    const students = studentsDocs.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    });
+    const students = await getStudents();
     res.status(200).send(students);
   } catch (error) {
     console.log(error);
@@ -30,15 +19,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
+  const id = req.params.id;
   try {
-    const docRef = doc(db, "students", req.params.id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      res.status(200).send({ id: docSnap.id, ...docSnap.data() });
-    } else {
-      res.status(404).send("Fejl - eleven findes ikke.");
-    }
+    const student = await getStudentById(id);
+    res.status(200).send(student);
   } catch (error) {
     console.log(error);
     res.status(400).send("Fejl - kunne ikke hente elev.");
@@ -50,7 +34,7 @@ router.delete("/:id", async (req, res) => {
   let id = req.params.id;
 
   try {
-    const docDelete = await deleteDoc(doc(db, "students", id));
+    await deleteStudent(id);
     res.status(200).send("Elev slettet");
   } catch (error) {
     console.log(error);
@@ -61,10 +45,10 @@ router.delete("/:id", async (req, res) => {
 /* Opdater elev */
 router.put("/:id", async (req, res) => {
   let id = req.params.id;
+  const updatedStudent = req.body;
 
   try {
-    const docRef = doc(db, "students", id);
-    await updateDoc(docRef, req.body);
+    await updateStudent(id, updatedStudent);
     res.status(200).send("Elev opdateret");
   } catch (error) {
     console.log(error);
@@ -72,35 +56,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-/* Hent elever tilstede*/
-router.get("/checkedIn", async (req, res) => {
-  try {
-    const querySnapshot = await getDocs(
-      query(collection(db, "students"), where("checkedIn", "==", true))
-    );
-    const students = querySnapshot.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    });
-    res.status(200).send(students);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - elever ikke fundet.");
-  }
-});
-
 /* Opdater elev tilstedeværelse */
 router.put("/toggleCheckedIn/:id", async (req, res) => {
+  const studentId = req.params.id;
   try {
-    const studentId = req.params.id;
-    const docRef = doc(db, "students", studentId);
-    const studentDoc = await getDoc(docRef);
-
-    if (!studentDoc.exists()) {
-      throw new Error("Eleven findes ikke.");
-    }
-    const currentCheckedInStatus = studentDoc.data().checkedIn;
-    const updatedCheckedInStatus = !currentCheckedInStatus;
-    await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
+    await toggleCheckedInStatus(studentId);
     res
       .status(200)
       .send(
@@ -111,32 +71,5 @@ router.put("/toggleCheckedIn/:id", async (req, res) => {
     res.status(404).send("Fejl - kunne ikke opdatere elev.");
   }
 });
-
-export const createStudentsWithParentsId = async (students, parentsId) => {
-  if (!students || !parentsId || students.length === 0) {
-    throw new Error("Fejl - manglende data");
-  }
-
-  try {
-    const batch = writeBatch(db);
-    students.forEach(student => {
-      if (!student.name || !student.classId) {
-        throw new Error("Fejl - manglende data");
-      }
-
-      const studentRef = doc(collection(db, "students"));
-      batch.set(studentRef, {
-        ...student,
-        parentsId,
-        checkedIn: false,
-      });
-    });
-    await batch.commit();
-    console.log("Students created");
-  } catch (error) {
-    console.error(error);
-    throw new Error("Fejl ved oprettelse af elever");
-  }
-};
 
 export default router;
