@@ -1,27 +1,18 @@
 import express from "express";
-import { logIn } from "../controllers/authController.js";
+import { createSessionCookie } from "../controllers/authController.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { idToken } = req.body;
 
   try {
-    const userRecord = await logIn(email, password);
+    const { sessionCookie, options } = await createSessionCookie(idToken);
 
-    res.status(200).send({
-      message: "Successfully logged in",
-      data: {
-        uid: userRecord.uid,
-      },
-    });
+    res.cookie("__session", sessionCookie, options);
+    res.end(JSON.stringify({ status: "success" }));
   } catch (error) {
-    console.error("Error logging in:", error);
-    res.status(500).send({
-      message: "Error logging in",
-      data: {
-        error: error.message,
-      },
-    });
+    console.error(error);
+    res.status(401).send("UNAUTHORIZED REQUEST!");
   }
 });
 

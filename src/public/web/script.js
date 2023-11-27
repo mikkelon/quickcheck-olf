@@ -1,4 +1,9 @@
+import { requestSessionCookie } from "../utility/datahandler.js";
 import { auth } from "../utility/firebase.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
 const loginBtn = document.getElementById("login");
 
@@ -8,9 +13,12 @@ loginBtn.addEventListener("click", async () => {
   console.log(email, password);
 
   try {
-    const userRecord = await auth.signInWithEmailAndPassword(email, password);
+    const userRecord = await signInWithEmailAndPassword(auth, email, password);
 
-    console.log(userRecord);
+    // get id token
+    const idToken = await userRecord.user.getIdToken();
+    console.log(idToken);
+    await requestSessionCookie(idToken);
   } catch (error) {
     console.error(error);
   }

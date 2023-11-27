@@ -419,3 +419,32 @@ export const updateParents = async (id, parents) => {
     throw error;
   }
 };
+
+/**
+ * Requests a session cookie based on the idToken
+ * @param {string} idToken
+ */
+export const requestSessionCookie = async (idToken) => {
+  const url = `${apiUrl}/login`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ idToken }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.data.error.code);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+};

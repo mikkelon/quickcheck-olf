@@ -15,6 +15,18 @@ const createUser = async (email, password) => {
   return userRecord;
 };
 
-const logIn = async (email, password) => {};
+const createSessionCookie = async (idToken) => {
+  const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+  const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+    expiresIn,
+  });
+  const options = {
+    maxAge: expiresIn,
+    httpOnly: true,
+    secure: true,
+  };
 
-export { createUser, logIn };
+  return { sessionCookie, options };
+};
+
+export { createUser, createSessionCookie };
