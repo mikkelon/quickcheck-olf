@@ -28,7 +28,7 @@ class headerComponent extends HTMLElement {
 
     <div id="logo">
       <!-- Logo -->
-      <img src="${config.assetsPath}/logo.png" width="64" />
+      <img src="${config.assets.logo}" width="64" />
     </div>
     </header>
     `;

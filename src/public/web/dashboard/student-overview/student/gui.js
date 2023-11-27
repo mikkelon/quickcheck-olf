@@ -20,9 +20,10 @@ import {
   createIconButton,
   createTextButton,
 } from "../../../../forms.js";
+import config from "../../../../utility/config.js";
 
-const checkMark = "/client/assets/icons/check.svg";
-const crossMark = "/client/assets/icons/cross.svg";
+const checkMark = config.assets.icons.check;
+const crossMark = config.assets.icons.cross;
 
 let editing = false;
 let child;
@@ -59,8 +60,8 @@ async function initGUI() {
 
   setStatus(child.checkedIn);
 
-  await getParentsById(child.parentsId).then(res => {
-    res.parents.map(parent => {
+  await getParentsById(child.parentsId).then((res) => {
+    res.parents.map((parent) => {
       createParent(parent.name, parent.phone, parent.email);
     });
   });
@@ -131,7 +132,7 @@ function addButtons() {
 function setEditing(editing) {
   const forms = document.querySelectorAll(".forms-input");
 
-  forms.forEach(form => {
+  forms.forEach((form) => {
     form.disabled = !editing;
   });
 
@@ -222,7 +223,7 @@ function createParentElement(parent, index) {
     "text",
     "name",
     parent.name,
-    input => {
+    (input) => {
       console.log("Name changed to:", input);
       updateParent(index, "name", input);
     }
@@ -233,7 +234,7 @@ function createParentElement(parent, index) {
     "text",
     "phone",
     parent.phone,
-    input => {
+    (input) => {
       console.log("Phone changed to:", input);
       updateParent(index, "phone", input);
     }
@@ -244,7 +245,7 @@ function createParentElement(parent, index) {
     "text",
     "email",
     parent.email,
-    input => {
+    (input) => {
       console.log("Email changed to:", input);
       updateParent(index, "email", input);
     }

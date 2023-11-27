@@ -11,10 +11,19 @@
   </head>
 
   <body>
+    <!-- Script to import assets -->
+    <script type="module">
+      import config from "../utility/config.js";
+      // Get the img element
+      const imgElement = document.querySelector("img");
+
+      // Set the src attribute using the URL path from config.js
+      imgElement.src = config.assets.logo;
+    </script>
     <div>
       <!-- LOGO -->
 
-      <img src="/client/assets/logo.png" width="128" />
+      <img width="128" />
 
       <!-- LOGIN FORM -->
       <div class="form-container">

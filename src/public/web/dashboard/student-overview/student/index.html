@@ -16,6 +16,19 @@
 </head>
 
 <body>
+<!-- Script for importing assets -->
+<script type="module">
+    import config from "../../../../utility/config.js";
+
+    // Avatar placeholder
+    const avatarEl = document.querySelector("#avatar-img");
+    avatarEl.src = config.assets.avatarPlaceholder;
+
+    // Status
+    const statusEl = document.querySelector("#status");
+    statusEl.src = config.assets.icons.check;
+    </script>
+
     <header-component></header-component>
 
     <div class="sections">
@@ -27,9 +40,9 @@
                     <!-- Image -->
                     <div class="avatar-container">
                         <div class="avatar">
-                            <img src="/client/assets/avatar-placeholder.png" alt="child image" />
+                            <img id="avatar-img" alt="child image" />
                         </div>
-                        <img id="status" src="/client/assets/icons/check.svg" alt="status" />
+                        <img id="status" alt="status" />
                     </div>
 
                     <!-- Tjek -->

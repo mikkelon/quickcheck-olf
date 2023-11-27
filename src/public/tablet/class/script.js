@@ -3,6 +3,8 @@ import {
   getStudentsByClassId,
   toggleStudentCheckIn,
 } from "../../utility/datahandler.js";
+import config from "../../utility/config.js";
+console.log(config.assets.avatarPlaceholder);
 
 const backBtn = document.getElementById("back-icon");
 
@@ -40,7 +42,7 @@ const renderCards = async () => {
   });
 
   console.log(students);
-  students.forEach(student => {
+  students.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
@@ -49,7 +51,7 @@ const renderCards = async () => {
     cardImg.classList.add("avatar");
     cardImg.src = student.imgUrl
       ? student.imgUrl
-      : "../../../assets/avatar-placeholder.png";
+      : config.assets.avatarPlaceholder;
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-container");
