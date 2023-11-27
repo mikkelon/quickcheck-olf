@@ -8,7 +8,6 @@ router.post("/employee", async (req, res) => {
   try {
     const userRecord = await createUser(email, password);
 
-    console.log("Successfully created new user:", userRecord.uid);
     res.status(200).send({
       message: "Successfully created new user",
       data: {
