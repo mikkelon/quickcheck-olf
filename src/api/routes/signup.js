@@ -1,12 +1,12 @@
 import express from "express";
-import { createEmployeeUser } from "../controllers/signupController.js";
+import { createUser } from "../controllers/authController.js";
 const router = express.Router();
 
 router.post("/employee", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const userRecord = await createEmployeeUser(email, password);
+    const userRecord = await createUser(email, password);
 
     console.log("Successfully created new user:", userRecord.uid);
     res.status(200).send({
