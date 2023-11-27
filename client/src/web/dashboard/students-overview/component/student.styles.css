@@ -98,15 +98,23 @@ body {
   flex: 1;
   flex-direction: column;
   gap: 10px;
-  min-width: 25%;
 }
 
 #notes {
   display: flex;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 10px;
   border-radius: 4px;
   /* take as much space in flex box */
+  flex-grow: 1;
+  height: 200px;
+  overflow: hidden;
+}
+
+.no-notes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
 }
 
@@ -245,14 +253,17 @@ textarea {
   flex-direction: column;
   padding: 0px;
   width: 100%;
+  overflow-y: scroll;
 }
 
 .note {
   display: flex;
   justify-content: center;
-  width: 100%;
+  align-items: center;
+  width: 90%;
+  border-radius: 10px;
   height: fit-content;
-  padding: 4px;
+  padding: 5px;
   gap: 10px;
 }
 
@@ -261,7 +272,10 @@ textarea {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
   border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
 
   /* display: inline-block; */
 }

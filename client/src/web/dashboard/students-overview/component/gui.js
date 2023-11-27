@@ -283,6 +283,14 @@ async function createNotesGui() {
     noteContainer.innerHTML = "";
 
 
+    if (notes.length === 0) {
+        const noNotes = document.createElement("p");
+        noNotes.classList.add("no-notes");
+        noNotes.innerHTML = "Ingen noter";
+        noteContainer.appendChild(noNotes);
+    }
+
+
     notes.forEach((note, index) => {
         const noteElm = createNoteElement(note, index);
         noteContainer.appendChild(noteElm);
@@ -337,8 +345,8 @@ function createNoteElement(note, index) {
     });
 
     // Tilføj dropdown-containeren og delete-knappen til hovedelementet
+    dropdownDiv.appendChild(deleteBtnDiv);
     noteDiv.appendChild(dropdownDiv);
-    noteDiv.appendChild(deleteBtnDiv);
 
     return noteDiv;
 }
