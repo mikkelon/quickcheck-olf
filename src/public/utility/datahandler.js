@@ -448,3 +448,25 @@ export const requestSessionCookie = async idToken => {
     throw error;
   }
 };
+
+/**
+ * Deletes the session cookie
+ */
+export const requestDeleteSessionCookie = async () => {
+  const url = `${apiUrl}/login`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.data.error.code);
+    }
+  } catch (error) {
+    console.error("Error logging out:", error);
+    throw error;
+  }
+};

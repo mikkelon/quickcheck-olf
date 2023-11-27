@@ -16,4 +16,9 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/", async (req, res) => {
+  res.clearCookie("__session");
+  res.status(200).send({ status: "success" });
+});
+
 export default router;
