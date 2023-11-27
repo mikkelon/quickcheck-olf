@@ -1,4 +1,4 @@
-import { db } from "../../config/firebase.js";
+import { db } from "../../public/utility/firebase.js";
 import {
   addDoc,
   collection,
@@ -16,13 +16,13 @@ import {
 
 const getStudents = async () => {
   const studentsDocs = await getDocs(collection(db, "students"));
-  const students = studentsDocs.docs.map((doc) => {
+  const students = studentsDocs.docs.map(doc => {
     return { id: doc.id, ...doc.data() };
   });
   return students;
 };
 
-const getStudentById = async (id) => {
+const getStudentById = async id => {
   const docRef = doc(db, "students", id);
   const docSnap = await getDoc(docRef);
 
@@ -35,7 +35,7 @@ const getStudentById = async (id) => {
   return student;
 };
 
-const deleteStudent = async (id) => {
+const deleteStudent = async id => {
   await deleteDoc(doc(db, "students", id));
 };
 
@@ -43,7 +43,7 @@ const updateStudent = async (id, updatedStudent) => {
   await updateDoc(doc(db, "students", id), updatedStudent);
 };
 
-const toggleCheckedInStatus = async (id) => {
+const toggleCheckedInStatus = async id => {
   const docRef = doc(db, "students", id);
   const studentDoc = await getDoc(docRef);
 

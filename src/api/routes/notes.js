@@ -1,5 +1,5 @@
 import express from "express";
-import { db } from "../../config/firebase.js";
+import { db } from "../../public/utility/firebase.js";
 import {
   addDoc,
   collection,
@@ -47,7 +47,7 @@ router.get("/:studentId", async (req, res) => {
     );
     const notesDocs = await getDocs(noteQuery);
 
-    const notes = notesDocs.docs.map((doc) => {
+    const notes = notesDocs.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
     });
 

@@ -6,7 +6,7 @@ import {
   where,
   query,
 } from "firebase/firestore";
-import { db } from "../../config/firebase.js";
+import { db } from "../../public/utility/firebase.js";
 
 const getClasses = async () => {
   const classesDocs = await getDocs(collection(db, "classes"));

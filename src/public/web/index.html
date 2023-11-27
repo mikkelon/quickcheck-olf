@@ -6,6 +6,19 @@
 
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="../global.styles.css" />
+    <script
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"
+      type="module"
+    ></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script
+      src="https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js"
+      type="module"
+    ></script>
+
+    <script src="script.js" defer type="module"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
 
     <title>Document</title>
   </head>
@@ -29,16 +42,16 @@
       <div class="form-container">
         <div class="container">
           <label class="login-header-text">E-mail / Brugernavn</label>
-          <input type="text" />
+          <input type="text" id="email" />
         </div>
 
         <div class="container">
           <label>Password</label>
-          <input type="password" />
+          <input type="password" id="password" />
         </div>
       </div>
 
-      <button>Log ind</button>
+      <button id="login">Log ind</button>
     </div>
   </body>
 </html>

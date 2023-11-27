@@ -15,4 +15,6 @@ const createUser = async (email, password) => {
   return userRecord;
 };
 
-export { createUser };
+const logIn = async (email, password) => {};
+
+export { createUser, logIn };

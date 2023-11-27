@@ -1,5 +1,5 @@
 import { adminAuth } from "../../config/firebase-admin.js";
-import { db } from "../../config/firebase.js";
+import { db } from "../../public/utility/firebase.js";
 import { adminDB } from "../../config/firebase-admin.js";
 import {
   deleteDoc,
