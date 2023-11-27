@@ -15,7 +15,7 @@ for obj in data:
         # Serialize the object to JSON and encode it as UTF-8
         json_data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
 
-        response = requests.post(f"{express_url}/students", data=json_data, headers={"Content-Type": "application/json; charset=utf-8"})
+        response = requests.post(f"{express_url}/family/create", data=json_data, headers={"Content-Type": "application/json; charset=utf-8"})
         if response.status_code == 201:
             print(f"Successfully added object: {obj}")
         else:

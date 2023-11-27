@@ -1,5 +1,5 @@
 // crud.js
-import { createStudentsAndParents } from "../../../../datahandler.js";
+import { createFamily } from "../../../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
@@ -12,10 +12,17 @@ function createParent(name, phone, email) {
   return newParent;
 }
 
-function submitToDatabase() {
+async function submitToDatabase() {
   console.log("submitting to database");
   console.log(childrenData, parentsData);
-  return createStudentsAndParents(childrenData, parentsData);
+
+  try {
+    await createFamily(childrenData, parentsData);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 }
 
 // Function to create a new child

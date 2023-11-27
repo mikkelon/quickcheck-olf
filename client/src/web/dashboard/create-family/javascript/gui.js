@@ -17,6 +17,14 @@ import { getClasses } from "../../../../datahandler.js";
 // Fetch options for the class dropdown from an API
 let classOptions;
 
+const createDeleteButton = () => {
+  const deleteButton = document.createElement("div");
+  deleteButton.classList.add("delete");
+  deleteButton.style.backgroundImage = `url("./../../../../assets/icons/close-circle-bold.svg")`;
+
+  return deleteButton;
+};
+
 // Function to display parents on the UI
 function displayParents() {
   const parentsContainer = document.getElementById("parents");
@@ -74,12 +82,10 @@ function createParentElement(parent, index) {
 
   const headerDiv = document.createElement("div");
   headerDiv.classList.add("container-header");
-  headerDiv.innerHTML = `<h2>Forælder</h2>
-            <svg class="delete" width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M16 8L8 16M8.00001 8L16 16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                    stroke="#FF5656" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>`;
+  headerDiv.innerHTML = `<h2>Forælder</h2>`;
+
+  headerDiv.appendChild(createDeleteButton());
+
   headerDiv
     .querySelector(".delete")
     .addEventListener("click", () => deleteParentHandler(index));
@@ -130,12 +136,10 @@ function createChildElement(child, index) {
 
   const headerDiv = document.createElement("div");
   headerDiv.classList.add("container-header");
-  headerDiv.innerHTML = `<h2>Barn</h2>
-            <svg class="delete" width="32px" height="32px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M16 8L8 16M8.00001 8L16 16M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
-                    stroke="#FF5656" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>`;
+  headerDiv.innerHTML = `<h2>Barn</h2>`;
+
+  headerDiv.appendChild(createDeleteButton());
+
   headerDiv
     .querySelector(".delete")
     .addEventListener("click", () => deleteChildHandler(index));
@@ -307,7 +311,7 @@ function updateChildData(index, field, value) {
   console.log("Updated Child:", updatedChild);
 }
 
-function forælderOprettet(family) {
+function forælderOprettet(success) {
   const informationContainer = document.getElementById("information");
   // scroll to top
   window.scrollTo(0, 0);
@@ -315,13 +319,12 @@ function forælderOprettet(family) {
   //   window.location.href = './index.html';
   // }, 1500);
 
-  clear();
-  displayParents();
-  displayChildren();
-
-  if (family) {
+  if (success) {
     informationContainer.innerHTML = `<p>Familie oprettet</p>`;
     informationContainer.classList.add("success");
+    clear();
+    displayParents();
+    displayChildren();
   } else {
     informationContainer.innerHTML = `<p>Kunne ikke oprette familie</p>`;
     informationContainer.classList.add("error");
@@ -341,29 +344,21 @@ async function initGUI() {
     });
 
   const submit = document.getElementById("submit");
-  submit.addEventListener("click", () => {
-    const family = submitToDatabase();
-    forælderOprettet(family);
+  submit.addEventListener("click", async () => {
+    const success = await submitToDatabase();
+    console.log("Success:", success);
+    forælderOprettet(success);
   });
 
   const cancel = document.getElementById("cancel");
   cancel.addEventListener("click", () => {
-    window.location.href = "../index.html";
+    // Clear all data
+    clear();
   });
 }
 
 // Initialize the GUI when the DOM is ready
 document.addEventListener("DOMContentLoaded", initGUI);
-
-const logout = document.getElementById("logout");
-logout.addEventListener("click", () => {
-  window.location.href = "../login/index.html";
-});
-
-const goBack = document.getElementById("back-icon");
-goBack.addEventListener("click", () => {
-  window.location.href = "../../dashboard/index.html";
-});
 
 const cancel = document.getElementById("cancel");
 cancel.addEventListener("click", () => {

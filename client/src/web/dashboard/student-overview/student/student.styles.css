@@ -16,6 +16,12 @@ body {
   margin-bottom: 20px;
 }
 
+#header-right {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
 #back-icon:hover {
   cursor: pointer;
   transform: scale(1.05);
@@ -293,4 +299,17 @@ textarea {
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+#delete-modal {
+  display: none;
+  /* position: fixed; */
+}
+
+#delete-child-btn {
+  background-color: #ff5656;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
 }
