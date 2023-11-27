@@ -302,7 +302,7 @@ export const getNotesById = async (studentId) => {
       },
     });
   } catch (error) {
-    console.error("Error deleting student:", error);
+    console.error("Error getting notes:", error);
     throw error; // Rethrow the error for the caller to handle
   }
 };
