@@ -2,7 +2,7 @@ import {
   getClassById,
   getStudentsByClassId,
   toggleStudentCheckIn,
-} from "../../datahandler.js";
+} from "../../utility/datahandler.js";
 
 const backBtn = document.getElementById("back-icon");
 

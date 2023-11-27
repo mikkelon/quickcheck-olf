@@ -1,4 +1,5 @@
-const apiUrl = "http://localhost:6969/api";
+import config from "./config.js";
+const apiUrl = config.apiUrl;
 
 /**
  * Get all students based on classId

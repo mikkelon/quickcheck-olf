@@ -2,7 +2,7 @@ import {
   getStudentsWithClass,
   getClasses,
   toggleStudentCheckIn,
-} from "../../../datahandler.js";
+} from "../../../utility/datahandler.js";
 
 // #--- Student list ---#
 const studentContainer = document.querySelector(".students");
@@ -16,7 +16,7 @@ const updateActiveFiltersStorage = () => {
   localStorage.setItem("activeFilters", JSON.stringify(activeFilters));
 };
 
-const renderStudent = (student) => {
+const renderStudent = student => {
   const studentElement = document.createElement("div");
   studentElement.classList.add("student");
 
@@ -45,7 +45,7 @@ const renderStudent = (student) => {
   studentCheckBtn.classList.add(
     student.checkedIn ? "checked-in" : "checked-out"
   );
-  studentCheckBtn.addEventListener("click", (event) => {
+  studentCheckBtn.addEventListener("click", event => {
     toggleStudentCheckIn(student.id);
     student.checkedIn = !student.checkedIn;
     studentCheckBtn.classList.toggle("checked-in");
@@ -99,7 +99,7 @@ let classArray = [];
 const renderClassOptions = () => {
   const classSelect = document.querySelector("#class-select");
 
-  classArray.forEach((classObj) => {
+  classArray.forEach(classObj => {
     const classOption = document.createElement("option");
     classOption.value = classObj.id;
     classOption.textContent = classObj.colorLabel;
@@ -116,7 +116,7 @@ const fetchClasses = async () => {
 // #--- Active filters ---#
 
 const filterStudents = () => {
-  const filteredStudents = studentArray.filter((student) => {
+  const filteredStudents = studentArray.filter(student => {
     const classFilter =
       activeFilters.classes.length === 0 ||
       activeFilters.classes.includes(student.class.id);
@@ -210,7 +210,7 @@ const addFilter = (filterType, filterValue) => {
     );
     // if classFilters contains a filter with the same value, return
     const classFilter = Array.from(classFilters).find(
-      (classFilter) =>
+      classFilter =>
         classFilter.querySelector(".active-filter-text").dataset.filterValue ===
         filterValue
     );
@@ -218,7 +218,7 @@ const addFilter = (filterType, filterValue) => {
       return;
     }
 
-    const classObj = classArray.find((classObj) => classObj.id === filterValue);
+    const classObj = classArray.find(classObj => classObj.id === filterValue);
 
     activeFilterDiv.style.backgroundColor = classObj.color;
     activeFilterText.dataset.filterValue = filterValue;
@@ -275,7 +275,7 @@ const removeFilter = (filterType, filterValue) => {
     activeFilters.name = "";
   } else if (filterType === "class") {
     activeFilters.classes = activeFilters.classes.filter(
-      (classId) => classId !== filterValue
+      classId => classId !== filterValue
     );
   } else if (filterValue === "checkedIn") {
     activeFilters.checkedIn = false;
@@ -286,7 +286,7 @@ const removeFilter = (filterType, filterValue) => {
   updateActiveFiltersStorage();
 
   const filterDivs = activeFiltersContainer.querySelectorAll(".active-filter");
-  filterDivs.forEach((filterDiv) => {
+  filterDivs.forEach(filterDiv => {
     if (
       filterDiv.querySelector(".active-filter-text").dataset.filterValue ===
       filterValue
@@ -337,9 +337,7 @@ clearFiltersBtn.addEventListener("click", () => {
 
 function updateClearFiltersButtonVisibility() {
   const clearFiltersBtn = document.querySelector("#clear-filters-btn");
-  const hasActiveFilters = Object.values(activeFilters).some(
-    (filter) => filter
-  );
+  const hasActiveFilters = Object.values(activeFilters).some(filter => filter);
 
   if (hasActiveFilters) {
     clearFiltersBtn.style.display = "block";
@@ -370,7 +368,7 @@ const initActiveFiltersFromLocalStorage = () => {
 };
 
 const renderFilterCards = () => {
-  activeFilters.classes.forEach((classId) => {
+  activeFilters.classes.forEach(classId => {
     addFilter("class", classId);
   });
 

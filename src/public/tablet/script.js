@@ -2,7 +2,7 @@ import {
   getClasses,
   getStudentsByClassId,
   getStudents,
-} from "../datahandler.js";
+} from "../utility/datahandler.js";
 
 const renderCards = async () => {
   const classesData = await getClasses();
@@ -30,8 +30,10 @@ const renderCards = async () => {
 
       // Henter alle elever i klassen
 
-      const students = allStudents.filter(students => students.classId === classData.id);
-      const checkedInStudents = students.filter((student) => student.checkedIn);
+      const students = allStudents.filter(
+        students => students.classId === classData.id
+      );
+      const checkedInStudents = students.filter(student => student.checkedIn);
       const totalStudents = document.createElement("div");
       totalStudents.innerText = `Tjekket ind: ${checkedInStudents.length}/${students.length}`;
 

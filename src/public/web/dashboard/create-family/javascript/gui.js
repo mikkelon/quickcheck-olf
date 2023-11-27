@@ -12,7 +12,7 @@ import {
   submitToDatabase,
   clear,
 } from "./crud.js";
-import { getClasses } from "../../../../datahandler.js";
+import { getClasses } from "../../../../utility/datahandler.js";
 
 // Fetch options for the class dropdown from an API
 let classOptions;
@@ -214,7 +214,7 @@ function createDropdownFormElement(
   select.classList.add("forms-input");
   select.setAttribute("id", inputId);
 
-  options.forEach((option) => {
+  options.forEach(option => {
     const optionElement = document.createElement("option");
     optionElement.value = option.colorLabel;
     optionElement.textContent = option.colorLabel;
@@ -226,7 +226,7 @@ function createDropdownFormElement(
 
   // Find index of option where data-class-id matches selectedClassId
   const selectedIndex = options.findIndex(
-    (option) => option.id === selectedClassId
+    option => option.id === selectedClassId
   );
   select.selectedIndex = selectedIndex;
 
@@ -334,7 +334,7 @@ function forælderOprettet(success) {
 // Function to initialize the GUI
 async function initGUI() {
   getClasses()
-    .then((data) => {
+    .then(data => {
       classOptions = data;
     })
     .then(() => {

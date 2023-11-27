@@ -1,3 +1,5 @@
+import config from "../utility/config.js";
+
 class headerComponent extends HTMLElement {
   constructor() {
     super();
@@ -5,7 +7,6 @@ class headerComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    const logoPath = new URL("../assets/logo.png", import.meta.url).href;
     this.innerHTML = `
     <header id="header">
     <a id="back-icon" href="../">
@@ -27,7 +28,7 @@ class headerComponent extends HTMLElement {
 
     <div id="logo">
       <!-- Logo -->
-      <img src="${logoPath}" width="64" />
+      <img src="${config.assetsPath}/logo.png" width="64" />
     </div>
     </header>
     `;

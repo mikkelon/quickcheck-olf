@@ -1,15 +1,15 @@
 import {
   getRandomParentStudents,
   toggleStudentCheckIn,
-} from "../../../datahandler.js";
-import { getStudentsByParentId } from "../../../datahandler.js";
+  getStudentsByParentId,
+} from "../../../../utility/datahandler.js";
 
 let students = [];
 
-const fetchStudents = async (parentId) => {
+const fetchStudents = async parentId => {
   try {
     students = await getStudentsByParentId(parentId);
-    students = students.map((student) => ({
+    students = students.map(student => ({
       id: student.id,
       name: student.name,
       checkedIn: student.checkedIn,
@@ -24,7 +24,7 @@ const renderCards = async () => {
   students = await getRandomParentStudents();
   // TODO: When authentication is implemented, get the parent ID from the token
   // await fetchStudents("PARENT ID HERE");
-  students.forEach((student) => {
+  students.forEach(student => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);

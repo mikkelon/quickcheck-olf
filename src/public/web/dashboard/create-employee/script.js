@@ -1,4 +1,4 @@
-import { createEmployee } from "../../../datahandler.js";
+import { createEmployee } from "../../../utility/datahandler.js";
 
 // clear fields
 const clearFields = () => {
