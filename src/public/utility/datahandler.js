@@ -6,7 +6,7 @@ const apiUrl = config.apiUrl;
  * @param {*} classId The id of the class (firebase document id)
  * @returns {Array} Array of students
  */
-export const getStudentsByClassId = async classId => {
+export const getStudentsByClassId = async (classId) => {
   const url = `${apiUrl}/classes/${classId}/students`;
 
   try {
@@ -31,7 +31,7 @@ export const getStudentsByClassId = async classId => {
  * @param {string} parentId ID of the parents object in firebase
  * @returns
  */
-export const getStudentsByParentId = async parentId => {
+export const getStudentsByParentId = async (parentId) => {
   const url = `${apiUrl}/parents/${parentId}/students`;
 
   try {
@@ -111,7 +111,7 @@ export const createFamily = async (students, parents) => {
  * Creates a new employee user in firebase
  * @param {Object} employee And object containing the employee data
  */
-export const createEmployee = async employee => {
+export const createEmployee = async (employee) => {
   const url = apiUrl + "/signup/employee";
   const options = {
     method: "POST",
@@ -171,11 +171,12 @@ export const getStudentsWithClass = async () => {
   const classes = await getClasses();
 
   // Add class information to students
-  const studentsWithClass = students.map(student => {
-    const studentClass = classes.find(c => c.id === student.classId);
+  const studentsWithClass = students.map((student) => {
+    const studentClass = classes.find((c) => c.id === student.classId);
     return {
       ...student,
       class: studentClass,
+      id: student.id,
     };
   });
 
@@ -186,7 +187,7 @@ export const getStudentsWithClass = async () => {
  * Toggles the checked in status of a student
  * @param {*} studentId The id of the student (firebase document id)
  */
-export const toggleStudentCheckIn = async studentId => {
+export const toggleStudentCheckIn = async (studentId) => {
   const url = `${apiUrl}/students/toggleCheckedIn/${studentId}`;
   const options = {
     method: "PUT",
@@ -209,7 +210,7 @@ export const toggleStudentCheckIn = async studentId => {
  * Get all parents
  * @returns {Array} Array of parents
  */
-export const getParentsById = async parentsId => {
+export const getParentsById = async (parentsId) => {
   const url = `${apiUrl}/parents/${parentsId}`;
   const options = {
     method: "GET",
@@ -231,11 +232,50 @@ export const getParentsById = async parentsId => {
   }
 };
 
+// Create note
+export const createNote = async (studentId, note) => {
+  const url = `http://localhost:6969/notes`;
+  const options = {
+    method: "POST",
+    body: JSON.stringify({ studentId, ...note }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  console.log("prepost: " + JSON.stringify({ studentId, note }));
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+export const deleteNoteById = async (noteId) => {
+  const url = `http://localhost:6969/notes/${noteId}`;
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+};
+
 /**
  * Delete a student with a given studentId
  * @param {string} studentId
  */
-export const deleteStudent = async studentId => {
+export const deleteStudent = async (studentId) => {
   const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "DELETE",
@@ -249,7 +289,23 @@ export const deleteStudent = async studentId => {
     }
   } catch (error) {
     // Handle errors appropriately, e.g., log or throw them
-    console.error("Error deleting student:", error);
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+// GET notes til en elev
+export const getNotesById = async (studentId) => {
+  const url = `http://localhost:6969/notes/${studentId}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error getting notes:", error);
     throw error; // Rethrow the error for the caller to handle
   }
 };
@@ -258,7 +314,7 @@ export const deleteStudent = async studentId => {
  * Get a student with a given studentId
  * @param {string} studentId
  */
-export const getStudentById = async studentId => {
+export const getStudentById = async (studentId) => {
   const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "GET",
@@ -285,7 +341,7 @@ export const getStudentById = async studentId => {
  * @param {string} classId
  * @returns {Object} Class object
  */
-export const getClassById = async classId => {
+export const getClassById = async (classId) => {
   const url = `${apiUrl}/classes/${classId}`;
   const options = {
     method: "GET",
@@ -312,7 +368,7 @@ export const getClassById = async classId => {
  * @returns {Array} Array of students
  */
 export const getRandomParentStudents = async () => {
-  const parents = await fetch(apiUrl + "/parents").then(res => res.json());
+  const parents = await fetch(apiUrl + "/parents").then((res) => res.json());
 
   const randomParent = parents[Math.floor(Math.random() * parents.length)];
   const students = await getStudentsByParentId(randomParent.id);
@@ -320,7 +376,7 @@ export const getRandomParentStudents = async () => {
   return students;
 };
 
-export const updateStudent = async student => {
+export const updateStudent = async (student) => {
   const url = `${apiUrl}/${student.id}`;
   const options = {
     method: "PUT",

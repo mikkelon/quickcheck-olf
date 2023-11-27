@@ -6,12 +6,17 @@ import {
   toggleStudentCheckIn,
   updateStudent,
   updateParents,
+  createNote,
+  getNotesById,
 } from "../../../../utility/datahandler.js";
 import {
   createParent,
   deleteParent,
   getAllParents,
   updateParent,
+  getAllNotes,
+  deleteNote,
+  createNewNote,
 } from "./crud.js";
 import {
   createDropdownFormElement,
@@ -19,7 +24,7 @@ import {
   createFormsContainer,
   createIconButton,
   createTextButton,
-} from "../../../../forms.js";
+} from "../../../../utility/forms.js";
 import config from "../../../../utility/config.js";
 
 const checkMark = config.assets.icons.check;
@@ -68,6 +73,7 @@ async function initGUI() {
 
   setParents();
   setEditing(false);
+  createNotesGui();
 
   const closeBtn = document.getElementById("closeBtn");
   closeBtn.addEventListener("click", () => {
@@ -268,6 +274,15 @@ function deleteParentHandler(index) {
   setParents();
 }
 
+// Event handler for deleting a note
+function deleteNoteHandler(index) {
+  const deletedNote = deleteNote(index);
+  console.log("Deleted note:", deletedNote);
+
+  // Update the UI
+  createNotesGui();
+}
+
 function save() {
   const birthday = document.getElementById("birthday").value;
 
@@ -287,11 +302,6 @@ function save() {
 
   console.log("Saved");
 }
-
-const goBack = document.getElementById("back-icon");
-goBack.addEventListener("click", () => {
-  window.location.href = "../index.html";
-});
 
 const checkInOutBtn = document.getElementById("checkInOutBtn");
 checkInOutBtn.addEventListener("click", () => {
@@ -323,3 +333,103 @@ deleteBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("DOMContentLoaded", initGUI);
+
+const saveNote = document.querySelector(".note-save-btn");
+saveNote.addEventListener("click", async () => {
+  const titleField = document.getElementById("note-title");
+  const title = titleField.value;
+
+  const descriptionField = document.getElementById("note-description");
+  const description = descriptionField.value;
+
+  /*     const startDateField = document.getElementById("start-date")
+        const startDate = startDateField.value; */
+
+  /*     const endDateField = document.getElementById("end-date")
+        const endDate = endDateField.value; */
+
+  createNewNote(child.id, title, description);
+  createNotesGui();
+
+  titleField.value = "";
+  descriptionField.value = "";
+
+  noteModal.style.display = "none";
+});
+
+async function createNotesGui() {
+  const notes = await getAllNotes(child.id);
+  const noteContainer = document.getElementById("notes");
+
+  noteContainer.innerHTML = "";
+
+  if (notes.length === 0) {
+    const noNotes = document.createElement("p");
+    noNotes.classList.add("no-notes");
+    noNotes.innerHTML = "Ingen noter";
+    noteContainer.appendChild(noNotes);
+  }
+
+  notes.forEach((note, index) => {
+    const noteElm = createNoteElement(note, index);
+    noteContainer.appendChild(noteElm);
+  });
+}
+
+function createNoteElement(note, index) {
+  // Opret hovedelementet <div class="note">
+  const noteDiv = document.createElement("div");
+  noteDiv.classList.add("note");
+
+  // Opret dropdown-containeren <div class="dropdown">
+  const dropdownDiv = document.createElement("div");
+  dropdownDiv.classList.add("dropdown");
+
+  // Opret <p>-elementer for titel, startdato og slutdato
+  const titleP = document.createElement("p");
+  titleP.innerHTML = note.title;
+
+  /* const startDateP = document.createElement("p");
+    startDateP.innerHTML = note.startDate; */
+
+  /*   const endDateP = document.createElement("p");
+      endDateP.innerHTML = note.endDate; */
+
+  // Opret dropdown-indholdet <div class="dropdown-content">
+  const dropdownContentDiv = document.createElement("div");
+  dropdownContentDiv.classList.add("dropdown-content");
+
+  // Opret <p>-element for beskrivelse
+  const descriptionP = document.createElement("p");
+  descriptionP.innerHTML = note.description;
+
+  // Tilføj <p>-elementet til dropdown-indholdet
+  dropdownContentDiv.appendChild(descriptionP);
+
+  // Tilføj <p>-elementerne til dropdown-containeren
+  /*   dropdownDiv.appendChild(startDateP);
+    dropdownDiv.appendChild(endDateP); */
+
+  dropdownDiv.appendChild(titleP);
+  dropdownDiv.appendChild(dropdownContentDiv);
+
+  // Opret delete-knappen <div class="note-delete">
+  const deleteBtnDiv = document.createElement("div");
+  deleteBtnDiv.classList.add("note-delete");
+  deleteBtnDiv.innerHTML = "X";
+
+  // Tilføj en event listener til delete-knappen
+  deleteBtnDiv.addEventListener("click", () => {
+    deleteNoteHandler(index);
+  });
+
+  // Tilføj dropdown-containeren og delete-knappen til hovedelementet
+  dropdownDiv.appendChild(deleteBtnDiv);
+  noteDiv.appendChild(dropdownDiv);
+
+  return noteDiv;
+}
+
+// const index = 0; // Dette skal være det aktuelle index for noten
+// const noteElement = createNoteElement(note, index);
+// noteContainer.appendChild(noteElement);

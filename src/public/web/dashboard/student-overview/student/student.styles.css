@@ -73,7 +73,7 @@ body {
   height: 200px;
 }
 
-.avatar>img {
+.avatar > img {
   width: 100%;
   height: 100%;
   /* fit image in parent div */
@@ -104,15 +104,23 @@ body {
   flex: 1;
   flex-direction: column;
   gap: 10px;
-  min-width: 25%;
 }
 
 #notes {
   display: flex;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 10px;
   border-radius: 4px;
   /* take as much space in flex box */
+  flex-grow: 1;
+  height: 200px;
+  overflow: hidden;
+}
+
+.no-notes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
 }
 
@@ -198,17 +206,19 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  gap: 10px;
+  padding: 40px;
+  width: 70%;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  gap: 20px;
 }
 
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -217,19 +227,79 @@ body {
   justify-content: center;
 }
 
+.forms-label {
+  margin-bottom: 10px;
+}
+
+.forms-input,
+textarea {
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .note-save-btn {
+  justify-content: center;
   background-color: #4caf50;
   color: white;
   padding: 10px 15px;
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   cursor: pointer;
+  width: 50%;
+  align-self: center;
 }
 
 .modal-content button:hover {
   background-color: #45a049;
 }
 
+#notes {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.note {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  border-radius: 10px;
+  height: fit-content;
+  padding: 5px;
+  gap: 10px;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+
+  /* display: inline-block; */
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ccc;
+  min-width: fit-content;
+  top: 20px;
+  padding: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 #delete-modal {
   display: none;
   /* position: fixed; */
