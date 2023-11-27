@@ -1,13 +1,4 @@
-import { adminAuth } from "../../config/firebase-admin.js";
-import { db } from "../../public/utility/firebase.js";
-import { adminDB } from "../../config/firebase-admin.js";
-import {
-  deleteDoc,
-  doc,
-  addDoc,
-  collection,
-  writeBatch,
-} from "firebase/firestore";
+import { adminAuth, adminDB } from "../../config/firebase-admin.js";
 
 const createFamily = async (parents, students) => {
   const studentIds = [];
@@ -19,7 +10,9 @@ const createFamily = async (parents, students) => {
     parentsId = await createParents(parents);
 
     // Create students
-    await createStudentsWithParentsId(students, parentsId);
+    studentIds.push(
+      ...(await createStudentsWithParentsId(students, parentsId))
+    );
 
     // Create parent user
     const userRecord = await createParentUserWithEmailAndId(
@@ -32,14 +25,14 @@ const createFamily = async (parents, students) => {
   } catch (error) {
     console.error(error);
     if (parentsId) {
-      await deleteDoc(doc(db, "parents", parentsId));
+      await adminDB.collection("parents").doc(parentsId).delete();
       console.log("parents deleted");
     }
 
     // Delete students, if created
     if (studentIds.length > 0) {
-      studentIds.forEach(async studentId => {
-        await deleteDoc(doc(db, "students", studentId));
+      studentIds.forEach(async (studentId) => {
+        await adminDB.collection("students").doc(studentId).delete();
       });
       console.log("students deleted");
     }
@@ -54,19 +47,19 @@ const createFamily = async (parents, students) => {
   }
 };
 
-const createParents = async parents => {
+const createParents = async (parents) => {
   if (!parents || parents.length === 0) {
     throw new Error("Fejl - manglende data");
   }
 
-  parents.forEach(parent => {
+  parents.forEach((parent) => {
     if (!parent.name || !parent.email || !parent.phone) {
       throw new Error("Fejl - manglende data");
     }
   });
 
   try {
-    const docRef = await addDoc(collection(db, "parents"), { parents });
+    const docRef = await adminDB.collection("parents").add({ parents });
     console.log("Parents object created with ID: ", docRef.id);
     return docRef.id;
   } catch (error) {
@@ -113,21 +106,26 @@ const createStudentsWithParentsId = async (students, parentsId) => {
   }
 
   try {
-    const batch = writeBatch(db);
-    students.forEach(student => {
+    const batch = adminDB.batch();
+    const studentIds = [];
+
+    students.forEach((student) => {
       if (!student.name || !student.classId) {
         throw new Error("Fejl - manglende data");
       }
 
-      const studentRef = doc(collection(db, "students"));
+      const studentRef = adminDB.collection("students").doc();
       batch.set(studentRef, {
         ...student,
         parentsId,
         checkedIn: false,
       });
+      studentIds.push(studentRef.id);
     });
+
     await batch.commit();
     console.log("Students created");
+    return studentIds;
   } catch (error) {
     console.error(error);
     throw new Error("Fejl ved oprettelse af elever");

@@ -1,58 +1,56 @@
-import { db } from "../../public/utility/firebase.js";
+import { adminDB } from "../../config/firebase-admin.js";
 import {
-  addDoc,
+  getDocs,
   collection,
-  doc,
+  getDoc,
   deleteDoc,
   updateDoc,
-  getDoc,
-  query,
-  where,
-  getDocs,
-  setDoc,
-  writeBatch,
-  DocumentReference,
 } from "firebase/firestore";
 
 const getStudents = async () => {
-  const studentsDocs = await getDocs(collection(db, "students"));
-  const students = studentsDocs.docs.map(doc => {
+  const studentsSnapshot = await adminDB.collection("students").get();
+  const students = studentsSnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() };
   });
   return students;
 };
 
-const getStudentById = async id => {
-  const docRef = doc(db, "students", id);
-  const docSnap = await getDoc(docRef);
+const getStudentById = async (id) => {
+  const docRef = adminDB.collection("students").doc(id);
+  const docSnap = await docRef.get();
 
-  let student;
-  if (docSnap.exists()) {
-    student = { id: docSnap.id, ...docSnap.data() };
-  } else {
+  if (!docSnap.exists) {
     throw new Error("Fejl - eleven findes ikke.");
   }
+
+  const student = { id: docSnap.id, ...docSnap.data() };
+
   return student;
 };
 
-const deleteStudent = async id => {
-  await deleteDoc(doc(db, "students", id));
+const deleteStudent = async (id) => {
+  await adminDB.collection("students").doc(id).delete();
 };
 
 const updateStudent = async (id, updatedStudent) => {
-  await updateDoc(doc(db, "students", id), updatedStudent);
+  await adminDB.collection("students").doc(id).update(updatedStudent);
 };
 
-const toggleCheckedInStatus = async id => {
-  const docRef = doc(db, "students", id);
-  const studentDoc = await getDoc(docRef);
+const toggleCheckedInStatus = async (id) => {
+  const studentDoc = adminDB.collection("students").doc(id);
+  const studentSnapshot = await studentDoc.get();
 
-  if (!studentDoc.exists()) {
-    throw new Error("Eleven findes ikke.");
+  if (!studentSnapshot.exists) {
+    throw new Error("Fejl - eleven findes ikke.");
   }
-  const currentCheckedInStatus = studentDoc.data().checkedIn;
+
+  const currentCheckedInStatus = studentSnapshot.data().checkedIn;
+  console.log(currentCheckedInStatus);
   const updatedCheckedInStatus = !currentCheckedInStatus;
-  await updateDoc(docRef, { checkedIn: updatedCheckedInStatus });
+  await adminDB
+    .collection("students")
+    .doc(id)
+    .update({ checkedIn: updatedCheckedInStatus });
 };
 
 export {
