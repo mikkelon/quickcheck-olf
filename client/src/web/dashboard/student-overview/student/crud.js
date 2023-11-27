@@ -1,7 +1,13 @@
 // crud.js
+import {
+  createNote,
+  deleteNoteById,
+  getNotesById,
+} from "../../../../datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
+let notes = [];
 
 // Function to create a new parent
 function createParent(name, phone, email) {
@@ -13,6 +19,32 @@ function createParent(name, phone, email) {
 // Function to read all parents
 function getAllParents() {
   return parentsData;
+}
+
+async function getAllNotes(studentId) {
+  notes = await getNotesById(studentId);
+  return notes;
+}
+
+async function createNewNote(studentId, title, description) {
+  const note = {
+    title,
+    description,
+  };
+
+  await createNote(studentId, note);
+
+  notes.push(note);
+  return note;
+}
+
+//Function to delete note by index
+function deleteNote(index) {
+  const deletedNote = notes.splice(index, 1);
+  const noteId = deletedNote[0].id;
+  deleteNoteById(noteId);
+
+  return deletedNote[0];
 }
 
 // Function to update parent by index
@@ -32,4 +64,13 @@ function clear() {
   createParent("", "", "");
 }
 
-export { createParent, getAllParents, updateParent, deleteParent, clear };
+export {
+  createParent,
+  getAllParents,
+  updateParent,
+  deleteParent,
+  clear,
+  createNewNote,
+  getAllNotes,
+  deleteNote,
+};

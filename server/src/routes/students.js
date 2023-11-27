@@ -20,7 +20,10 @@ router.get("/", async (req, res) => {
   try {
     const studentsDocs = await getDocs(collection(db, "students"));
     const students = studentsDocs.docs.map((doc) => {
-      return { id: doc.id, ...doc.data() };
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
     });
     res.status(200).send(students);
   } catch (error) {

@@ -173,6 +173,7 @@ export const getStudentsWithClass = async () => {
     return {
       ...student,
       class: studentClass,
+      id: student.id,
     };
   });
 
@@ -228,9 +229,48 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
+// Create note
+export const createNote = async (studentId, note) => {
+  const url = `http://localhost:6969/notes`;
+  const options = {
+    method: "POST",
+    body: JSON.stringify({ studentId, ...note }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  console.log("prepost: " + JSON.stringify({ studentId, note }));
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+export const deleteNoteById = async (noteId) => {
+  const url = `http://localhost:6969/notes/${noteId}`;
+  const options = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+};
+
 /**
  * Delete a student with a given studentId
- * @param {string} studentId 
+ * @param {string} studentId
  */
 export const deleteStudent = async (studentId) => {
   const url = `http://localhost:6969/students/${studentId}`;
@@ -246,14 +286,30 @@ export const deleteStudent = async (studentId) => {
     }
   } catch (error) {
     // Handle errors appropriately, e.g., log or throw them
-    console.error("Error deleting student:", error);
+    console.error("Error fetching parents:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
+};
+
+// GET notes til en elev
+export const getNotesById = async (studentId) => {
+  const url = `http://localhost:6969/notes/${studentId}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error getting notes:", error);
     throw error; // Rethrow the error for the caller to handle
   }
 };
 
 /**
  * Get a student with a given studentId
- * @param {string} studentId 
+ * @param {string} studentId
  */
 export const getStudentById = async (studentId) => {
   const url = `http://localhost:6969/students/${studentId}`;
@@ -275,7 +331,7 @@ export const getStudentById = async (studentId) => {
     console.error("Error fetching student:", error);
     throw error; // Rethrow the error for the caller to handle
   }
-}
+};
 
 /**
  * Gets a class based on the classId
@@ -338,7 +394,7 @@ export const updateStudent = async (student) => {
     console.error("Error updating student:", error);
     throw error;
   }
-}
+};
 
 export const updateParents = async (id, parents) => {
   const url = `http://localhost:6969/parents/${id}`;
@@ -361,4 +417,4 @@ export const updateParents = async (id, parents) => {
     console.error("Error updating parents:", error);
     throw error;
   }
-}
+};
