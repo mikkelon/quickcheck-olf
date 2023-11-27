@@ -1,7 +1,6 @@
 // crud.js
 import {
   createNote,
-  createStudentsAndParents,
   deleteNoteById,
   getNotesById,
 } from "../../../../datahandler.js";
