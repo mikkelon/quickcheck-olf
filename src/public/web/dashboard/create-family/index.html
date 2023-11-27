@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../../../global.styles.css" />
+    <script type="module" src="javascript/gui.js" defer></script>
+    <script type="module" src="javascript/app.js" defer></script>
+    <script src="../../../../components/header.js" type="module" defer></script>
+    <title>Opret Forældre</title>
+  </head>
+
+  <body>
+    <header-component></header-component>
+    <h1 id="title">Opret familie</h1>
+    <div id="information"></div>
+    <div class="sectionsContainer">
+      <section>
+        <h1>Forældre</h1>
+        <div id="parents" class="nodeContainer"></div>
+        <!-- <div id="createBtn" /> -->
+      </section>
+
+      <div class="horizontal-line"></div>
+
+      <section>
+        <h1 id="children-title">Børn</h1>
+        <div id="children" class="nodeContainer"></div>
+      </section>
+    </div>
+
+    <div class="btn-container">
+      <button id="cancel" class="cancel-btn">Ryd</button>
+      <button id="submit" class="submit-btn">Opret</button>
+    </div>
+  </body>
+</html>

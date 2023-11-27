@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../../../global.styles.css" />
+    <script src="script.js" type="module" defer></script>
+    <script src="../../../../components/header.js" type="module" defer></script>
+    <title>QuickCheck</title>
+  </head>
+  <body>
+    <!-- Script to import assets -->
+    <script type="module">
+      import config from "../../../../utility/config.js";
+      // Get the img element
+      const magnifierEl = document.querySelector("#magnifier");
+      // Set the src attribute using the URL path from config.js
+      magnifierEl.src = config.assets.icons.magnifier;
+    </script>
+
+    <header-component></header-component>
+    <main>
+      <h1 class="title">Elevoversigt</h1>
+      <div class="container search">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Søg efter elev" />
+          <img id="magnifier" />
+        </div>
+      </div>
+      <h2 class="subheader">Filtre</h2>
+      <div class="container filter-options">
+        <select id="class-select">
+          <option value="0">Vælg klasse...</option>
+        </select>
+        <button id="checked-in-btn">Tjekket ind</button>
+        <button id="checked-out-btn">Tjekket ud</button>
+      </div>
+      <div id="active-filters-wrapper">
+        <h2 class="subheader">Aktive filtre</h2>
+        <div class="container" id="active-filters">
+          <button id="clear-filters-btn" style="display: none">
+            Ryd filtre
+          </button>
+        </div>
+      </div>
+      <div class="container students-table">
+        <div class="student-column-titles">
+          <p>Navn</p>
+          <p>Klasse</p>
+          <p>Status</p>
+        </div>
+        <div class="students"></div>
+      </div>
+    </main>
+  </body>
+</html>

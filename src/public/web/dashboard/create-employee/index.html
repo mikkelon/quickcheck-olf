@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opret Ansat</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../../../global.styles.css" />
+    <script src="script.js" type="module" defer></script>
+    <script src="../../../../components/header.js" type="module" defer></script>
+  </head>
+  <body>
+    <header-component></header-component>
+    <!--Opret ansat-->
+    <h1>Opret ansat</h1>
+    <div id="alert"></div>
+    <div class="employeeBox">
+      <div class="container">
+        <form id="create-employee-form">
+          <div class="forms-container">
+            <label class="forms-label">Fulde navn</label>
+            <input class="forms-input" type="text" id="name" />
+          </div>
+          <div class="forms-container">
+            <label class="forms-label">Email</label>
+            <input class="forms-input" type="email" id="email" />
+          </div>
+          <div class="forms-container">
+            <label class="forms-label">Telefon</label>
+            <input class="forms-input" type="text" id="phone" />
+          </div>
+          <div class="forms-container">
+            <label class="forms-label">Adgangskode</label>
+            <input class="forms-input" type="password" id="password" />
+          </div>
+          <div class="forms-container">
+            <label class="forms-label">Gentag adgangskode</label>
+            <input class="forms-input" type="password" id="repeatPassword" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="btn-container">
+      <button id="cancel" class="cancel-btn">Ryd</button>
+      <button id="submit" class="submit-btn">Opret</button>
+    </div>
+  </body>
+</html>
