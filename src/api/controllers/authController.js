@@ -15,8 +15,16 @@ const createUser = async (email, password) => {
   return userRecord;
 };
 
-const createSessionCookie = async (idToken) => {
+const createSessionCookie = async idToken => {
+  const decodedIdToken = await adminAuth.verifyIdToken(idToken);
+
+  const userId = decodedIdToken.uid;
+  const user = await adminDB.collection("users").doc(userId).get();
+  const role = user.data().role;
+
   const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+
+  adminAuth.setCustomUserClaims(userId, { role });
   const sessionCookie = await adminAuth.createSessionCookie(idToken, {
     expiresIn,
   });

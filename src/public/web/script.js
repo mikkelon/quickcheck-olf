@@ -10,15 +10,12 @@ const loginBtn = document.getElementById("login");
 loginBtn.addEventListener("click", async () => {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
-  console.log(email, password);
 
   try {
     const userRecord = await signInWithEmailAndPassword(auth, email, password);
-
-    // get id token
     const idToken = await userRecord.user.getIdToken();
-    console.log(idToken);
     await requestSessionCookie(idToken);
+    window.location.href = "./dashboard";
   } catch (error) {
     console.error(error);
   }
