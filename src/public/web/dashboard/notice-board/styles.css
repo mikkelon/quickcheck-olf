@@ -1,0 +1,65 @@
+.nav-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;   
+}
+
+.nav-button {
+    background-color: #8774ff49;
+    color: #8774ff;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+.nav-button:hover {
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.actual-posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    flex: 60%;
+    background-color: #8774ff;
+    padding: 1rem;
+
+}
+
+#actual-fixed-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 40%;
+    background-color: #7593;
+    padding: 1rem;
+
+
+}
+
+.post-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    align-items: center;
+}
+.status {
+    border-radius: 50%;
+    width: 1rem;
+    height: 1rem;
+    background-color: rgb(2, 235, 2);
+}
