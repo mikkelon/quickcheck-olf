@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 const publicPath = path.join(__dirname, "public");
 
 const app = express();
-const port = 6969;
+const port = 80;
 app.use(express.static(publicPath));
 app.use(express.json());
 app.use(cors());
