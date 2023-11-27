@@ -10,13 +10,22 @@
     <title>QuickCheck</title>
   </head>
   <body>
+    <!-- Script to import assets -->
+    <script type="module">
+      import config from "../../../../utility/config.js";
+      // Get the img element
+      const magnifierEl = document.querySelector("#magnifier");
+      // Set the src attribute using the URL path from config.js
+      magnifierEl.src = config.assets.icons.magnifier;
+    </script>
+
     <header-component></header-component>
     <main>
       <h1 class="title">Elevoversigt</h1>
       <div class="container search">
         <div class="search-bar">
           <input type="text" id="search-input" placeholder="Søg efter elev" />
-          <img src="../../../../assets/icons/magnifer.svg" />
+          <img id="magnifier" />
         </div>
       </div>
       <h2 class="subheader">Filtre</h2>
@@ -41,13 +50,7 @@
           <p>Klasse</p>
           <p>Status</p>
         </div>
-        <div class="students">
-          <!-- <div class="student">
-          <p>Fabian Andersen</p>
-          <p class="class-text">Rød</p>
-          <div class="check-btn checked-in"></div>
-        </div> -->
-        </div>
+        <div class="students"></div>
       </div>
     </main>
   </body>

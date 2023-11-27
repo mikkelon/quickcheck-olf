@@ -3,13 +3,14 @@ import {
   toggleStudentCheckIn,
   getStudentsByParentId,
 } from "../../../../utility/datahandler.js";
+import config from "../../../utility/config.js";
 
 let students = [];
 
-const fetchStudents = async parentId => {
+const fetchStudents = async (parentId) => {
   try {
     students = await getStudentsByParentId(parentId);
-    students = students.map(student => ({
+    students = students.map((student) => ({
       id: student.id,
       name: student.name,
       checkedIn: student.checkedIn,
@@ -24,7 +25,7 @@ const renderCards = async () => {
   students = await getRandomParentStudents();
   // TODO: When authentication is implemented, get the parent ID from the token
   // await fetchStudents("PARENT ID HERE");
-  students.forEach(student => {
+  students.forEach((student) => {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-student-id", student.id);
@@ -40,7 +41,7 @@ const renderCards = async () => {
     cardImg.classList.add("avatar");
     cardImg.src = student.imgUrl
       ? student.imgUrl
-      : "../../../../assets/avatar-placeholder.png";
+      : config.assets.avatarPlaceholder;
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("text-container");

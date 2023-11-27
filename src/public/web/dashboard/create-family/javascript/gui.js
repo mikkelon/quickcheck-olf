@@ -13,6 +13,7 @@ import {
   clear,
 } from "./crud.js";
 import { getClasses } from "../../../../utility/datahandler.js";
+import config from "../../../../utility/config.js";
 
 // Fetch options for the class dropdown from an API
 let classOptions;
@@ -20,7 +21,7 @@ let classOptions;
 const createDeleteButton = () => {
   const deleteButton = document.createElement("div");
   deleteButton.classList.add("delete");
-  deleteButton.style.backgroundImage = `url("./../../../../assets/icons/close-circle-bold.svg")`;
+  deleteButton.style.backgroundImage = `url(${config.assets.icons.closeBold})`;
 
   return deleteButton;
 };
@@ -214,7 +215,7 @@ function createDropdownFormElement(
   select.classList.add("forms-input");
   select.setAttribute("id", inputId);
 
-  options.forEach(option => {
+  options.forEach((option) => {
     const optionElement = document.createElement("option");
     optionElement.value = option.colorLabel;
     optionElement.textContent = option.colorLabel;
@@ -226,7 +227,7 @@ function createDropdownFormElement(
 
   // Find index of option where data-class-id matches selectedClassId
   const selectedIndex = options.findIndex(
-    option => option.id === selectedClassId
+    (option) => option.id === selectedClassId
   );
   select.selectedIndex = selectedIndex;
 
@@ -334,7 +335,7 @@ function forælderOprettet(success) {
 // Function to initialize the GUI
 async function initGUI() {
   getClasses()
-    .then(data => {
+    .then((data) => {
       classOptions = data;
     })
     .then(() => {
