@@ -47,26 +47,6 @@ label {
   margin-left: 1rem;
 }
 
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 20px;
-  min-width: 120px;
-  min-height: 50px;
-  border: none;
-  border-radius: var(--small-border-radius);
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-button:disabled {
-  background-color: #87c289;
-  cursor: not-allowed;
-}
-
 #alert {
   display: grid;
   /* Center content */
