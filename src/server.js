@@ -9,7 +9,12 @@ import {
   authenticate,
   authorize,
   loginRedirect,
+  webRedirect,
 } from "./middleware/authentication.js";
+
+const ROLE_ADMIN = "admin";
+const ROLE_EMPLOYEE = "employee";
+const ROLE_PARENTS = "parents";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,11 +25,22 @@ const port = 80;
 
 app.use(cookieParser());
 
-app.get("/web", loginRedirect, (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "web", "index.html"));
+app.get("/web/login", loginRedirect, (req, res, next) => {
+  next();
+});
+
+app.get("/web", webRedirect, (req, res, next) => {
+  next();
 });
 
 app.use("/web/dashboard", authenticate);
+app.use("/web/dashboard/create-employee", authorize([ROLE_ADMIN]));
+app.use("/web/dashboard/create-family", authorize([ROLE_ADMIN]));
+app.use(
+  "/web/dashboard/student-overview",
+  authorize([ROLE_ADMIN, ROLE_EMPLOYEE])
+);
+app.use("/web/dashboard/my-children", authorize([ROLE_PARENTS]));
 
 app.use(express.static(publicPath));
 app.use(express.json());

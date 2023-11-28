@@ -17,11 +17,12 @@ export const authenticate = async (req, res, next) => {
 export const authorize = allowedRoles => {
   return async (req, res, next) => {
     const decodedClaims = req.user;
+    console.log(decodedClaims.role);
 
     if (allowedRoles.includes(decodedClaims.role)) {
       return next();
     } else {
-      return redirect("/web/dashboard/");
+      return res.redirect("/web/dashboard/");
     }
   };
 };
@@ -31,5 +32,13 @@ export const loginRedirect = (req, res, next) => {
     return res.redirect("/web/dashboard");
   } else {
     next();
+  }
+};
+
+export const webRedirect = (req, res, next) => {
+  if (req.cookies.__session) {
+    return res.redirect("/web/dashboard");
+  } else {
+    return res.redirect("/web/login");
   }
 };
