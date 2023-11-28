@@ -217,6 +217,7 @@ function createParentElement(parent, index) {
         deleteParentHandler(index);
       }
     );
+    deleteIcon.classList.add("delete-parent");
     deleteIcon.style.backgroundColor = "#FF5656";
     headerDiv.appendChild(deleteIcon);
   }
