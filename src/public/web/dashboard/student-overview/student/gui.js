@@ -68,7 +68,7 @@ async function initGUI() {
   });
 
   await setParents();
-  
+
   setEditing(false);
   createNotesGui();
 
@@ -232,6 +232,17 @@ function createParentElement(parent, index) {
     }
   );
 
+  const relationForm = createFormElement(
+    "Relation",
+    "text",
+    "relation",
+    parent.relation,
+    (input) => {
+      console.log("Relation changed to:", input);
+      updateParent(index, "relation", input);
+    }
+  );
+
   const phoneForm = createFormElement(
     "Telefonnummer",
     "text",
@@ -254,7 +265,12 @@ function createParentElement(parent, index) {
     }
   );
 
-  const formsContainer = createFormsContainer([nameForm, phoneForm, emailForm]);
+  const formsContainer = createFormsContainer([
+    nameForm,
+    relationForm,
+    phoneForm,
+    emailForm,
+  ]);
 
   parentDiv.appendChild(headerDiv);
   parentDiv.appendChild(formsContainer);
