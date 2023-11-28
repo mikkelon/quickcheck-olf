@@ -1,39 +1,26 @@
-import { db } from "../../config/firebase.js";
-import {
-  addDoc,
-  collection,
-  doc,
-  deleteDoc,
-  updateDoc,
-  getDocs,
-  getDoc,
-  query,
-  where,
-} from "firebase/firestore";
+import { adminDB } from "../../config/firebase-admin.js";
 
 const getParents = async () => {
-  const parentsDocs = await getDocs(collection(db, "parents"));
-  const parents = parentsDocs.docs.map(doc => {
+  const parentsSnapshot = await adminDB.collection("parents").get();
+  const parents = parentsSnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() };
   });
-
   return parents;
 };
 
-const getParentById = async id => {
-  const docRef = doc(db, "parents", id);
+const getParentById = async (id) => {
+  const docRef = adminDB.collection("parents").doc(id);
   const docSnap = await getDoc(docRef);
   const parent = { id: docSnap.id, ...docSnap.data() };
   return parent;
 };
 
-const getStudentsByParentsId = async parentsId => {
-  const firebaseQuery = query(
-    collection(db, "students"),
-    where("parentsId", "==", parentsId)
-  );
-  const studentsDocs = await getDocs(firebaseQuery);
-  const students = studentsDocs.docs.map(doc => ({
+const getStudentsByParentsId = async (parentsId) => {
+  const studentsSnapshot = adminDB
+    .collection("students")
+    .where("parentsId", "==", parentsId)
+    .get();
+  const students = studentsSnapshot.docs.map((doc) => ({
     id: doc.id, // Include the student ID
     ...doc.data(),
   }));
@@ -41,26 +28,25 @@ const getStudentsByParentsId = async parentsId => {
   return students;
 };
 
-const deleteParents = async parentsId => {
-  const docRef = doc(db, "parents", parentsId);
-  await deleteDoc(docRef);
+const deleteParents = async (parentsId) => {
+  await adminDB.collection("parents").doc(parentsId).delete();
 };
 
 const updateParents = async (parentsId, updatedParents) => {
-  const docRef = doc(db, "parents", parentsId);
-  await updateDoc(docRef, updatedParents);
+  await adminDB.collection("parents").doc(parentsId).update(updatedParents);
 };
 
 const addParent = async (parentsId, newParent) => {
-  const docRef = doc(db, "parents", parentsId);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) {
+  const docRef = adminDB.collection("parents").doc(parentsId);
+  const docSnap = await docRef.get();
+
+  if (!docSnap.exists) {
     throw new Error("Fejl - forælder findes ikke");
   }
 
   const parents = docSnap.data().parents;
   parents.push(newParent);
-  await updateDoc(docRef, { parents });
+  await adminDB.collection("parents").doc(parentsId).update({ parents });
 };
 
 export {

@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  createFamily,
-  rollbackFamilyCreation,
-} from "../controllers/familyController.js";
+import { createFamily } from "../controllers/familyController.js";
 
 const router = express.Router();
 
