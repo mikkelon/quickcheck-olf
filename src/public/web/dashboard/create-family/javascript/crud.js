@@ -6,8 +6,8 @@ let parentsData = [];
 let childrenData = [];
 
 // Function to create a new parent
-function createParent(name, phone, email) {
-  const newParent = { name, phone, email };
+function createParent(name, phone, email, relation) {
+  const newParent = { name, phone, email, relation };
   parentsData.push(newParent);
   return newParent;
 }
@@ -70,7 +70,7 @@ function clear() {
   parentsData = [];
   childrenData = [];
   createChild("", "", "");
-  createParent("", "", "");
+  createParent("", "", "", "");
 }
 
 export {

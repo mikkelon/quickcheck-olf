@@ -4,7 +4,7 @@ import { createParent, createChild } from "./crud.js";
 
 // Example usage:
 // Create parents
-const parent1 = createParent("", "", "");
+const parent1 = createParent("", "", "", "");
 
 // Create children
 const child1 = createChild("", "", "");

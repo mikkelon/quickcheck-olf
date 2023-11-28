@@ -45,7 +45,7 @@ function displayParents() {
       // Handle the click event for adding a child
       // You can show a form or perform any other action
       console.log("Add Parent button clicked");
-      createParent("", "", "");
+      createParent("", "", "", "");
       displayParents();
     }
   );
@@ -108,9 +108,18 @@ function createParentElement(parent, index) {
   const emailForm = createFormElement("E-mail", "text", "email", parent.email);
   formsContainer.appendChild(emailForm);
 
+  const relationForm = createFormElement(
+    "Relation (f.eks. Mor)",
+    "text",
+    "relation",
+    parent.relation
+  );
+  formsContainer.appendChild(relationForm);
+
   const nameInput = nameForm.querySelector(".forms-input");
   const phoneInput = phoneForm.querySelector(".forms-input");
   const emailInput = emailForm.querySelector(".forms-input");
+  const relationInput = relationForm.querySelector(".forms-input");
 
   nameInput.addEventListener("blur", () =>
     updateParentData(index, "name", nameInput.value)
@@ -120,6 +129,9 @@ function createParentElement(parent, index) {
   );
   emailInput.addEventListener("blur", () =>
     updateParentData(index, "email", emailInput.value)
+  );
+  emailInput.addEventListener("blur", () =>
+    updateParentData(index, "relation", relationInput.value)
   );
 
   parentDiv.appendChild(headerDiv);
