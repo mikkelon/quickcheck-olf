@@ -1,42 +1,40 @@
-import {
-  getRandomParentStudents,
-  toggleStudentCheckIn,
-  getStudentsByParentId,
-} from "../../../../utility/datahandler.js";
 import config from "../../../utility/config.js";
+import { getStudentsBySessionCookie } from "../../../utility/datahandler.js";
 
 // Static DOM elements
 const main = document.querySelector("main");
 const modal = document.querySelector(".modal");
 const closeModalBtn = document.querySelector("#close-modal");
 
+let students = [];
+
 // Hardcoded students for testing purposes
-let students = [
-  {
-    id: "KeDx34IDddihmuM8P4pV",
-    classId: "Y1lzso2ntN1CyyRemzaL",
-    parentsId: "0cwxE83RrmMFJUS0uCNq",
-    name: "Maria Olsen Vestergaard Eriksen Magnussen",
-    birthday: "2015-02-18",
-    class: {
-      class: "1",
-      colorLabel: "Grøn",
-    },
-    checkedIn: false,
-  },
-  {
-    id: "Xfsa8u7V26afOQWEB3gB",
-    name: "Laura Mikkelsen",
-    parentsId: "0cwxE83RrmMFJUS0uCNq",
-    classId: "4tRapRljbXu3hsoIwHfc",
-    checkedIn: true,
-    birthday: "2016-04-30",
-    class: {
-      class: "2",
-      colorLabel: "Blå",
-    },
-  },
-];
+// [
+//   {
+//     id: "KeDx34IDddihmuM8P4pV",
+//     classId: "Y1lzso2ntN1CyyRemzaL",
+//     parentsId: "0cwxE83RrmMFJUS0uCNq",
+//     name: "Maria Olsen Vestergaard Eriksen Magnussen",
+//     birthday: "2015-02-18",
+//     class: {
+//       class: "1",
+//       colorLabel: "Grøn",
+//     },
+//     checkedIn: false,
+//   },
+//   {
+//     id: "Xfsa8u7V26afOQWEB3gB",
+//     name: "Laura Mikkelsen",
+//     parentsId: "0cwxE83RrmMFJUS0uCNq",
+//     classId: "4tRapRljbXu3hsoIwHfc",
+//     checkedIn: true,
+//     birthday: "2016-04-30",
+//     class: {
+//       class: "2",
+//       colorLabel: "Blå",
+//     },
+//   },
+// ];
 
 const createCard = (student) => {
   // LOG STUDENT FOR TESTING PURPOSES
@@ -224,9 +222,11 @@ closeModalBtn.addEventListener("click", () => {
   closeModal();
 });
 
-// When DOM is loaded
+// #--- When DOM is loaded ---#
 document.addEventListener("DOMContentLoaded", async () => {
   // TODO: Get students from database
+  students = await getStudentsBySessionCookie();
+  console.log(students);
 
   // Create cards for students
   students.forEach((student) => createCard(student));

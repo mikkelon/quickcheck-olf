@@ -36,6 +36,7 @@ const roles = {
 export const getButtonsForRole = async (sessionCookie) => {
   const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie);
   const userRole = decodedClaims.role;
+  console.log("User role:", userRole);
 
   const buttonsForRole = roles[userRole];
   return buttonsForRole;
