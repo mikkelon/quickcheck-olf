@@ -10,6 +10,7 @@ import {
   authorize,
   loginRedirect,
   webRedirect,
+  handleInvalidRoutes,
 } from "./middleware/authentication.js";
 
 const ROLE_ADMIN = "admin";
@@ -25,13 +26,9 @@ const port = 80;
 
 app.use(cookieParser());
 
-app.get("/web/login", loginRedirect, (req, res, next) => {
-  next();
-});
+app.get("/web/login", loginRedirect);
 
-app.get("/web", webRedirect, (req, res, next) => {
-  next();
-});
+app.get("/web", webRedirect);
 
 app.use("/web/dashboard", authenticate);
 app.use("/web/dashboard/create-employee", authorize([ROLE_ADMIN]));
@@ -47,6 +44,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api", apiRoutes);
+
+app.use(handleInvalidRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}...`);

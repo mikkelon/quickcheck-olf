@@ -2,7 +2,6 @@ import { adminDB, adminAuth } from "../config/firebase-admin.js";
 
 export const authenticate = async (req, res, next) => {
   const sessionCookie = req.cookies.__session || "";
-  console.log(req.originalUrl);
 
   try {
     const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie);
@@ -17,7 +16,6 @@ export const authenticate = async (req, res, next) => {
 export const authorize = allowedRoles => {
   return async (req, res, next) => {
     const decodedClaims = req.user;
-    console.log(decodedClaims.role);
 
     if (allowedRoles.includes(decodedClaims.role)) {
       return next();
@@ -37,8 +35,13 @@ export const loginRedirect = (req, res, next) => {
 
 export const webRedirect = (req, res, next) => {
   if (req.cookies.__session) {
-    return res.redirect("/web/dashboard");
+    res.redirect("/web/dashboard");
   } else {
-    return res.redirect("/web/login");
+    res.redirect("/web/login");
   }
+  next();
+};
+
+export const handleInvalidRoutes = (req, res, next) => {
+  res.status(404).send("404 - Not found");
 };
