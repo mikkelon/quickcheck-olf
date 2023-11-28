@@ -3,7 +3,7 @@ from firebase_admin import credentials, firestore
 from subprocess import call
 
 # Initialize Firebase Admin SDK with your service account credentials
-cred = credentials.Certificate('./../server/service-account.json')
+cred = credentials.Certificate('../service-account.json')
 firebase_admin.initialize_app(cred)
 
 # Initialize Firestore client

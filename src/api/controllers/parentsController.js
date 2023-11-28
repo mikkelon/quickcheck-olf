@@ -1,4 +1,4 @@
-import { adminDB } from "../../config/firebase-admin.js";
+import { adminDB, adminAuth } from "../../config/firebase-admin.js";
 
 const getParents = async () => {
   const parentsSnapshot = await adminDB.collection("parents").get();
@@ -10,13 +10,13 @@ const getParents = async () => {
 
 const getParentById = async (id) => {
   const docRef = adminDB.collection("parents").doc(id);
-  const docSnap = await getDoc(docRef);
+  const docSnap = await docRef.get();
   const parent = { id: docSnap.id, ...docSnap.data() };
   return parent;
 };
 
 const getStudentsByParentsId = async (parentsId) => {
-  const studentsSnapshot = adminDB
+  const studentsSnapshot = await adminDB
     .collection("students")
     .where("parentsId", "==", parentsId)
     .get();
@@ -25,6 +25,50 @@ const getStudentsByParentsId = async (parentsId) => {
     ...doc.data(),
   }));
   console.log(students);
+  return students;
+};
+
+const getParentsIdFromUserId = async (userId) => {
+  const docRef = adminDB.collection("users").doc(userId);
+  const docSnap = await docRef.get();
+  const parentsId = docSnap.data().parentsId;
+  return parentsId;
+};
+
+export const getStudentsBySessionCookie = async (sessionCookie) => {
+  console.log("getting students by session cookie:", sessionCookie);
+  const decodedClaims = await adminAuth.verifySessionCookie(
+    sessionCookie,
+    true // Check if revoked (extra cost but more secure)
+  );
+  const userId = decodedClaims.uid;
+
+  const parentsId = await getParentsIdFromUserId(userId);
+
+  const students = [];
+
+  // Get students and their classes
+  const studentsSnapshot = await adminDB
+    .collection("students")
+    .where("parentsId", "==", parentsId)
+    .get();
+
+  // Get classes
+  const classesSnapshot = await adminDB.collection("classes").get();
+
+  // Embed class data in students
+  studentsSnapshot.docs.forEach((doc) => {
+    const student = {
+      id: doc.id,
+      ...doc.data(),
+    };
+    const classId = student.classId;
+    const classDoc = classesSnapshot.docs.find((doc) => doc.id === classId);
+    const classData = classDoc.data();
+    student.class = classData;
+    students.push(student);
+  });
+
   return students;
 };
 

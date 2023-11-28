@@ -1,40 +1,47 @@
-import {
-  getRandomParentStudents,
-  toggleStudentCheckIn,
-  getStudentsByParentId,
-} from "../../../../utility/datahandler.js";
 import config from "../../../utility/config.js";
+import {
+  getStudentsBySessionCookie,
+  toggleStudentCheckIn,
+} from "../../../utility/datahandler.js";
 
 // Static DOM elements
 const main = document.querySelector("main");
+const modal = document.querySelector(".modal");
+const closeModalBtn = document.querySelector("#close-modal");
 
-// Hardcoded students for testing purposes
-let students = [
-  {
-    id: "KeDx34IDddihmuM8P4pV",
-    classId: "Y1lzso2ntN1CyyRemzaL",
-    parentsId: "0cwxE83RrmMFJUS0uCNq",
-    name: "Maria Olsen Vestergaard Eriksen Magnussen",
-    birthday: "2015-02-18",
-    class: {
-      class: "1",
-      colorLabel: "Grøn",
-    },
-    checkedIn: false,
-  },
-  {
-    id: "Xfsa8u7V26afOQWEB3gB",
-    name: "Laura Mikkelsen",
-    parentsId: "0cwxE83RrmMFJUS0uCNq",
-    classId: "4tRapRljbXu3hsoIwHfc",
-    checkedIn: true,
-    birthday: "2016-04-30",
-    class: {
-      class: "2",
-      colorLabel: "Blå",
-    },
-  },
-];
+let students = [];
+
+const toggleCheckIn = async (studentId) => {
+  try {
+    await toggleStudentCheckIn(studentId);
+  } catch (error) {
+    console.log(error);
+    return;
+  }
+
+  // Find button
+  const checkBtn = document.querySelector(
+    `.check-btn[data-student-id=${studentId}]`
+  );
+
+  // Find status indicator
+  const statusIndicator = document.querySelector(
+    `[data-student-id="${studentId}"]`
+  );
+
+  // Toggle check in
+  if (checkBtn.classList.contains("check-in")) {
+    checkBtn.classList.remove("check-in");
+    checkBtn.classList.add("check-out");
+    checkBtn.innerText = "Tjek ud";
+    statusIndicator.src = config.assets.icons.checkBold;
+  } else {
+    checkBtn.classList.remove("check-out");
+    checkBtn.classList.add("check-in");
+    checkBtn.innerText = "Tjek ind";
+    statusIndicator.src = config.assets.icons.closeBold;
+  }
+};
 
 const createCard = (student) => {
   // LOG STUDENT FOR TESTING PURPOSES
@@ -80,7 +87,7 @@ const createAvatar = (student) => {
 
   // Create avatar image
   const image = document.createElement("img");
-  image.src = "../../../../assets/avatar-placeholder.png";
+  image.src = config.assets.avatarPlaceholder;
   image.alt = "Avatar";
   image.classList.add("avatar");
 
@@ -89,12 +96,12 @@ const createAvatar = (student) => {
 
   // Create status indicator
   const statusIndicator = document.createElement("img");
-  const statusImgSrc = student.checkedIn
-    ? "check-circle-bold.svg"
-    : "close-circle-bold.svg";
-  statusIndicator.src = `../../../../assets/icons/${statusImgSrc}`;
+  statusIndicator.src = student.checkedIn
+    ? config.assets.icons.checkBold
+    : config.assets.icons.closeBold;
   statusIndicator.alt = "Status indicator";
   statusIndicator.classList.add("status");
+  statusIndicator.dataset.studentId = student.id;
 
   // Add status indicator to avatar
   avatar.appendChild(statusIndicator);
@@ -109,6 +116,7 @@ const createButtons = (student) => {
   // Create check in/out button
   const checkBtn = document.createElement("button");
   checkBtn.classList.add("check-btn");
+  checkBtn.dataset.studentId = student.id;
 
   if (!student.checkedIn) {
     checkBtn.innerText = "Tjek ind";
@@ -120,8 +128,8 @@ const createButtons = (student) => {
 
   // Add event listener to check in/out button
   checkBtn.addEventListener("click", () => {
-    //TODO
     console.log("Check in/out button clicked for student: ", student.id);
+    toggleCheckIn(student.id);
   });
 
   // Add check in/out button to buttons array
@@ -134,8 +142,8 @@ const createButtons = (student) => {
 
   // Add event listener to notes button
   notesBtn.addEventListener("click", () => {
-    //TODO
     console.log("Notes button clicked for student: ", student.id);
+    openModal(student);
   });
 
   // Add notes button to buttons array
@@ -158,7 +166,7 @@ const createInfoContainer = (student) => {
   const birthdayBox = createInfoBox("Fødselsdag", student.birthday);
   infoContainer.appendChild(birthdayBox);
 
-  const classText = `${student.class.class}. ${student.class.colorLabel}`;
+  const classText = `${student.class.colorLabel}`;
   const classBox = createInfoBox("Klasse", classText);
   infoContainer.appendChild(classBox);
 
@@ -202,9 +210,31 @@ const shortenName = (name) => {
   }
 };
 
-// When DOM is loaded
+// #--- MODAL ---#
+const openModal = (student) => {
+  modal.style.display = "flex";
+};
+
+const closeModal = () => {
+  modal.style.display = "none";
+};
+
+// Add eventlistener to grey background
+modal.addEventListener("click", (e) => {
+  if (e.target.classList.contains("modal")) {
+    closeModal();
+  }
+});
+
+// Add eventlistener to close button
+closeModalBtn.addEventListener("click", () => {
+  closeModal();
+});
+
+// #--- When DOM is loaded ---#
 document.addEventListener("DOMContentLoaded", async () => {
   // TODO: Get students from database
+  students = await getStudentsBySessionCookie();
 
   // Create cards for students
   students.forEach((student) => createCard(student));

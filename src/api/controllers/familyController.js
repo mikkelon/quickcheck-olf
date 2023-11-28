@@ -1,4 +1,5 @@
 import { adminAuth, adminDB } from "../../config/firebase-admin.js";
+import { createUser } from "./authController.js";
 
 const createFamily = async (parents, students) => {
   const studentIds = [];
@@ -80,10 +81,7 @@ const createParentUserWithEmailAndId = async (email, parentsId) => {
   }
 
   try {
-    const userRecord = await adminAuth.createUser({
-      email,
-      password: "123456", // TODO: Generate random password and send email to user
-    });
+    const userRecord = await createUser(email, "123456", "parents");
 
     console.log("Successfully created new user:", userRecord.uid);
 
