@@ -16,20 +16,23 @@
 </head>
 
 <body>
-<!-- Script for importing assets -->
-<script type="module">
-    import config from "../../../../utility/config.js";
+    <!-- Script for importing assets -->
+    <script type="module">
+        import config from "../../../../utility/config.js";
 
-    // Avatar placeholder
-    const avatarEl = document.querySelector("#avatar-img");
-    avatarEl.src = config.assets.avatarPlaceholder;
+        // Avatar placeholder
+        const avatarEl = document.querySelector("#avatar-img");
+        avatarEl.src = config.assets.avatarPlaceholder;
 
-    // Status
-    const statusEl = document.querySelector("#status");
-    statusEl.src = config.assets.icons.check;
+        // Status
+        const statusEl = document.querySelector("#status");
+        statusEl.src = config.assets.icons.check;
     </script>
 
-    <header-component></header-component>
+    <header-component>
+    </header-component>
+
+    <div id="buttons-container"></div>
 
     <div class="sections">
 

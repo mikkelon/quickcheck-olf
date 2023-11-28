@@ -29,16 +29,12 @@ const renderClassName = async () => {
 
 const renderCards = async () => {
   const students = await getStudentsByClassId(classId);
-  // Sort students by checked in status
-  // Checked in students first
+  // Sort students by checked in status, then by name alphabetically
   students.sort((a, b) => {
-    if (a.checkedIn && !b.checkedIn) {
-      return -1;
+    if (a.checkedIn === b.checkedIn) {
+      return a.name.localeCompare(b.name);
     }
-    if (!a.checkedIn && b.checkedIn) {
-      return 1;
-    }
-    return 0;
+    return a.checkedIn ? -1 : 1;
   });
 
   console.log(students);

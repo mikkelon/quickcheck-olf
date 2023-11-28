@@ -37,11 +37,7 @@ async function initGUI() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get("id");
 
-  console.log("Student ID:", id);
-
   child = await getStudentById(id);
-
-  console.log(child);
 
   const colorLabels = await getClasses();
 
@@ -71,7 +67,8 @@ async function initGUI() {
     });
   });
 
-  setParents();
+  await setParents();
+
   setEditing(false);
   createNotesGui();
 
@@ -82,7 +79,7 @@ async function initGUI() {
 }
 
 function addButtons() {
-  const customizeButtons = document.getElementById("header-right");
+  const customizeButtons = document.getElementById("buttons-container");
   customizeButtons.innerHTML = "";
 
   if (editing) {
@@ -220,6 +217,7 @@ function createParentElement(parent, index) {
         deleteParentHandler(index);
       }
     );
+    deleteIcon.classList.add("delete-parent");
     deleteIcon.style.backgroundColor = "#FF5656";
     headerDiv.appendChild(deleteIcon);
   }
@@ -232,6 +230,17 @@ function createParentElement(parent, index) {
     (input) => {
       console.log("Name changed to:", input);
       updateParent(index, "name", input);
+    }
+  );
+
+  const relationForm = createFormElement(
+    "Relation",
+    "text",
+    "relation",
+    parent.relation,
+    (input) => {
+      console.log("Relation changed to:", input);
+      updateParent(index, "relation", input);
     }
   );
 
@@ -257,7 +266,12 @@ function createParentElement(parent, index) {
     }
   );
 
-  const formsContainer = createFormsContainer([nameForm, phoneForm, emailForm]);
+  const formsContainer = createFormsContainer([
+    nameForm,
+    relationForm,
+    phoneForm,
+    emailForm,
+  ]);
 
   parentDiv.appendChild(headerDiv);
   parentDiv.appendChild(formsContainer);
