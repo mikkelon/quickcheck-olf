@@ -17,14 +17,19 @@ const buttons = {
     name: "Mine børn",
     link: "/web/dashboard/my-children",
   },
+  noticeBoard: {
+    name: "Opslagstavlen",
+    link: "/web/dashboard/notice-board",
+  },
 };
 const roles = {
   admin: [
     buttons.createEmployee,
     buttons.createFamily,
     buttons.studentOverview,
+    buttons.noticeBoard,
   ],
-  employee: [buttons.studentOverview],
+  employee: [buttons.studentOverview, buttons.noticeBoard],
   parents: [buttons.myChildren],
 };
 
