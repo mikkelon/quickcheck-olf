@@ -11,25 +11,33 @@
   </head>
   <body>
     <header-component></header-component>
-    <div class="container">
-      <h1 id="title">Send besked</h1>
+    <h1 id="title">Send besked</h1>
 
+    <div class="forms-container">
       <form id="messageForm">
-        <label>Vælg børn:</label>
-        <div class="children-checkboxes">
-          <input type="checkbox" id="child1" name="child" value="Child1" />
-          <label for="child1">Barn 1</label>
+        <label class="label-container">Hvem drejer beskeden sig om:</label>
 
-          <input type="checkbox" id="child2" name="child" value="Child2" />
-          <label for="child2">Barn 2</label>
+        <div id="children"></div>
 
-          <!-- Add more checkboxes for each child -->
+        <textarea
+          class="text-area"
+          id="message"
+          name="message"
+          rows="4"
+          cols="50"
+        ></textarea>
+
+        <div class="dato-container">
+          <label id="label-dato" for="sendDate"
+            >Vælg dato for afsendelse:</label
+          >
+          <input type="date" id="sendDate" name="sendDate" />
         </div>
 
-        <label for="message">Besked:</label>
-        <textarea id="message" name="message" rows="4" cols="50"></textarea>
-
-        <button type="submit">Send besked</button>
+        <div class="button-container">
+          <button class="send-btn" type="submit">Send besked</button>
+          <button class="clear-btn">Ryd</button>
+        </div>
       </form>
     </div>
   </body>
