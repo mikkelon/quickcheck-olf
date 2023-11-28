@@ -35,6 +35,7 @@ const roles = {
   ],
   employee: [buttons.studentOverview, buttons.noticeBoard],
   parents: [buttons.myChildren, buttons.parentInfo],
+  test: Object.keys(buttons).map((key) => buttons[key]), // TODO: Remove test role
 };
 
 export const getButtonsForRole = async (sessionCookie) => {
