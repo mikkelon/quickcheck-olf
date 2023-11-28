@@ -1,16 +1,9 @@
-import {
-  getDocs,
-  collection,
-  doc,
-  getDoc,
-  where,
-  query,
-} from "firebase/firestore";
-import { db } from "../../config/firebase.js";
+import { adminDB } from "../../config/firebase-admin.js";
+import { getDocs, collection, getDoc, query, where } from "firebase/firestore";
 
 const getClasses = async () => {
-  const classesDocs = await getDocs(collection(db, "classes"));
-  const classes = classesDocs.docs.map(doc => {
+  const classesSnapshot = await adminDB.collection("classes").get();
+  const classes = classesSnapshot.docs.map((doc) => {
     return {
       id: doc.id,
       ...doc.data(),
@@ -19,20 +12,21 @@ const getClasses = async () => {
   return classes;
 };
 
-const getClassById = async id => {
-  const docRef = doc(db, "classes", id);
-  const docSnap = await getDoc(docRef);
-  const clazz = docSnap.data();
-  return clazz;
+const getClassById = async (id) => {
+  const docRef = adminDB.collection("classes").doc(id);
+  const docSnap = await docRef.get();
+  if (!docSnap.exists) {
+    return null; // Or handle appropriately if the document does not exist
+  }
+  return { id: docSnap.id, ...docSnap.data() };
 };
 
-const getStudentsByClassId = async classId => {
-  const firebaseQuery = query(
-    collection(db, "students"),
-    where("classId", "==", classId)
-  );
-  const studentsDocs = await getDocs(firebaseQuery);
-  const students = studentsDocs.docs.map(doc => {
+const getStudentsByClassId = async (classId) => {
+  const studentsSnapshot = await adminDB
+    .collection("students")
+    .where("classId", "==", classId)
+    .get();
+  const students = studentsSnapshot.docs.map((doc) => {
     return { id: doc.id, ...doc.data() };
   });
   return students;

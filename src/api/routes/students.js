@@ -64,7 +64,7 @@ router.put("/toggleCheckedIn/:id", async (req, res) => {
     res
       .status(200)
       .send(
-        `Elevens (${studentId}) checkedIn opdateres til: ${updatedCheckedInStatus}`
+        `Elevens (${studentId}) checkedIn opdateres til det modsatte af det nuværende`
       );
   } catch (error) {
     console.log(error);

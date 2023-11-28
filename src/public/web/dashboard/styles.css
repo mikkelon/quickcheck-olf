@@ -29,15 +29,16 @@ body {
 }
 
 .buttons {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 3fr));
-  gap: 20px;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 75vw;
   margin: 0 auto;
 }
 
 .buttons a {
-  width: calc(100% - 200px); /* Calculate the width with margin */
+  width: 33%;
   margin: 10px 10px;
   color: #fff;
   padding: 75px;
