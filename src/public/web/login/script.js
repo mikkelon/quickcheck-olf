@@ -36,6 +36,7 @@ const logIn = async () => {
 loginBtn.addEventListener("click", logIn);
 document.body.addEventListener("keypress", e => {
   if (e.key === "Enter") {
+    loginBtn.focus();
     logIn();
   }
 });
