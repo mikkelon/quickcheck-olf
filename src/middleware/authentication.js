@@ -8,7 +8,8 @@ export const authenticate = async (req, res, next) => {
     req.user = decodedClaims;
     next();
   } catch (error) {
-    console.log(error);
+    console.log("Error authenticating user from session cookie");
+    console.log("Redirecting to /web/login");
     res.redirect("/web/login");
   }
 };
@@ -20,6 +21,8 @@ export const authorize = (allowedRoles) => {
     if (allowedRoles.includes(decodedClaims.role)) {
       return next();
     } else {
+      console.log("User does not have permission to access this endpoint");
+      console.log("Redirecting to /web/dashboard");
       return res.redirect("/web/dashboard/");
     }
   };
@@ -27,6 +30,8 @@ export const authorize = (allowedRoles) => {
 
 export const loginRedirect = (req, res, next) => {
   if (req.cookies.__session) {
+    console.log("User is already logged in");
+    console.log("Redirecting to /web/dashboard");
     return res.redirect("/web/dashboard");
   } else {
     next();
@@ -35,8 +40,12 @@ export const loginRedirect = (req, res, next) => {
 
 export const webRedirect = (req, res, next) => {
   if (req.cookies.__session) {
+    console.log("User is already logged in");
+    console.log("Redirecting to /web/dashboard");
     return res.redirect("/web/dashboard");
   } else {
+    console.log("User is not logged in");
+    console.log("Redirecting to /web/login");
     return res.redirect("/web/login");
   }
 };
