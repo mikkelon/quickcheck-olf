@@ -10,7 +10,7 @@ const getParents = async () => {
 
 const getParentById = async (id) => {
   const docRef = adminDB.collection("parents").doc(id);
-  const docSnap = await getDoc(docRef);
+  const docSnap = await docRef.get();
   const parent = { id: docSnap.id, ...docSnap.data() };
   return parent;
 };
