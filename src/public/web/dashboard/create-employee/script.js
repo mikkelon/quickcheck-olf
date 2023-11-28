@@ -34,7 +34,6 @@ submitBtn.addEventListener("click", async () => {
       await createEmployee(employee);
       alertMsg("Bruger oprettet", true);
       clearFields();
-      toggleLoadingSpinner();
     } catch (error) {
       console.log(error);
       if (error.message == "auth/invalid-password") {
@@ -46,6 +45,7 @@ submitBtn.addEventListener("click", async () => {
       } else {
         alertMsg("Der er sket en fejl", false);
       }
+    } finally {
       toggleLoadingSpinner();
     }
   }
