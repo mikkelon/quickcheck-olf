@@ -68,7 +68,7 @@ async function initGUI() {
   });
 
   await setParents();
-  
+
   setEditing(false);
   createNotesGui();
 
@@ -217,6 +217,7 @@ function createParentElement(parent, index) {
         deleteParentHandler(index);
       }
     );
+    deleteIcon.classList.add("delete-parent");
     deleteIcon.style.backgroundColor = "#FF5656";
     headerDiv.appendChild(deleteIcon);
   }
@@ -229,6 +230,17 @@ function createParentElement(parent, index) {
     (input) => {
       console.log("Name changed to:", input);
       updateParent(index, "name", input);
+    }
+  );
+
+  const relationForm = createFormElement(
+    "Relation",
+    "text",
+    "relation",
+    parent.relation,
+    (input) => {
+      console.log("Relation changed to:", input);
+      updateParent(index, "relation", input);
     }
   );
 
@@ -254,7 +266,12 @@ function createParentElement(parent, index) {
     }
   );
 
-  const formsContainer = createFormsContainer([nameForm, phoneForm, emailForm]);
+  const formsContainer = createFormsContainer([
+    nameForm,
+    relationForm,
+    phoneForm,
+    emailForm,
+  ]);
 
   parentDiv.appendChild(headerDiv);
   parentDiv.appendChild(formsContainer);
