@@ -21,6 +21,10 @@ const buttons = {
     name: "Opslagstavlen",
     link: "/web/dashboard/notice-board",
   },
+  parentInfo: {
+    name: "Mine oplysninger",
+    link: "/web/dashboard/parent-info",
+  },
 };
 const roles = {
   admin: [
@@ -30,7 +34,7 @@ const roles = {
     buttons.noticeBoard,
   ],
   employee: [buttons.studentOverview, buttons.noticeBoard],
-  parents: [buttons.myChildren],
+  parents: [buttons.myChildren, buttons.parentInfo],
 };
 
 export const getButtonsForRole = async (sessionCookie) => {
