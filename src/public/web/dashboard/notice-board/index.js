@@ -37,8 +37,10 @@ function loadNotices() {
     let noticeBoard = document.getElementById("notice-board");
     for (let i = 0; i < notices.length; i++) {
         let notice = notices[i];
+
         let noticeElement = document.createElement("div");
         noticeElement.className = "notice";
+        noticeElement.classList.add("unread");
         noticeElement.innerHTML = `
         <div class="concerning">
             <div class="sender">
@@ -46,21 +48,26 @@ function loadNotices() {
                 <p>${notice.sender.name} (<span>${notice.sender.relation}</span>)</p>
             </div>
             <div class="concerns">
-                ${
-                    notice.concerns.length > 1 ?
-                    `<p>${notice.concerns[0].name} + ${notice.concerns.length - 1}</p>` :
-                    `<p>${notice.concerns[0].name}</p>`
-                }
+                ${notice.concerns.length > 1 ?
+                `<p>${notice.concerns[0].name} + ${notice.concerns.length - 1}</p>` :
+                `<p>${notice.concerns[0].name}</p>`
+            }
             </div>
         </div>
         
         
         <div class="message">
             <p>${notice.message}</p>
-        </div>
+        </div>`
 
-        <button class="check-button">Markér som "udført"</button>
-    `;
+        let checkButton = document.createElement("button");
+        checkButton.className = "check-button";
+        checkButton.innerText = "Markér som \"udført\"";
+        checkButton.addEventListener("click", () => {
+            markAsRead(i);
+        });
+        noticeElement.appendChild(checkButton);
+
         noticeBoard.appendChild(noticeElement);
     }
 }
