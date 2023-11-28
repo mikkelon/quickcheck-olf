@@ -39,12 +39,23 @@
     color: #0000007d;
 }
 
-#notice-board {
+.notice-board {
     display: flex;
     flex-direction: column;
     gap: 1rem;
     flex: 2;
     padding: 1rem;
+}
+
+#notices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.container h3 {
+    margin: 0;
+    padding: 0;
 }
 
 #actual-fixed-posts {
@@ -97,7 +108,7 @@
 }
 
 .read>.check-button {
-    display: none;
+
 }
 
 .vertical-line {
