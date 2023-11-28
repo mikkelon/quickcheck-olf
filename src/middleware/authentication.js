@@ -9,11 +9,11 @@ export const authenticate = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    res.redirect("/web");
+    res.redirect("/web/login");
   }
 };
 
-export const authorize = allowedRoles => {
+export const authorize = (allowedRoles) => {
   return async (req, res, next) => {
     const decodedClaims = req.user;
 
@@ -35,11 +35,10 @@ export const loginRedirect = (req, res, next) => {
 
 export const webRedirect = (req, res, next) => {
   if (req.cookies.__session) {
-    res.redirect("/web/dashboard");
+    return res.redirect("/web/dashboard");
   } else {
-    res.redirect("/web/login");
+    return res.redirect("/web/login");
   }
-  next();
 };
 
 export const handleInvalidRoutes = (req, res, next) => {
