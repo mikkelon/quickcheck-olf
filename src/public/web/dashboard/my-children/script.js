@@ -157,7 +157,7 @@ const createInfoContainer = (student) => {
   const birthdayBox = createInfoBox("Fødselsdag", student.birthday);
   infoContainer.appendChild(birthdayBox);
 
-  const classText = `${student.class.class}. ${student.class.colorLabel}`;
+  const classText = `${student.class.colorLabel}`;
   const classBox = createInfoBox("Klasse", classText);
   infoContainer.appendChild(classBox);
 
