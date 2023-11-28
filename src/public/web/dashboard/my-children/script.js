@@ -7,6 +7,8 @@ import config from "../../../utility/config.js";
 
 // Static DOM elements
 const main = document.querySelector("main");
+const modal = document.querySelector(".modal");
+const closeModalBtn = document.querySelector("#close-modal");
 
 // Hardcoded students for testing purposes
 let students = [
@@ -80,7 +82,7 @@ const createAvatar = (student) => {
 
   // Create avatar image
   const image = document.createElement("img");
-  image.src = "../../../../assets/avatar-placeholder.png";
+  image.src = config.assets.avatarPlaceholder;
   image.alt = "Avatar";
   image.classList.add("avatar");
 
@@ -89,10 +91,9 @@ const createAvatar = (student) => {
 
   // Create status indicator
   const statusIndicator = document.createElement("img");
-  const statusImgSrc = student.checkedIn
-    ? "check-circle-bold.svg"
-    : "close-circle-bold.svg";
-  statusIndicator.src = `../../../../assets/icons/${statusImgSrc}`;
+  statusIndicator.src = student.checkedIn
+    ? config.assets.icons.checkBold
+    : config.assets.icons.closeBold;
   statusIndicator.alt = "Status indicator";
   statusIndicator.classList.add("status");
 
@@ -134,8 +135,8 @@ const createButtons = (student) => {
 
   // Add event listener to notes button
   notesBtn.addEventListener("click", () => {
-    //TODO
     console.log("Notes button clicked for student: ", student.id);
+    openModal(student);
   });
 
   // Add notes button to buttons array
@@ -201,6 +202,27 @@ const shortenName = (name) => {
     return name;
   }
 };
+
+// #--- MODAL ---#
+const openModal = (student) => {
+  modal.style.display = "flex";
+};
+
+const closeModal = () => {
+  modal.style.display = "none";
+};
+
+// Add eventlistener to grey background
+modal.addEventListener("click", (e) => {
+  if (e.target.classList.contains("modal")) {
+    closeModal();
+  }
+});
+
+// Add eventlistener to close button
+closeModalBtn.addEventListener("click", () => {
+  closeModal();
+});
 
 // When DOM is loaded
 document.addEventListener("DOMContentLoaded", async () => {

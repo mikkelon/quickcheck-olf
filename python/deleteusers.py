@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, auth
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate('./../server/service-account.json')
+cred = credentials.Certificate('../service-account.json')
 firebase_admin.initialize_app(cred)
 
 # Fetch a list of all users
