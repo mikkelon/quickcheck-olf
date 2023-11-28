@@ -1,3 +1,4 @@
+
 const childrenData = [
     { id: 'child1', name: 'Barn 1', value: 'child1' },
     { id: 'child2', name: 'Barn 2', value: 'child2' },
@@ -59,12 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function createMessageObject(message, selectedChildren, sendDate) {
+async function createMessageObject(message, selectedChildren, sendDate) {
     return {
         message,
         selectedChildren,
         sendDate
     };
+
 }
 
 function getChildren() {
@@ -98,3 +100,6 @@ async function createChildrenGui() {
         childrenContainer.appendChild(childContainer);
     });
 }
+
+
+
