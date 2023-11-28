@@ -1,16 +1,5 @@
 import express from "express";
-import { db } from "../../config/firebase.js";
-import {
-  addDoc,
-  collection,
-  updateDoc,
-  getDoc,
-  doc,
-  getDocs,
-  query,
-  where,
-  deleteDoc,
-} from "firebase/firestore";
+import { adminDB } from "../../config/firebase-admin.js";
 
 const router = express.Router();
 
@@ -18,18 +7,17 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const note = req.body;
 
-  /*   console.log(req.body) */
   try {
-    const docRef = await addDoc(collection(db, "notes"), note);
+    const docRef = await addDoc(collection(adminDB, "notes"), note);
 
     const addedNote = {
       id: docRef.id,
       ...note,
     };
 
-    res.status(200).send("Note tilføjet: " + addedNote);
+    res.status(200).send("Note tilføjet: " + JSON.stringify(addedNote));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(400).send("Fejl ved oprettelse af note");
   }
 });
@@ -39,10 +27,8 @@ router.get("/:studentId", async (req, res) => {
   try {
     const studentId = req.params.studentId;
 
-    console.log(studentId);
-
     const noteQuery = query(
-      collection(db, "notes"),
+      collection(adminDB, "notes"),
       where("studentId", "==", studentId)
     );
     const notesDocs = await getDocs(noteQuery);
@@ -63,7 +49,7 @@ router.delete("/:noteId", async (req, res) => {
   try {
     const noteId = req.params.noteId;
 
-    const noteRef = doc(db, "notes", noteId);
+    const noteRef = adminDB.collection("notes").doc(noteId);
 
     await deleteDoc(noteRef);
 
