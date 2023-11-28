@@ -1,5 +1,6 @@
 import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
+import { getDatabase } from "firebase-admin/database";
 import pkg from "firebase-admin";
 import { config } from "dotenv";
 
@@ -14,6 +15,8 @@ try {
       clientEmail: FB_CLIENT_EMAIL,
       privateKey: FB_PRIVATE_KEY.replace(/\\n/g, "\n"),
     }),
+    databaseURL:
+      "https://quickcheck-254b9-default-rtdb.europe-west1.firebasedatabase.app/",
   });
 } catch (error) {
   if (!/already exists/u.test(error.message)) {
@@ -23,3 +26,4 @@ try {
 
 export const adminDB = getFirestore();
 export const adminAuth = getAuth();
+export const adminRealtimeDB = getDatabase();

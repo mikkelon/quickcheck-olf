@@ -4,7 +4,6 @@ import { createEmployee } from "../../../utility/datahandler.js";
 const clearFields = () => {
   document.getElementById("name").value = "";
   document.getElementById("email").value = "";
-  document.getElementById("phone").value = "";
   document.getElementById("password").value = "";
   document.getElementById("repeatPassword").value = "";
 };

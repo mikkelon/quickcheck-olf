@@ -234,7 +234,7 @@ export const getParentsById = async (parentsId) => {
 
 // Create note
 export const createNote = async (studentId, note) => {
-  const url = `http://localhost:6969/notes`;
+  const url = `${apiUrl}/notes`;
   const options = {
     method: "POST",
     body: JSON.stringify({ studentId, ...note }),
@@ -262,7 +262,7 @@ export const createNote = async (studentId, note) => {
 };
 
 export const deleteNoteById = async (noteId) => {
-  const url = `http://localhost:6969/notes/${noteId}`;
+  const url = `${apiUrl}/notes/${noteId}`;
   const options = {
     method: "DELETE",
     headers: {
@@ -296,7 +296,7 @@ export const deleteStudent = async (studentId) => {
 
 // GET notes til en elev
 export const getNotesById = async (studentId) => {
-  const url = `http://localhost:6969/notes/${studentId}`;
+  const url = `${apiUrl}/notes/${studentId}`;
   try {
     const response = await fetch(url, {
       method: "GET",
