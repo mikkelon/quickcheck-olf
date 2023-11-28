@@ -35,6 +35,8 @@
     flex-direction: row;
     gap: 1rem;
     flex: 1;
+    align-items: center;
+    color: #0000007d;
 }
 
 #notice-board {
@@ -65,6 +67,11 @@
     flex-wrap: wrap;
 }
 
+.notice p {
+    margin: 0;
+    padding: 0;
+}
+
 .sender {
     display: flex;
     flex-direction: row;
@@ -85,10 +92,12 @@
 }
 
 .read {
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    background-color: rgb(2, 235, 2);
+    background-color: #91919127;
+    color: #00000047;
+}
+
+.read>.check-button {
+    display: none;
 }
 
 .vertical-line {
@@ -97,7 +106,7 @@
 }
 
 /* on tablets put concerning make .container a column */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1075px) {
     .notice {
         /* flex-direction: flex-start; */
         flex-direction: column;
