@@ -54,29 +54,6 @@ const createFamily = async (parents, students) => {
   }
 };
 
-const rollbackFamilyCreation = async rollback => {
-  // #-- Cleanup if error --#
-  // Delete parents, if created
-  if (parentsId) {
-    await deleteDoc(doc(db, "parents", parentsId));
-    console.log("parents deleted");
-  }
-
-  // Delete students, if created
-  if (studentIds.length > 0) {
-    studentIds.forEach(async studentId => {
-      await deleteDoc(doc(db, "students", studentId));
-    });
-    console.log("students deleted");
-  }
-
-  // Delete user, if created
-  if (userId) {
-    await adminAuth.deleteUser(userId);
-    console.log("user deleted");
-  }
-};
-
 const createParents = async parents => {
   if (!parents || parents.length === 0) {
     throw new Error("Fejl - manglende data");
@@ -157,4 +134,4 @@ const createStudentsWithParentsId = async (students, parentsId) => {
   }
 };
 
-export { createFamily, rollbackFamilyCreation };
+export { createFamily };

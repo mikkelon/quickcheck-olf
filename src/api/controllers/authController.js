@@ -1,6 +1,6 @@
 import { adminAuth, adminDB } from "../../config/firebase-admin.js";
 
-const createEmployeeUser = async (email, password) => {
+const createUser = async (email, password) => {
   const userRecord = await adminAuth.createUser({
     email,
     password,
@@ -8,4 +8,4 @@ const createEmployeeUser = async (email, password) => {
   return userRecord;
 };
 
-export { createEmployeeUser };
+export { createUser };
