@@ -58,7 +58,10 @@ export const getStudentsBySessionCookie = async (sessionCookie) => {
 
   // Embed class data in students
   studentsSnapshot.docs.forEach((doc) => {
-    const student = doc.data();
+    const student = {
+      id: doc.id,
+      ...doc.data(),
+    };
     const classId = student.classId;
     const classDoc = classesSnapshot.docs.find((doc) => doc.id === classId);
     const classData = classDoc.data();
