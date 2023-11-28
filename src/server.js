@@ -5,7 +5,11 @@ import apiRoutes from "./api/index.js";
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
 import cookieParser from "cookie-parser";
-import { authenticate } from "./middleware/authentication.js";
+import {
+  authenticate,
+  authorize,
+  loginRedirect,
+} from "./middleware/authentication.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,6 +19,10 @@ const app = express();
 const port = 80;
 
 app.use(cookieParser());
+
+app.get("/web", loginRedirect, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "web", "index.html"));
+});
 
 app.use("/web/dashboard", authenticate);
 
