@@ -2,6 +2,8 @@ import { writeNotice } from "../../../utility/realtime.js";
 // import data from "./data.json";
 import { getParentInfoBySessionCookie, getStudentsBySessionCookie } from "../../../utility/datahandler.js";
 
+let parentInfo = null;
+
 async function initGui() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
@@ -57,6 +59,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+async function getSender() {
+    const sender = await getParentInfoBySessionCookie();
+    return sender;
+}
+
 function createMessageObject(message, selectedChildren, sendDate, sender, read) {
     const data = {
         "sendDate": sendDate,
@@ -81,6 +88,10 @@ function createMessageObject(message, selectedChildren, sendDate, sender, read) 
 
 async function createChildrenGui() {
     const children = await getStudentsBySessionCookie();
+
+    parentInfo = await getParentInfoBySessionCookie();
+
+    console.log(parentInfo);
 
     // Få fat i det overordnede container-element
     const childrenContainer = document.getElementById('children');

@@ -106,7 +106,10 @@ export const getParentInfoBySessionCookie = async (sessionCookie) => {
 
   const parentsId = await getParentsIdFromUserId(userId);
 
+
   const parents = await getParentById(parentsId);
+
+  console.log("Forældre: " + parents);
 
   return parents;
 };

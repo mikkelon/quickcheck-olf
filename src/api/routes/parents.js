@@ -6,6 +6,7 @@ import {
   deleteParents,
   addParent,
   getStudentsBySessionCookie,
+  getParentInfoBySessionCookie
 } from "../controllers/parentsController.js";
 const router = express.Router();
 
@@ -116,6 +117,9 @@ router.get("/:id", async (req, res) => {
 
 // Hent forældre info ud fra session cookie
 router.get("/info", async (req, res) => {
+
+  console.log("yooodfdsgdo");
+
   const sessionCookie = req.cookies.__session || "";
   try {
     const parent = await getParentInfoBySessionCookie(sessionCookie);
