@@ -15,12 +15,12 @@
   font-weight: 500;
   cursor: pointer;
   margin-bottom: 20px;
-  
+  text-decoration: none;
+  transition: all 0.2s;
 }
 
 .nav-button:hover {
   transform: scale(1.05);
-  transition: all 0.2s ease-in-out;
 }
 
 .container {
@@ -96,11 +96,12 @@
   flex: 2;
 }
 
-.status {
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  background-color: rgb(2, 235, 2);
+button {
+  box-sizing: border-box;
+  background-color: #ff5656b6;
+  width: 160px;
+  padding: 10px 20px;
+  font-size: medium;
 }
 
 .read {
@@ -108,7 +109,8 @@
   color: #00000047;
 }
 
-.read > .check-button {
+.read button {
+  background-color: #56e87fc3;
 }
 
 .vertical-line {

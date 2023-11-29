@@ -70,6 +70,7 @@ button {
   padding: 16px 32px;
   border-radius: var(--small-border-radius);
   border: none;
+  cursor: pointer;
 }
 
 select,
