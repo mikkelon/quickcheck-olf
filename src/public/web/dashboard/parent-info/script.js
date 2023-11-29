@@ -4,32 +4,35 @@ import {
   updateParents,
   deleteParentByIndex,
 } from "../../../utility/datahandler.js";
+
+// #--- Local variables ---#
 let parentsObj = {};
 
-// Static DOM elements
+// #--- Static DOM elements ---#
 const main = document.querySelector("main");
 const addParentButton = document.getElementById("outer-add-card");
 const modal = document.querySelector(".modal");
 const cancelButton = document.getElementById("cancel");
 const acceptButton = document.getElementById("accept");
 
-// Event Listeners
-
+// #--- Event listeners ---#
+// Modal click
 modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
   }
 });
 
+// Modal buttons
 acceptButton.addEventListener("click", () => {
   const index = modal.dataset.id;
   deleteParent(index);
 });
-
 cancelButton.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
+// Add parent button
 addParentButton.addEventListener("click", () => {
   const currentIndex = parentsObj.parents.length;
   const newCard = createCard(
@@ -42,7 +45,6 @@ addParentButton.addEventListener("click", () => {
     currentIndex
   );
 
-  // Select name input
   const nameInput = newCard.querySelector(".name");
   nameInput.placeholder = "Navn";
   console.log(nameInput);
@@ -52,6 +54,7 @@ addParentButton.addEventListener("click", () => {
   addParentButton.style.display = "none";
 });
 
+// #--- Functions to create DOM elements ---#
 const createCard = (parent, index) => {
   // Create card div
   const cardDiv = document.createElement("div");
@@ -61,6 +64,8 @@ const createCard = (parent, index) => {
   // Add info container to card
   const infoContainer = createInfoContainer(parent, index);
   cardDiv.appendChild(infoContainer);
+
+  // Add buttons to card
   const buttons = createButtons(parent, index);
   cardDiv.appendChild(buttons);
 
@@ -171,6 +176,8 @@ const createButtons = (parent, index) => {
   return buttonsContainer;
 };
 
+// #--- Functions to update DOM elements ---#
+// Toggle save and edit buttons in the card
 const toggleSaveEditButtons = (index) => {
   const saveButton = document.querySelector(`.save-btn[data-id="${index}"]`);
   const editButton = document.querySelector(`.edit-btn[data-id="${index}"]`);
@@ -183,6 +190,7 @@ const toggleSaveEditButtons = (index) => {
   }
 };
 
+// Toggle inputs in the card
 const toggleInputs = (index) => {
   const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
   inputs.forEach((input) => {
@@ -196,11 +204,13 @@ const toggleInputs = (index) => {
   });
 };
 
+// Delete a card
 const deleteCard = (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   card.remove();
 };
 
+// Delete a parent (calls deleteCard)
 const deleteParent = async (index) => {
   try {
     await deleteParentByIndex(parentsObj.id, index);
@@ -214,6 +224,7 @@ const deleteParent = async (index) => {
   }
 };
 
+// Handle adding and updating a parent
 const addUpdateParent = async (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   const nameInput = card.querySelector(".name");
@@ -221,39 +232,35 @@ const addUpdateParent = async (index) => {
   const phoneInput = card.querySelector(".info-box:nth-child(3) input");
   const emailInput = card.querySelector(".info-box:nth-child(4) input");
 
-  const parents = [
-    {
-      name: nameInput.value,
-      relation: relationInput.value,
-      phone: phoneInput.value,
-      email: emailInput.value,
-    },
-  ];
+  const parent = {
+    name: nameInput.value,
+    relation: relationInput.value,
+    phone: phoneInput.value,
+    email: emailInput.value,
+  };
+
   if (index === parentsObj.parents.length) {
-    // Add parent
+    // #-- Add parent --#
+    // Add parent to local array
+    parentsObj.parents.push(parent);
     try {
-      await addParent(parentsObj.id, parents[0]);
+      await addParent(parentsObj.id, parent);
       toggleInputs(index);
       toggleSaveEditButtons(index);
       addParentButton.style.display = "flex";
-      parentsObj.parents.push(parents[0]);
     } catch (error) {
       console.log(error);
       alert("Fejl - forælder findes ikke.");
     }
   } else {
-    // Add other parents
-    for (let i = 0; i < parentsObj.parents.length; i++) {
-      if (i !== index) {
-        parents.push(parentsObj.parents[i]);
-      }
-    }
-    // Update parent
+    // #-- Update parent --#
+    // Update parent in local array
+    parentsObj.parents[index] = parent;
     try {
-      await updateParents(parentsObj.id, { parents });
+      await updateParents(parentsObj.id, { parents: parentsObj.parents });
 
       // Update parentsObj
-      parentsObj.parents = parents;
+      parentsObj.parents = parent;
 
       toggleInputs(index);
       toggleSaveEditButtons(index);
@@ -264,6 +271,7 @@ const addUpdateParent = async (index) => {
   }
 };
 
+// Update indexes of cards, buttons and inputs (Used for all logic)
 const updateIndexes = () => {
   const cards = document.querySelectorAll(".card");
   cards.forEach((card, index) => {
@@ -279,6 +287,7 @@ const updateIndexes = () => {
   });
 };
 
+// Shorten name
 const shortenName = (name) => {
   const nameArray = name.split(" ");
 
@@ -299,7 +308,7 @@ const shortenName = (name) => {
   }
 };
 
-// When DOM is loaded
+// #--- When DOM is loaded ---#
 document.addEventListener("DOMContentLoaded", async () => {
   parentsObj = await getParentInfoBySessionCookie();
   console.log(parentsObj);
