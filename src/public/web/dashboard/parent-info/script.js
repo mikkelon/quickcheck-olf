@@ -1,4 +1,7 @@
-import { getParentInfoBySessionCookie } from "../../../utility/datahandler.js";
+import {
+  getParentInfoBySessionCookie,
+  updateParents,
+} from "../../../utility/datahandler.js";
 let parentsObj = {};
 
 // Static DOM elements
@@ -145,7 +148,16 @@ const createButtons = (parent, index) => {
   ); //TODO: Edit parent
   buttonsContainer.appendChild(editButton);
 
-  const saveButton = createButton("Gem", "save-btn", () => {}, index); //TODO: Save parent
+  const saveButton = createButton(
+    "Gem",
+    "save-btn",
+    () => {
+      toggleSaveEditButtons(index);
+      toggleInputs(index);
+      addUpdateParent(index);
+    },
+    index
+  ); //TODO: Save parent
   saveButton.style.display = "none";
   buttonsContainer.appendChild(saveButton);
 
@@ -180,6 +192,37 @@ const toggleInputs = (index) => {
 const deleteCard = (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   card.remove();
+};
+
+const addUpdateParent = (index) => {
+  const card = document.querySelector(`.card[data-id="${index}"]`);
+  const nameInput = card.querySelector(".name");
+  const relationInput = card.querySelector(".info-box:nth-child(2) input");
+  const phoneInput = card.querySelector(".info-box:nth-child(3) input");
+  const emailInput = card.querySelector(".info-box:nth-child(4) input");
+
+  const parents = [
+    {
+      name: nameInput.value,
+      relation: relationInput.value,
+      phone: phoneInput.value,
+      email: emailInput.value,
+    },
+  ];
+
+  // Add all other parents
+  for (let i = 0; i < parentsObj.parents.length; i++) {
+    if (i !== index) {
+      parents.push(parentsObj.parents[i]);
+    }
+  }
+
+  if (index === parentsObj.parents.length) {
+    // Add parent
+  } else {
+    // Update parent
+    updateParents(parentsObj.id, { parents });
+  }
 };
 
 const shortenName = (name) => {

@@ -384,6 +384,7 @@ export const updateStudent = async (student) => {
 
 export const updateParents = async (id, parents) => {
   const url = `${apiUrl}/parents/${id}`;
+  console.log(id, parents);
   const options = {
     method: "PUT",
     headers: {

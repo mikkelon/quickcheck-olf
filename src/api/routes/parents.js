@@ -94,6 +94,8 @@ router.get("/:parentsId/students", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   const id = req.params.id;
+  console.log("updating parents with id:", id);
+  console.log("updating parents with body:", req.body);
 
   try {
     await updateParents(id, req.body);
