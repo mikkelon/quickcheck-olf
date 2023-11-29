@@ -84,6 +84,11 @@ p {
   border: 1px solid #ccc;
   background-color: #fff;
 }
+#skoletrin-select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
 
 #active-filters-wrapper {
   display: none;
