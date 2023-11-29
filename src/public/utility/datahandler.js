@@ -361,21 +361,6 @@ export const getClassById = async (classId) => {
   }
 };
 
-/**
- * FOR TESTING PURPOSES ONLY
- *
- * Gets a random parent's students
- * @returns {Array} Array of students
- */
-export const getRandomParentStudents = async () => {
-  const parents = await fetch(apiUrl + "/parents").then((res) => res.json());
-
-  const randomParent = parents[Math.floor(Math.random() * parents.length)];
-  const students = await getStudentsByParentId(randomParent.id);
-
-  return students;
-};
-
 export const updateStudent = async (student) => {
   const url = `${apiUrl}/${student.id}`;
   const options = {
@@ -548,6 +533,4 @@ export const getParentInfoBySessionCookie = async () => {
     console.error("Error getting parents by session cookie:", error);
     throw error;
   }
-}
-
-
+};
