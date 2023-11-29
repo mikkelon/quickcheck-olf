@@ -6,6 +6,7 @@ import {
   deleteParents,
   addParent,
   getStudentsBySessionCookie,
+  updateParents,
 } from "../controllers/parentsController.js";
 const router = express.Router();
 
@@ -111,6 +112,20 @@ router.get("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).send("Fejl ved hentning af forælder");
+  }
+});
+
+/* Opdater parents */
+router.put("/:id", async (req, res) => {
+  let id = req.params.id;
+  const updatedParents = req.body;
+
+  try {
+    await updateParents(id, updatedParents);
+    res.status(200).send("Forælder opdateret");
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - forælder findes ikke.");
   }
 });
 
