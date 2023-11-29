@@ -1,11 +1,6 @@
 import { writeNotice } from "../../../utility/realtime.js";
 // import data from "./data.json";
-
-const childrenData = [
-    { id: 'child1', name: 'Barn 1', value: 'child1', class: 'Blå' },
-    { id: 'child2', name: 'Barn 2', value: 'child2', class: 'Pink' },
-    { id: 'child3', name: 'Barn 3', value: 'child3', class: 'Gul' },
-];
+import { getParentInfoBySessionCookie, getStudentsBySessionCookie } from "../../../utility/datahandler.js";
 
 async function initGui() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -75,7 +70,7 @@ function createMessageObject(message, selectedChildren, sendDate, sender, read) 
                 "class": "Pink"
             }
         ],
-        "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl quis aliquam ultricies, nunc"
+        "message": message
     };
 
     console.log(data.concerns);
@@ -84,14 +79,8 @@ function createMessageObject(message, selectedChildren, sendDate, sender, read) 
     writeNotice(data.sender, data.concerns, data.message, data.sendDate);
 }
 
-createMessageObject();
-
-function getChildren() {
-    return childrenData;
-}
-
 async function createChildrenGui() {
-    const children = getChildren();
+    const children = await getStudentsBySessionCookie();
 
     // Få fat i det overordnede container-element
     const childrenContainer = document.getElementById('children');

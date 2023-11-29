@@ -114,4 +114,16 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Hent forældre info ud fra session cookie
+router.get("/info", async (req, res) => {
+  const sessionCookie = req.cookies.__session || "";
+  try {
+    const parent = await getParentInfoBySessionCookie(sessionCookie);
+    res.status(200).send(parent);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af forælder");
+  }
+});
+
 export default router;

@@ -522,4 +522,30 @@ export const getStudentsBySessionCookie = async () => {
   }
 };
 
+/**
+ * Gets the parents associated with the current user
+ * @returns {Array} Array of parents
+ */
+
+export const getParentInfoBySessionCookie = async () => {
+  const url = `${apiUrl}/parents/info`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting parents by session cookie:", error);
+    throw error;
+  }
+}
+
 

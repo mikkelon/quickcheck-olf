@@ -1,6 +1,7 @@
 import { ref, onChildAdded, onChildChanged, onChildRemoved, set, push } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 import { realtimeDB } from "./firebase.js";
 
+
 const realtime = ref(realtimeDB, "notice-board");
 
 export const realtimeNoticeBoard = (callback) => {
