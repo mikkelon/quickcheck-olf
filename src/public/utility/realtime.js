@@ -27,10 +27,12 @@ export const realtimeNoticeBoardDelete = (callback) => {
  * @param {[{name, class}, {name, class}]} concerns 
  * @param {string} message 
  */
-export function writeNotice(sender, concerns, message, sendDate) {
+export function writeNotice(sender, concerns, message) {
     console.log(sender)
 
     console.log(concerns)
+
+    console.log()
 
     const newPostRef = push(realtime);
     set(newPostRef, {
@@ -38,10 +40,11 @@ export function writeNotice(sender, concerns, message, sendDate) {
         concerns: concerns,
         message: message,
         read: false,
-        sendDate: sendDate
+        sendData: sendDate
     }).then(() => {
         console.log('Notice written to realtime database');
     }).catch((error) => {
         console.error('Error writing notice to realtime database:', error);
     });
+
 }

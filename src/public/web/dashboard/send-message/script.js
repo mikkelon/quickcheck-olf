@@ -2,9 +2,9 @@ import { writeNotice } from "../../../utility/realtime.js";
 // import data from "./data.json";
 
 const childrenData = [
-    { id: 'child1', name: 'Barn 1', value: 'child1' },
-    { id: 'child2', name: 'Barn 2', value: 'child2' },
-    { id: 'child3', name: 'Barn 3', value: 'child3' },
+    { id: 'child1', name: 'Barn 1', value: 'child1', class: 'Blå' },
+    { id: 'child2', name: 'Barn 2', value: 'child2', class: 'Pink' },
+    { id: 'child3', name: 'Barn 3', value: 'child3', class: 'Gul' },
 ];
 
 async function initGui() {
@@ -62,9 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function createMessageObject(message, selectedChildren, sendDate,) {
+function createMessageObject(message, selectedChildren, sendDate, sender, read) {
     const data = {
-        "sendDate": "2021-05-12",
+        "sendDate": sendDate,
         "sender": {
             "name": "Browly",
             "relation": "Far"
