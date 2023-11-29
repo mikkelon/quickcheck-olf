@@ -58,10 +58,11 @@ main {
   gap: 0.5rem;
 }
 
-.info-container h2 {
+.info-container .name {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  color: black;
 }
 
 .info-box {
@@ -69,9 +70,16 @@ main {
 }
 
 .label {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: bold;
   color: #777;
+}
+
+input {
+  background-color: transparent;
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.25rem;
 }
 
 .buttons-container {

@@ -6,14 +6,12 @@ import {
 } from "../../../utility/forms.js";
 const parents = [
   {
-    id: 1,
     name: "Hans",
     email: "hahsh@lhs.dk",
     phone: "12345678",
     relation: "far",
   },
   {
-    id: 2,
     name: "Hansss",
     email: "asdasda2@sads.kd",
     phone: "12345678",
@@ -43,7 +41,7 @@ cancelButton.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
-const createCard = (parent) => {
+const createCard = (parent, index) => {
   // LOG STUDENT FOR TESTING PURPOSES
   console.log(parent);
 
@@ -52,69 +50,42 @@ const createCard = (parent) => {
   cardDiv.classList.add("card");
 
   // Add info container to card
-  const infoContainer = createInfoContainer(parent);
+  const infoContainer = createInfoContainer(parent, index);
   cardDiv.appendChild(infoContainer);
-  const buttons = createButtons(parent);
+  const buttons = createButtons(parent, index);
   cardDiv.appendChild(buttons);
 
   // Add card to main
   main.appendChild(cardDiv);
 };
 
-const createInfoContainer = (parent) => {
+const createInfoContainer = (parent, index) => {
   const infoContainer = document.createElement("div");
   infoContainer.classList.add("info-container");
 
-  const name = document.createElement("h2");
-  name.innerText = shortenName(parent.name);
-
+  const shortenedName = shortenName(parent.name);
+  const inputName = document.createElement("input");
+  inputName.value = shortenedName;
+  inputName.disabled = true;
+  inputName.dataset.id = index;
+  inputName.classList.add("name");
   // Add name to info container
-  infoContainer.appendChild(name);
+  infoContainer.appendChild(inputName);
 
   // Add info boxes to info container
-  const relationBox = createInfoBox("Relation", parent.relation);
+  const relationBox = createInfoBox(parent, "Relation", parent.relation, index);
   infoContainer.appendChild(relationBox);
 
-  const phoneBox = createInfoBox("Telefon", parent.phone);
+  const phoneBox = createInfoBox(parent, "Telefon", parent.phone, index);
   infoContainer.appendChild(phoneBox);
 
-  const emailBox = createInfoBox("Email", parent.email);
+  const emailBox = createInfoBox(parent, "Email", parent.email, index);
   infoContainer.appendChild(emailBox);
 
   return infoContainer;
 };
 
-const createButton = (parent, text, htmlClass, onClick) => {
-  const button = document.createElement("button");
-  button.classList.add("button");
-  button.classList.add(htmlClass);
-  button.dataset.parentId = parent.id;
-  button.innerText = text;
-  button.addEventListener("click", onClick);
-
-  return button;
-};
-
-const createButtons = (parent) => {
-  const buttonsContainer = document.createElement("div");
-  buttonsContainer.classList.add("buttons-container");
-
-  const deleteButton = createButton(parent, "Slet", "delete-btn", () => {
-    modal.style.display = "flex";
-  }); //TODO: Delete parent
-  buttonsContainer.appendChild(deleteButton);
-
-  const editButton = createButton(parent, "Rediger", "edit-btn", () => {}); //TODO: Edit parent
-  buttonsContainer.appendChild(editButton);
-
-  const saveButton = createButton(parent, "Gem", "save-btn", () => {}); //TODO: Save parent
-  saveButton.style.display = "none";
-  buttonsContainer.appendChild(saveButton);
-
-  return buttonsContainer;
-};
-
-const createInfoBox = (label, value) => {
+const createInfoBox = (parent, label, value, index) => {
   const infoBox = document.createElement("div");
   infoBox.classList.add("info-box");
 
@@ -122,13 +93,61 @@ const createInfoBox = (label, value) => {
   labelElement.classList.add("label");
   labelElement.innerText = label;
 
-  const valueElement = document.createElement("p");
-  valueElement.innerText = value;
+  const inputElement = document.createElement("input");
+  inputElement.value = value;
+  inputElement.disabled = true;
+  inputElement.dataset.id = index;
 
   infoBox.appendChild(labelElement);
-  infoBox.appendChild(valueElement);
+  infoBox.appendChild(inputElement);
 
   return infoBox;
+};
+
+const createButton = (text, htmlClass, onClick, index) => {
+  const button = document.createElement("button");
+  button.classList.add("button");
+  button.classList.add(htmlClass);
+  button.dataset.id = index;
+  button.innerText = text;
+  button.addEventListener("click", onClick);
+
+  return button;
+};
+
+const createButtons = (parent, index) => {
+  const buttonsContainer = document.createElement("div");
+  buttonsContainer.classList.add("buttons-container");
+
+  const deleteButton = createButton(
+    "Slet",
+    "delete-btn",
+    () => {
+      modal.style.display = "flex";
+    },
+    index
+  ); //TODO: Delete parent
+  buttonsContainer.appendChild(deleteButton);
+
+  const editButton = createButton(
+    "Rediger",
+    "edit-btn",
+    () => {
+      const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
+      inputs.forEach((input) => {
+        input.disabled = false;
+        input.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+      });
+    },
+    index
+  ); //TODO: Edit parent
+  buttonsContainer.appendChild(editButton);
+
+  const saveButton = createButton("Gem", "save-btn", () => {}, index); //TODO: Save parent
+  saveButton.style.display = "none";
+  buttonsContainer.appendChild(saveButton);
+
+  return buttonsContainer;
 };
 
 const shortenName = (name) => {
@@ -156,5 +175,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   // TODO: Get students from database
 
   // Create cards for students
-  parents.forEach((parent) => createCard(parent));
+  parents.forEach((parent, index) => createCard(parent, index));
 });
