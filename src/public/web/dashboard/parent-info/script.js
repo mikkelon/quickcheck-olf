@@ -2,6 +2,7 @@ import {
   addParent,
   getParentInfoBySessionCookie,
   updateParents,
+  deleteParentByIndex,
 } from "../../../utility/datahandler.js";
 let parentsObj = {};
 
@@ -10,6 +11,7 @@ const main = document.querySelector("main");
 const addParentButton = document.getElementById("outer-add-card");
 const modal = document.querySelector(".modal");
 const cancelButton = document.getElementById("cancel");
+const acceptButton = document.getElementById("accept");
 
 // Event Listeners
 
@@ -17,6 +19,11 @@ modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
   }
+});
+
+acceptButton.addEventListener("click", () => {
+  const index = modal.dataset.id;
+  deleteParent(index);
 });
 
 cancelButton.addEventListener("click", () => {
@@ -131,6 +138,7 @@ const createButtons = (parent, index) => {
         deleteCard(index);
         addParentButton.style.display = "flex";
       } else {
+        modal.dataset.id = index;
         modal.style.display = "flex";
       }
     },
@@ -195,6 +203,18 @@ const toggleInputs = (index) => {
 const deleteCard = (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   card.remove();
+};
+
+const deleteParent = async (index) => {
+  try {
+    await deleteParentByIndex(parentsObj.id, index);
+    parentsObj.parents.splice(index, 1);
+    deleteCard(index);
+    modal.style.display = "none";
+  } catch (error) {
+    console.log(error);
+    alert("Fejl - forælder findes ikke.");
+  }
 };
 
 const addUpdateParent = async (index) => {

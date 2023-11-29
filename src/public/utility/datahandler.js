@@ -433,6 +433,28 @@ export const addParent = async (id, parent) => {
 };
 
 /**
+ * Delete parent object from parentsObj using index in parents array
+ * @param {string} id parentsObj id
+ * @param {number} index index of parent in parents array
+ */
+export const deleteParentByIndex = async (id, index) => {
+  const url = `${apiUrl}/parents/${id}/${index}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error deleting parent:", error);
+    throw error;
+  }
+};
+
+/**
  * Requests a session cookie based on the idToken
  * @param {string} idToken
  */
