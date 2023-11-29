@@ -509,7 +509,7 @@ export const getStudentsBySessionCookie = async () => {
 
 /**
  * Gets the parents associated with the current user
- * @returns {Array} Array of parents
+ * @returns {Object} Object with parents' ID and array of parents.
  */
 
 export const getParentInfoBySessionCookie = async () => {

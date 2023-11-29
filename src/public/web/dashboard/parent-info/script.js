@@ -1,10 +1,6 @@
-import {
-  createFormElement,
-  createFormsContainer,
-  createTextButton,
-  createIconButton,
-} from "../../../utility/forms.js";
-const parents = [
+import { getParentInfoBySessionCookie } from "../../../utility/datahandler.js";
+
+let parentsObj = [
   {
     name: "Hans",
     email: "hahsh@lhs.dk",
@@ -18,13 +14,6 @@ const parents = [
     relation: "farfar",
   },
 ];
-
-import {
-  getRandomParentStudents,
-  toggleStudentCheckIn,
-  getStudentsByParentId,
-} from "../../../../utility/datahandler.js";
-import config from "../../../utility/config.js";
 
 // Static DOM elements
 const main = document.querySelector("main");
@@ -194,8 +183,9 @@ const shortenName = (name) => {
 
 // When DOM is loaded
 document.addEventListener("DOMContentLoaded", async () => {
-  // TODO: Get students from database
+  parentsObj = await getParentInfoBySessionCookie();
+  console.log(parentsObj);
 
   // Create cards for students
-  parents.forEach((parent, index) => createCard(parent, index));
+  parentsObj.parents.forEach((parent, index) => createCard(parent, index));
 });
