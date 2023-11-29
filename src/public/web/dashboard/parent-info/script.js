@@ -31,6 +31,18 @@ import config from "../../../utility/config.js";
 // Static DOM elements
 const main = document.querySelector("main");
 
+const modal = document.querySelector(".modal");
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+const cancelButton = document.getElementById("cancel");
+cancelButton.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
 const createCard = (parent) => {
   // LOG STUDENT FOR TESTING PURPOSES
   console.log(parent);
@@ -87,7 +99,9 @@ const createButtons = (parent) => {
   const buttonsContainer = document.createElement("div");
   buttonsContainer.classList.add("buttons-container");
 
-  const deleteButton = createButton(parent, "Slet", "delete-btn", () => {}); //TODO: Delete parent
+  const deleteButton = createButton(parent, "Slet", "delete-btn", () => {
+    modal.style.display = "flex";
+  }); //TODO: Delete parent
   buttonsContainer.appendChild(deleteButton);
 
   const editButton = createButton(parent, "Rediger", "edit-btn", () => {}); //TODO: Edit parent
