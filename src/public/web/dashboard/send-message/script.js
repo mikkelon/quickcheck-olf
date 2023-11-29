@@ -1,3 +1,5 @@
+import { writeNotice } from "../../../utility/realtime.js";
+// import data from "./data.json";
 
 const childrenData = [
     { id: 'child1', name: 'Barn 1', value: 'child1' },
@@ -60,14 +62,29 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-async function createMessageObject(message, selectedChildren, sendDate) {
-    return {
-        message,
-        selectedChildren,
-        sendDate
+function createMessageObject(message, selectedChildren, sendDate,) {
+    const data = {
+        "sendDate": "2021-05-12",
+        "sender": {
+            "name": "Browly",
+            "relation": "Far"
+        },
+        "concerns": [
+            {
+                "name": "Kuririn",
+                "class": "Pink"
+            }
+        ],
+        "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl quis aliquam ultricies, nunc"
     };
 
+    console.log(data.concerns);
+
+    // Sørg for at sende alle nødvendige parametre
+    writeNotice(data.sender, data.concerns, data.message, data.sendDate);
 }
+
+createMessageObject();
 
 function getChildren() {
     return childrenData;
