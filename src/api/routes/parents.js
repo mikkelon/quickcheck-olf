@@ -5,6 +5,8 @@ import {
   getStudentsByParentsId,
   deleteParents,
   addParent,
+  getStudentsBySessionCookie,
+  getParentInfoBySessionCookie,
 } from "../controllers/parentsController.js";
 const router = express.Router();
 
@@ -18,15 +20,15 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* Hent forældre med id */
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
+/* Se børn ud fra session cookie */
+router.get("/students", async (req, res) => {
+  const sessionCookie = req.cookies.__session || "";
   try {
-    const parent = await getParentById(id);
-    res.status(200).send(parent);
+    const students = await getStudentsBySessionCookie(sessionCookie);
+    res.status(200).send(students);
   } catch (error) {
     console.log(error);
-    res.status(400).send("Fejl ved hentning af forælder");
+    res.status(400).send("Fejl ved hentning af elever");
   }
 });
 
@@ -98,6 +100,31 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(400).send("Fejl ved opdatering af forælder");
+  }
+});
+
+// Hent forældre info ud fra session cookie
+router.get("/info", async (req, res) => {
+
+  const sessionCookie = req.cookies.__session || "";
+  try {
+    const parent = await getParentInfoBySessionCookie(sessionCookie);
+    res.status(200).send(parent);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af forælder");
+  }
+});
+
+/* Hent forældre med id */
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const parent = await getParentById(id);
+    res.status(200).send(parent);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af forælder");
   }
 });
 

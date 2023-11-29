@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../../global.styles.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="../../../../components/header.js" type="module" defer></script>
+    <script type="module" src="script.js" defer></script>
+    <title>Send besked</title>
+  </head>
+  <body>
+    <header-component></header-component>
+    <h1 id="title">Send besked</h1>
+
+    <div class="forms-container">
+      <form id="messageForm">
+        <label class="label-container">Hvem drejer beskeden sig om:</label>
+
+        <div id="children"></div>
+
+        <textarea
+          class="text-area"
+          id="message"
+          name="message"
+          rows="4"
+          cols="50"
+        ></textarea>
+
+        <div class="dropdown-container">
+          <label id="label-dropdown">Vælg afsender:</label>
+          <select id="parents-dropdown"></select>
+        </div>
+
+        <div class="dato-container">
+          <label id="label-dato" for="sendDate"
+            >Vælg dato for afsendelse:</label
+          >
+          <input type="date" id="sendDate" name="sendDate" />
+        </div>
+
+        <div class="button-container">
+          <button class="submit-btn" type="submit">Send besked</button>
+          <button class="cancel-btn">Ryd</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

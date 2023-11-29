@@ -234,7 +234,7 @@ export const getParentsById = async (parentsId) => {
 
 // Create note
 export const createNote = async (studentId, note) => {
-  const url = `http://localhost:6969/notes`;
+  const url = `${apiUrl}/notes`;
   const options = {
     method: "POST",
     body: JSON.stringify({ studentId, ...note }),
@@ -262,7 +262,7 @@ export const createNote = async (studentId, note) => {
 };
 
 export const deleteNoteById = async (noteId) => {
-  const url = `http://localhost:6969/notes/${noteId}`;
+  const url = `${apiUrl}/notes/${noteId}`;
   const options = {
     method: "DELETE",
     headers: {
@@ -296,7 +296,7 @@ export const deleteStudent = async (studentId) => {
 
 // GET notes til en elev
 export const getNotesById = async (studentId) => {
-  const url = `http://localhost:6969/notes/${studentId}`;
+  const url = `${apiUrl}/notes/${studentId}`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -419,3 +419,133 @@ export const updateParents = async (id, parents) => {
     throw error;
   }
 };
+
+/**
+ * Requests a session cookie based on the idToken
+ * @param {string} idToken
+ */
+export const requestSessionCookie = async (idToken) => {
+  const url = `${apiUrl}/login`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ idToken }),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.data.error.code);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw error;
+  }
+};
+
+/**
+ * Deletes the session cookie
+ */
+export const requestDeleteSessionCookie = async () => {
+  const url = `${apiUrl}/login`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.data.error.code);
+    }
+  } catch (error) {
+    console.error("Error logging out:", error);
+    throw error;
+  }
+};
+
+/**
+ * Gets the buttons for the given role for the dashboard display
+ * @returns {Array} Array of buttons
+ */
+export const getButtonsForRole = async () => {
+  const url = `${apiUrl}/dashboard`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    console.log(response);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.data.error.code);
+    }
+
+    return data;
+  } catch (error) {
+    console.log("Error getting buttons for role:", error);
+    throw error;
+  }
+};
+
+/**
+ * Gets the students associated with the current user
+ * @returns {Array} Array of students
+ */
+export const getStudentsBySessionCookie = async () => {
+  const url = `${apiUrl}/parents/students`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting students by session cookie:", error);
+    throw error;
+  }
+};
+
+/**
+ * Gets the parents associated with the current user
+ * @returns {Array} Array of parents
+ */
+
+export const getParentInfoBySessionCookie = async () => {
+  const url = `${apiUrl}/parents/info`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting parents by session cookie:", error);
+    throw error;
+  }
+}
+
+

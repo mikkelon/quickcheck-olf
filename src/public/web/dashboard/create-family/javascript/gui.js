@@ -17,6 +17,7 @@ import config from "../../../../utility/config.js";
 
 // Fetch options for the class dropdown from an API
 let classOptions;
+const informationContainer = document.getElementById("information");
 
 const createDeleteButton = () => {
   const deleteButton = document.createElement("div");
@@ -45,7 +46,7 @@ function displayParents() {
       // Handle the click event for adding a child
       // You can show a form or perform any other action
       console.log("Add Parent button clicked");
-      createParent("", "", "");
+      createParent("", "", "", "");
       displayParents();
     }
   );
@@ -108,9 +109,18 @@ function createParentElement(parent, index) {
   const emailForm = createFormElement("E-mail", "text", "email", parent.email);
   formsContainer.appendChild(emailForm);
 
+  const relationForm = createFormElement(
+    "Relation (f.eks. Mor)",
+    "text",
+    "relation",
+    parent.relation
+  );
+  formsContainer.appendChild(relationForm);
+
   const nameInput = nameForm.querySelector(".forms-input");
   const phoneInput = phoneForm.querySelector(".forms-input");
   const emailInput = emailForm.querySelector(".forms-input");
+  const relationInput = relationForm.querySelector(".forms-input");
 
   nameInput.addEventListener("blur", () =>
     updateParentData(index, "name", nameInput.value)
@@ -120,6 +130,9 @@ function createParentElement(parent, index) {
   );
   emailInput.addEventListener("blur", () =>
     updateParentData(index, "email", emailInput.value)
+  );
+  emailInput.addEventListener("blur", () =>
+    updateParentData(index, "relation", relationInput.value)
   );
 
   parentDiv.appendChild(headerDiv);
@@ -215,7 +228,7 @@ function createDropdownFormElement(
   select.classList.add("forms-input");
   select.setAttribute("id", inputId);
 
-  options.forEach((option) => {
+  options.forEach(option => {
     const optionElement = document.createElement("option");
     optionElement.value = option.colorLabel;
     optionElement.textContent = option.colorLabel;
@@ -227,7 +240,7 @@ function createDropdownFormElement(
 
   // Find index of option where data-class-id matches selectedClassId
   const selectedIndex = options.findIndex(
-    (option) => option.id === selectedClassId
+    option => option.id === selectedClassId
   );
   select.selectedIndex = selectedIndex;
 
@@ -313,7 +326,8 @@ function updateChildData(index, field, value) {
 }
 
 function forælderOprettet(success) {
-  const informationContainer = document.getElementById("information");
+  informationContainer.classList.remove("success");
+  informationContainer.classList.remove("error");
   // scroll to top
   window.scrollTo(0, 0);
   // setTimeout(() => {
@@ -335,7 +349,7 @@ function forælderOprettet(success) {
 // Function to initialize the GUI
 async function initGUI() {
   getClasses()
-    .then((data) => {
+    .then(data => {
       classOptions = data;
     })
     .then(() => {
@@ -345,10 +359,20 @@ async function initGUI() {
     });
 
   const submit = document.getElementById("submit");
+
+  const toggleLoadingSpinner = () => {
+    submit.disabled = !submit.disabled;
+    submit.innerHTML = submit.disabled
+      ? '<i class="fas fa-spinner fa-pulse fa-lg"></i>'
+      : "Opret";
+  };
+
   submit.addEventListener("click", async () => {
+    informationContainer.innerHTML = "";
+    toggleLoadingSpinner();
     const success = await submitToDatabase();
-    console.log("Success:", success);
     forælderOprettet(success);
+    toggleLoadingSpinner();
   });
 
   const cancel = document.getElementById("cancel");
