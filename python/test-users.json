@@ -10,11 +10,6 @@
     "role": "employee"
   },
   {
-    "email": "forælder@test.dk",
-    "password": "123456",
-    "role": "parents"
-  },
-  {
     "email": "test@test.dk",
     "password": "123456",
     "role": "test"
