@@ -1,3 +1,5 @@
+@import "../../global.styles.css";
+
 /* center content inside body */
 body {
   display: flex;
@@ -34,7 +36,7 @@ body > div {
 
 input {
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: var(--small-border-radius);
   padding: 12px 12px;
   box-sizing: border-box;
   width: 100%;
@@ -43,15 +45,6 @@ input {
 label {
   font-weight: bold;
   margin-left: 1rem;
-}
-
-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 #alert {

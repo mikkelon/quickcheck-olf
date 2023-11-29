@@ -79,7 +79,11 @@ input {
 
 .submit-btn,
 .cancel-btn {
+  box-sizing: border-box;
   color: white;
+  min-width: 140px;
+  min-height: 70px;
+  font-size: x-large;
 }
 
 .submit-btn {
@@ -96,6 +100,8 @@ input {
   opacity: 0.8;
 }
 
-.big-button {
-  border-radius: 25px;
+.cancel-btn:disabled,
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
