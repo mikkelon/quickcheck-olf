@@ -184,16 +184,12 @@ const toggleSaveEditButtons = (index) => {
 };
 
 const toggleInputs = (index) => {
-  console.log("toggling inputs for index:", index);
   const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
-  console.log(inputs);
   inputs.forEach((input) => {
-    console.log(input);
     if (input.disabled) {
       input.disabled = false;
       input.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     } else {
-      console.log("disabling input");
       input.disabled = true;
       input.style.backgroundColor = "transparent";
     }
@@ -209,6 +205,7 @@ const deleteParent = async (index) => {
   try {
     await deleteParentByIndex(parentsObj.id, index);
     parentsObj.parents.splice(index, 1);
+    updateIndexes();
     deleteCard(index);
     modal.style.display = "none";
   } catch (error) {
@@ -243,8 +240,6 @@ const addUpdateParent = async (index) => {
     } catch (error) {
       console.log(error);
       alert("Fejl - forælder findes ikke.");
-      toggleInputs(index);
-      toggleSaveEditButtons(index);
     }
   } else {
     // Add other parents
@@ -256,13 +251,32 @@ const addUpdateParent = async (index) => {
     // Update parent
     try {
       await updateParents(parentsObj.id, { parents });
+
+      // Update parentsObj
+      parentsObj.parents = parents;
+
+      toggleInputs(index);
+      toggleSaveEditButtons(index);
     } catch (error) {
       console.log(error);
       alert("Fejl - forælder findes ikke.");
-      toggleInputs(index);
-      toggleSaveEditButtons(index);
     }
   }
+};
+
+const updateIndexes = () => {
+  const cards = document.querySelectorAll(".card");
+  cards.forEach((card, index) => {
+    card.dataset.id = index;
+    const buttons = card.querySelectorAll(".button");
+    buttons.forEach((button) => {
+      button.dataset.id = index;
+    });
+    const inputs = card.querySelectorAll("input");
+    inputs.forEach((input) => {
+      input.dataset.id = index;
+    });
+  });
 };
 
 const shortenName = (name) => {

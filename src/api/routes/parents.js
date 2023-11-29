@@ -46,23 +46,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-/* Slet en enkelt forælder fra et parents objekt ud fra index i parents arrayet */
-router.delete("/:id/:index", async (req, res) => {
-  const id = req.params.id;
-  const index = req.params.index;
-
-  try {
-    const parent = await getParentById(id);
-    const parents = parent.parents;
-    parents.splice(index, 1);
-    await updateParents(id, { parents });
-    res.status(200).send("Forælder slettet");
-  } catch (error) {
-    console.log(error);
-    res.status(404).send("Fejl - forælder findes ikke.");
-  }
-});
-
 /* Se børn */
 router.get("/:parentsId/students", async (req, res) => {
   const parentsId = req.params.parentsId;
@@ -160,6 +143,23 @@ router.post("/:id", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(400).send("Fejl ved oprettelse af forælder");
+  }
+});
+
+/* Slet en enkelt forælder fra et parents objekt ud fra index i parents arrayet */
+router.delete("/:id/:index", async (req, res) => {
+  const id = req.params.id;
+  const index = req.params.index;
+
+  try {
+    const parent = await getParentById(id);
+    const parents = parent.parents;
+    parents.splice(index, 1);
+    await updateParents(id, { parents });
+    res.status(200).send("Forælder slettet");
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Fejl - forælder findes ikke.");
   }
 });
 
