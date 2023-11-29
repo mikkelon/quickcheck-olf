@@ -7,6 +7,7 @@ import {
   addParent,
   getStudentsBySessionCookie,
   updateParents,
+  getParentInfoBySessionCookie,
 } from "../controllers/parentsController.js";
 const router = express.Router();
 
@@ -100,6 +101,20 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(400).send("Fejl ved opdatering af forælder");
+  }
+});
+
+// Hent forældre info ud fra session cookie
+router.get("/info", async (req, res) => {
+  console.log("yooodfdsgdo");
+
+  const sessionCookie = req.cookies.__session || "";
+  try {
+    const parent = await getParentInfoBySessionCookie(sessionCookie);
+    res.status(200).send(parent);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af forælder");
   }
 });
 
