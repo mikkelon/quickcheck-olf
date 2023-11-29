@@ -1,41 +1,50 @@
 import { getParentInfoBySessionCookie } from "../../../utility/datahandler.js";
-
-let parentsObj = [
-  {
-    name: "Hans",
-    email: "hahsh@lhs.dk",
-    phone: "12345678",
-    relation: "far",
-  },
-  {
-    name: "Hansss",
-    email: "asdasda2@sads.kd",
-    phone: "12345678",
-    relation: "farfar",
-  },
-];
+let parentsObj = {};
 
 // Static DOM elements
 const main = document.querySelector("main");
-
+const addParentButton = document.getElementById("outer-add-card");
 const modal = document.querySelector(".modal");
+const cancelButton = document.getElementById("cancel");
+
+// Event Listeners
+
 modal.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
   }
 });
 
-const cancelButton = document.getElementById("cancel");
 cancelButton.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
-const createCard = (parent, index) => {
-  // LOG STUDENT FOR TESTING PURPOSES
-  console.log(parent);
+addParentButton.addEventListener("click", () => {
+  const currentIndex = parentsObj.parents.length;
+  const newCard = createCard(
+    {
+      name: "",
+      relation: "",
+      phone: "",
+      email: "",
+    },
+    currentIndex
+  );
 
+  // Select name input
+  const nameInput = newCard.querySelector(".name");
+  nameInput.placeholder = "Navn";
+  console.log(nameInput);
+
+  toggleSaveEditButtons(newCard.dataset.id);
+  toggleInputs(newCard.dataset.id);
+  addParentButton.style.display = "none";
+});
+
+const createCard = (parent, index) => {
   // Create card div
   const cardDiv = document.createElement("div");
+  cardDiv.dataset.id = index;
   cardDiv.classList.add("card");
 
   // Add info container to card
@@ -45,7 +54,9 @@ const createCard = (parent, index) => {
   cardDiv.appendChild(buttons);
 
   // Add card to main
-  main.appendChild(cardDiv);
+  main.insertBefore(cardDiv, addParentButton);
+
+  return cardDiv;
 };
 
 const createInfoContainer = (parent, index) => {
@@ -112,7 +123,12 @@ const createButtons = (parent, index) => {
     "Slet",
     "delete-btn",
     () => {
-      modal.style.display = "flex";
+      if (index === parentsObj.parents.length) {
+        deleteCard(index);
+        addParentButton.style.display = "flex";
+      } else {
+        modal.style.display = "flex";
+      }
     },
     index
   ); //TODO: Delete parent
@@ -161,6 +177,11 @@ const toggleInputs = (index) => {
   });
 };
 
+const deleteCard = (index) => {
+  const card = document.querySelector(`.card[data-id="${index}"]`);
+  card.remove();
+};
+
 const shortenName = (name) => {
   const nameArray = name.split(" ");
 
@@ -188,4 +209,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Create cards for students
   parentsObj.parents.forEach((parent, index) => createCard(parent, index));
+  addParentButton.style.display = "flex";
 });

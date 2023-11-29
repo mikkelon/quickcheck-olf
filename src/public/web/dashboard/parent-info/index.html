@@ -11,6 +11,12 @@
     <title>Document</title>
   </head>
   <body>
+    <script type="module">
+      import config from "../../../utility/config.js";
+      const addImg = document.querySelector("#add-parent");
+      addImg.src = config.assets.icons.add;
+    </script>
+
     <div class="modal">
       <div class="modal-content">
         <p>Er du sikker på, at du vil slette denne forælder?</p>
@@ -22,6 +28,13 @@
     </div>
     <header-component></header-component>
     <h1>Mine oplysninger</h1>
-    <main></main>
+    <main>
+      <div class="card" id="outer-add-card">
+        <div class="add-card">
+          <p id="add-text">Tilføj ny forælder</p>
+          <img id="add-parent" />
+        </div>
+      </div>
+    </main>
   </body>
 </html>
