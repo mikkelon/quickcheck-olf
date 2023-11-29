@@ -6,7 +6,7 @@ import {
   deleteParents,
   addParent,
   getStudentsBySessionCookie,
-  getParentInfoBySessionCookie
+  getParentInfoBySessionCookie,
 } from "../controllers/parentsController.js";
 const router = express.Router();
 
@@ -103,11 +103,13 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-/* Hent forældre med id */
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
+// Hent forældre info ud fra session cookie
+router.get("/info", async (req, res) => {
+  console.log("yooodfdsgdo");
+
+  const sessionCookie = req.cookies.__session || "";
   try {
-    const parent = await getParentById(id);
+    const parent = await getParentInfoBySessionCookie(sessionCookie);
     res.status(200).send(parent);
   } catch (error) {
     console.log(error);
@@ -115,14 +117,11 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Hent forældre info ud fra session cookie
-router.get("/info", async (req, res) => {
-
-  console.log("yooodfdsgdo");
-
-  const sessionCookie = req.cookies.__session || "";
+/* Hent forældre med id */
+router.get("/:id", async (req, res) => {
+  const id = req.params.id;
   try {
-    const parent = await getParentInfoBySessionCookie(sessionCookie);
+    const parent = await getParentById(id);
     res.status(200).send(parent);
   } catch (error) {
     console.log(error);
