@@ -1,21 +1,24 @@
 import { adminAuth, adminDB } from "../../config/firebase-admin.js";
 
-const createUser = async (email, password) => {
+const createUser = async (email, password, role) => {
   const userRecord = await adminAuth.createUser({
     email,
     password,
   });
 
   await adminDB.collection("users").doc(userRecord.uid).set({
-    role: "employee",
+    role: role,
   });
+
+  // Set custom user claims
+  adminAuth.setCustomUserClaims(userRecord.uid, { role });
 
   console.log("Successfully created new user:", userRecord.uid);
 
   return userRecord;
 };
 
-const createSessionCookie = async idToken => {
+const createSessionCookie = async (idToken) => {
   const decodedIdToken = await adminAuth.verifyIdToken(idToken);
 
   const userId = decodedIdToken.uid;

@@ -5,7 +5,19 @@ import {
   signInWithEmailAndPassword,
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
+const loginBtn = document.getElementById("login");
+const alert = document.getElementById("alert");
+
+const toggleLoadingSpinner = () => {
+  loginBtn.disabled = !loginBtn.disabled;
+  loginBtn.innerHTML = loginBtn.disabled
+    ? '<i class="fas fa-spinner fa-pulse fa-lg"></i>'
+    : "Log ind";
+};
+
 const logIn = async () => {
+  alert.innerHTML = "";
+  toggleLoadingSpinner();
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
 
@@ -17,14 +29,14 @@ const logIn = async () => {
   } catch (error) {
     console.error(error);
     showError();
+    toggleLoadingSpinner();
   }
 };
 
-const loginBtn = document.getElementById("login");
-
 loginBtn.addEventListener("click", logIn);
-document.body.addEventListener("keypress", (e) => {
+document.body.addEventListener("keypress", e => {
   if (e.key === "Enter") {
+    loginBtn.focus();
     logIn();
   }
 });
@@ -35,7 +47,6 @@ const showError = () => {
   const text = document.createElement("p");
   text.innerText = "Ugyldig email eller password";
 
-  const alert = document.getElementById("alert");
   alert.innerHTML = "";
   alert.appendChild(text);
 };

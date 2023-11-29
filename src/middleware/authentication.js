@@ -18,7 +18,10 @@ export const authorize = (allowedRoles) => {
   return async (req, res, next) => {
     const decodedClaims = req.user;
 
-    if (allowedRoles.includes(decodedClaims.role)) {
+    if (
+      allowedRoles.includes(decodedClaims.role) ||
+      decodedClaims.role === "test" // <--- TODO: Remove test role
+    ) {
       return next();
     } else {
       console.log("User does not have permission to access this endpoint");
