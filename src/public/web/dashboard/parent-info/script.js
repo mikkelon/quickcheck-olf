@@ -1,4 +1,5 @@
 import {
+  addParent,
   getParentInfoBySessionCookie,
   updateParents,
 } from "../../../utility/datahandler.js";
@@ -152,8 +153,6 @@ const createButtons = (parent, index) => {
     "Gem",
     "save-btn",
     () => {
-      toggleSaveEditButtons(index);
-      toggleInputs(index);
       addUpdateParent(index);
     },
     index
@@ -177,12 +176,16 @@ const toggleSaveEditButtons = (index) => {
 };
 
 const toggleInputs = (index) => {
+  console.log("toggling inputs for index:", index);
   const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
+  console.log(inputs);
   inputs.forEach((input) => {
+    console.log(input);
     if (input.disabled) {
       input.disabled = false;
       input.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
     } else {
+      console.log("disabling input");
       input.disabled = true;
       input.style.backgroundColor = "transparent";
     }
@@ -194,7 +197,7 @@ const deleteCard = (index) => {
   card.remove();
 };
 
-const addUpdateParent = (index) => {
+const addUpdateParent = async (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   const nameInput = card.querySelector(".name");
   const relationInput = card.querySelector(".info-box:nth-child(2) input");
@@ -209,19 +212,36 @@ const addUpdateParent = (index) => {
       email: emailInput.value,
     },
   ];
-
-  // Add all other parents
-  for (let i = 0; i < parentsObj.parents.length; i++) {
-    if (i !== index) {
-      parents.push(parentsObj.parents[i]);
-    }
-  }
-
   if (index === parentsObj.parents.length) {
     // Add parent
+    try {
+      await addParent(parentsObj.id, parents[0]);
+      toggleInputs(index);
+      toggleSaveEditButtons(index);
+      addParentButton.style.display = "flex";
+      parentsObj.parents.push(parents[0]);
+    } catch (error) {
+      console.log(error);
+      alert("Fejl - forælder findes ikke.");
+      toggleInputs(index);
+      toggleSaveEditButtons(index);
+    }
   } else {
+    // Add other parents
+    for (let i = 0; i < parentsObj.parents.length; i++) {
+      if (i !== index) {
+        parents.push(parentsObj.parents[i]);
+      }
+    }
     // Update parent
-    updateParents(parentsObj.id, { parents });
+    try {
+      await updateParents(parentsObj.id, { parents });
+    } catch (error) {
+      console.log(error);
+      alert("Fejl - forælder findes ikke.");
+      toggleInputs(index);
+      toggleSaveEditButtons(index);
+    }
   }
 };
 

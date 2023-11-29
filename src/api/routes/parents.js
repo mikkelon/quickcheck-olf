@@ -33,39 +33,6 @@ router.get("/students", async (req, res) => {
   }
 });
 
-/* Opret forælder */
-// Example of request body:
-// {
-//   parentsId: "string";
-//   name: "string";
-//   email: "string";
-//   phone: "string";
-// }
-// Can only add a new parent to an existing parents object
-router.post("/", async (req, res) => {
-  const parentsId = req.body.parentsId;
-
-  const newParent = {
-    name: req.body.name,
-    email: req.body.email,
-    phone: req.body.phone,
-  };
-
-  // Data validation
-  if (!parentsId || !newParent.name || !newParent.email || !newParent.phone) {
-    throw new Error("Fejl - manglende data");
-  }
-
-  // Check if parents object exists
-  try {
-    await addParent(parentsId, newParent);
-    res.status(201).send("Forælder oprettet");
-  } catch (error) {
-    console.log(error.message);
-    res.status(400).send("Fejl ved oprettelse af forælder");
-  }
-});
-
 /* Slet forælder */
 router.delete("/:id", async (req, res) => {
   let id = req.params.id;
@@ -143,6 +110,39 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).send("Fejl - forælder findes ikke.");
+  }
+});
+
+/* Opret forælder */
+// Can only add a new parent to an existing parents object
+router.post("/:id", async (req, res) => {
+  const parentsId = req.params.id;
+
+  const newParent = {
+    name: req.body.name,
+    relation: req.body.relation,
+    email: req.body.email,
+    phone: req.body.phone,
+  };
+
+  // Check if parents object exists
+  try {
+    // Data validation
+    if (
+      !parentsId ||
+      !newParent.name ||
+      !newParent.relation ||
+      !newParent.email ||
+      !newParent.phone
+    ) {
+      throw new Error("Fejl - manglende data");
+    }
+
+    await addParent(parentsId, newParent);
+    res.status(201).send("Forælder oprettet");
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).send("Fejl ved oprettelse af forælder");
   }
 });
 

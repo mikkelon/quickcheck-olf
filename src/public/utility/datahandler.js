@@ -407,6 +407,32 @@ export const updateParents = async (id, parents) => {
 };
 
 /**
+ * Add new parent object to parentsObj
+ * @param {string} id parentsObj id
+ * @param {Object} parent object containing name, relation, phone, email.
+ */
+export const addParent = async (id, parent) => {
+  const url = `${apiUrl}/parents/${id}`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(parent),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error adding parent:", error);
+    throw error;
+  }
+};
+
+/**
  * Requests a session cookie based on the idToken
  * @param {string} idToken
  */
