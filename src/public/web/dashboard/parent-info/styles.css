@@ -42,9 +42,9 @@ main {
 
 .card {
   border-radius: var(--default-border-radius);
-  padding: 1rem;
+  padding: 2rem;
   width: 20%;
-  min-width: 300px;
+  min-width: 25%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -80,6 +80,7 @@ input {
   border: none;
   padding: 0.5rem;
   font-size: 1.25rem;
+  width: 100%;
 }
 
 .buttons-container {

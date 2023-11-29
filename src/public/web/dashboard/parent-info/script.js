@@ -133,11 +133,8 @@ const createButtons = (parent, index) => {
     "Rediger",
     "edit-btn",
     () => {
-      const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
-      inputs.forEach((input) => {
-        input.disabled = false;
-        input.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
-      });
+      toggleSaveEditButtons(index);
+      toggleInputs(index);
     },
     index
   ); //TODO: Edit parent
@@ -148,6 +145,31 @@ const createButtons = (parent, index) => {
   buttonsContainer.appendChild(saveButton);
 
   return buttonsContainer;
+};
+
+const toggleSaveEditButtons = (index) => {
+  const saveButton = document.querySelector(`.save-btn[data-id="${index}"]`);
+  const editButton = document.querySelector(`.edit-btn[data-id="${index}"]`);
+  if (saveButton.style.display === "none") {
+    saveButton.style.display = "block";
+    editButton.style.display = "none";
+  } else {
+    saveButton.style.display = "none";
+    editButton.style.display = "block";
+  }
+};
+
+const toggleInputs = (index) => {
+  const inputs = document.querySelectorAll(`input[data-id="${index}"]`);
+  inputs.forEach((input) => {
+    if (input.disabled) {
+      input.disabled = false;
+      input.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+    } else {
+      input.disabled = true;
+      input.style.backgroundColor = "transparent";
+    }
+  });
 };
 
 const shortenName = (name) => {
