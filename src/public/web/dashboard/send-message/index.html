@@ -27,8 +27,10 @@
           cols="50"
         ></textarea>
 
-        <label for="">Vælg afsender</label>
-        <select id="parents-dropdown"></select>
+        <div class="dropdown-container">
+          <label id="label-dropdown">Vælg afsender:</label>
+          <select id="parents-dropdown"></select>
+        </div>
 
         <div class="dato-container">
           <label id="label-dato" for="sendDate"
@@ -38,8 +40,8 @@
         </div>
 
         <div class="button-container">
-          <button class="send-btn" type="submit">Send besked</button>
-          <button class="clear-btn">Ryd</button>
+          <button class="submit-btn" type="submit">Send besked</button>
+          <button class="cancel-btn">Ryd</button>
         </div>
       </form>
     </div>

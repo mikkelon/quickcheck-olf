@@ -541,8 +541,6 @@ export const getParentInfoBySessionCookie = async () => {
       throw new Error("Network response was not ok");
     }
 
-    console.log(data);
-
     return data;
   } catch (error) {
     console.error("Error getting parents by session cookie:", error);

@@ -28,7 +28,8 @@ export const realtimeNoticeBoardDelete = (callback) => {
  * @param {[{name, class}, {name, class}]} concerns 
  * @param {string} message 
  */
-export function writeNotice(sender, concerns, message) {
+export function writeNotice(data) {
+    const { sendDate, sender, concerns, message } = data;
     console.log(sender)
 
     console.log(concerns)
@@ -41,7 +42,7 @@ export function writeNotice(sender, concerns, message) {
         concerns: concerns,
         message: message,
         read: false,
-        sendData: sendDate
+        sendDate: sendDate
     }).then(() => {
         console.log('Notice written to realtime database');
     }).catch((error) => {

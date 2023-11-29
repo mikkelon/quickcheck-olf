@@ -2,7 +2,7 @@ import { writeNotice } from "../../../utility/realtime.js";
 // import data from "./data.json";
 import { getParentInfoBySessionCookie, getStudentsBySessionCookie } from "../../../utility/datahandler.js";
 
-let parentInfo = null;
+let parents = null;
 
 async function initGui() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const textArea = document.querySelector('.text-area');
         const childrenCheckboxes = document.querySelectorAll('.child-container input[type="checkbox"]');
         const sendDateInput = document.getElementById('sendDate');
+        const sender = document.getElementById('parents-dropdown').value;
 
         const message = textArea.value;
 
@@ -39,7 +40,17 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Markerede børn:', selectedChildren);
             console.log('Dato for afsendelse:', sendDate);
 
-            createMessageObject(message, selectedChildren, sendDate);
+            const data = {
+                "sendDate": sendDate,
+                "sender": sender,
+                "concerns": selectedChildren,
+                "message": message
+            };
+
+            console.log(data);
+
+            // Sørg for at sende alle nødvendige parametre
+            writeNotice(data);
         }
 
         textArea.value = '';
@@ -59,39 +70,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-async function getSender() {
-    const sender = await getParentInfoBySessionCookie();
-    return sender;
-}
 
-function createMessageObject(message, selectedChildren, sendDate, sender, read) {
-    const data = {
-        "sendDate": sendDate,
-        "sender": {
-            "name": "Browly",
-            "relation": "Far"
-        },
-        "concerns": [
-            {
-                "name": "Kuririn",
-                "class": "Pink"
-            }
-        ],
-        "message": message
-    };
+function createMessageObject(message, selectedChildren, sendDate, sender) {
 
-    console.log(data.concerns);
-
-    // Sørg for at sende alle nødvendige parametre
-    writeNotice(data.sender, data.concerns, data.message, data.sendDate);
 }
 
 async function createChildrenGui() {
     const children = await getStudentsBySessionCookie();
-
-    parentInfo = await getParentInfoBySessionCookie();
-
-    console.log(parentInfo);
 
     // Få fat i det overordnede container-element
     const childrenContainer = document.getElementById('children');
@@ -104,7 +89,7 @@ async function createChildrenGui() {
         checkbox.type = 'checkbox';
         checkbox.id = child.id;
         checkbox.name = 'child';
-        checkbox.value = child.value;
+        checkbox.value = child.name;
 
         const label = document.createElement('label');
         label.classList.add('label-child');
@@ -116,7 +101,20 @@ async function createChildrenGui() {
 
         childrenContainer.appendChild(childContainer);
     });
+
+    const parentInfo = await getParentInfoBySessionCookie();
+    parents = parentInfo.parents;
+
+    const dropdown = document.getElementById('parents-dropdown');
+
+    parents.forEach(parent => {
+        dropdown.innerHTML += `
+            <option value="${parent.name}">${parent.name}</option>
+        `;
+    });
 }
+
+
 
 
 

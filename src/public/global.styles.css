@@ -81,9 +81,9 @@ input {
 .cancel-btn {
   box-sizing: border-box;
   color: white;
-  min-width: 140px;
-  min-height: 70px;
-  font-size: x-large;
+  min-width: 130px;
+  min-height: 40px;
+  font-size: medium;
 }
 
 .submit-btn {
