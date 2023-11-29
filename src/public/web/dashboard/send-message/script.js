@@ -14,8 +14,8 @@ async function initGui() {
 document.addEventListener('DOMContentLoaded', initGui);
 
 document.addEventListener('DOMContentLoaded', function () {
-    const sendBtn = document.querySelector('.send-btn');
-    const clearBtn = document.querySelector('.clear-btn');
+    const sendBtn = document.querySelector('.submit-btn');
+    const clearBtn = document.querySelector('.cancel-btn');
 
     // 'Send'-knappen
     sendBtn.addEventListener('click', function (event) {
@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const textArea = document.querySelector('.text-area');
         const childrenCheckboxes = document.querySelectorAll('.child-container input[type="checkbox"]');
         const sendDateInput = document.getElementById('sendDate');
+        sendDateInput.valueAsDate = new Date();
+
         const sender = document.getElementById('parents-dropdown').value;
 
         const message = textArea.value;
@@ -55,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         textArea.value = '';
         childrenCheckboxes.forEach(checkbox => (checkbox.checked = false));
-        sendDateInput.value = '';
     });
 
     // 'Ryd'-knappen
@@ -70,10 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-function createMessageObject(message, selectedChildren, sendDate, sender) {
-
-}
 
 async function createChildrenGui() {
     const children = await getStudentsBySessionCookie();
@@ -112,6 +109,9 @@ async function createChildrenGui() {
             <option value="${parent.name}">${parent.name}</option>
         `;
     });
+
+    const sendDateInput = document.getElementById('sendDate');
+    sendDateInput.valueAsDate = new Date();
 }
 
 
