@@ -1,20 +1,14 @@
-import {
-  ref,
-  onChildAdded,
-  onChildChanged,
-  onChildRemoved,
-  set,
-  push,
-} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+import { ref, onChildAdded, onChildChanged, onChildRemoved, push, update, child } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 import { realtimeDB } from "./firebase.js";
 
 const realtime = ref(realtimeDB, "notice-board");
 
-export const realtimeNoticeBoard = callback => {
-  onChildAdded(realtime, snapshot => {
-    callback(snapshot.val());
-  });
-};
+export const realtimeNoticeBoard = (callback) => {
+    onChildAdded(realtime, (snapshot) => {
+        console.log(snapshot.key);
+        callback({ key: snapshot.key, ...snapshot.val() });
+    });
+}
 
 export const realtimeNoticeBoardUpdate = callback => {
   onChildChanged(realtime, snapshot => {
@@ -36,11 +30,6 @@ export const realtimeNoticeBoardDelete = callback => {
  */
 export async function writeNotice(data) {
   const { sendDate, sender, concerns, message } = data;
-  console.log(sender);
-
-  console.log(concerns);
-
-  console.log();
 
   const newPostRef = push(realtime);
   await set(newPostRef, {
@@ -50,4 +39,11 @@ export async function writeNotice(data) {
     read: false,
     sendDate: sendDate,
   });
+}
+
+export function updateNotice(key, noticeData) {
+    const updates = {};
+    updates[key] = noticeData;
+
+    return update(realtime, updates);
 }
