@@ -294,7 +294,6 @@ function deleteParentHandler(index) {
 function deleteAgreementHandler(index) {
   const deletedAgreement = deleteAgreement(index);
   console.log("Deleted agreement:", deletedAgreement);
-
   // Update the UI
   createAgreementsGui();
 }
