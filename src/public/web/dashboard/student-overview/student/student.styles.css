@@ -158,6 +158,10 @@ body {
   flex-wrap: wrap;
 }
 
+.form-container {
+  gap: 0px;
+}
+
 .parent {
   border: 1px solid #ccc;
   padding: 20px;

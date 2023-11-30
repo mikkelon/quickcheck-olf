@@ -6,17 +6,16 @@ import {
   toggleStudentCheckIn,
   updateStudent,
   updateParents,
-  createNote,
-  getNotesById,
+  createAgreement,
+  getAgreementsByStudentId,
 } from "../../../../utility/datahandler.js";
 import {
   createParent,
   deleteParent,
   getAllParents,
   updateParent,
-  getAllNotes,
-  deleteNote,
-  createNewNote,
+  deleteAgreement,
+  createNewAgreement,
 } from "./crud.js";
 import {
   createDropdownFormElement,
@@ -70,11 +69,11 @@ async function initGUI() {
   await setParents();
 
   setEditing(false);
-  createNotesGui();
+  createAgreementsGui();
 
   const closeBtn = document.getElementById("closeBtn");
   closeBtn.addEventListener("click", () => {
-    noteModal.style.display = "none";
+    agreementModal.style.display = "none";
   });
 }
 
@@ -136,7 +135,10 @@ function setEditing(editing) {
   const forms = document.querySelectorAll(".forms-input");
 
   forms.forEach((form) => {
-    form.disabled = !editing;
+    const isExcluded = form.classList.contains("exclude-from-disabling");
+
+    // Disable or enable based on the condition
+    form.disabled = isExcluded ? form.disabled : !editing;
   });
 
   setParents();
@@ -288,13 +290,13 @@ function deleteParentHandler(index) {
   setParents();
 }
 
-// Event handler for deleting a note
-function deleteNoteHandler(index) {
-  const deletedNote = deleteNote(index);
-  console.log("Deleted note:", deletedNote);
+// Event handler for deleting an agreement
+function deleteAgreementHandler(index) {
+  const deletedAgreement = deleteAgreement(index);
+  console.log("Deleted agreement:", deletedAgreement);
 
   // Update the UI
-  createNotesGui();
+  createAgreementsGui();
 }
 
 function save() {
@@ -327,11 +329,11 @@ checkInOutBtn.addEventListener("click", () => {
   alert(child.checkedIn ? "Barnet er tjekket ind" : "Barnet er tjekket ud");
 });
 
-const noteModal = document.getElementById("note-modal");
+const agreementModal = document.getElementById("note-modal");
 
-const addNote = document.querySelector(".add-note-btn");
-addNote.addEventListener("click", () => {
-  noteModal.style.display = "block";
+const addAgreement = document.querySelector(".add-note-btn");
+addAgreement.addEventListener("click", () => {
+  agreementModal.style.display = "block";
 });
 
 const closeDeleteBtn = document.getElementById("closeDeleteBtn");
@@ -348,84 +350,123 @@ deleteBtn.addEventListener("click", () => {
 
 document.addEventListener("DOMContentLoaded", initGUI);
 
-const saveNote = document.querySelector(".note-save-btn");
-saveNote.addEventListener("click", async () => {
-  const titleField = document.getElementById("note-title");
-  const title = titleField.value;
-
+const saveAgreement = document.querySelector(".note-save-btn");
+saveAgreement.addEventListener("click", async () => {
   const descriptionField = document.getElementById("note-description");
-  const description = descriptionField.value;
 
-  /*     const startDateField = document.getElementById("start-date")
-        const startDate = startDateField.value; */
+  const message = descriptionField.value;
 
-  /*     const endDateField = document.getElementById("end-date")
-        const endDate = endDateField.value; */
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const selectedDays = new Set();
 
-  createNewNote(child.id, title, description);
-  createNotesGui();
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked && checkbox.id !== "everyday") {
+      selectedDays.add(checkbox.name);
+    }
+  });
 
-  titleField.value = "";
-  descriptionField.value = "";
-
-  noteModal.style.display = "none";
-});
-
-async function createNotesGui() {
-  const notes = await getAllNotes(child.id);
-  const noteContainer = document.getElementById("notes");
-
-  noteContainer.innerHTML = "";
-
-  if (notes.length === 0) {
-    const noNotes = document.createElement("p");
-    noNotes.classList.add("no-notes");
-    noNotes.innerHTML = "Ingen noter";
-    noteContainer.appendChild(noNotes);
+  // Check if "Alle dage" checkbox is selected
+  const everydayCheckbox = document.getElementById("everyday");
+  if (everydayCheckbox.checked) {
+    // If selected, add all the other days
+    const otherDays = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ];
+    otherDays.forEach((day) => selectedDays.add(day));
   }
 
-  notes.forEach((note, index) => {
-    const noteElm = createNoteElement(note, index);
-    noteContainer.appendChild(noteElm);
-  });
+  createNewAgreement(child.id, message, Array.from(selectedDays));
+  createAgreementsGui();
+
+  descriptionField.value = "";
+
+  agreementModal.style.display = "none";
+});
+
+async function createAgreementsGui() {
+  try {
+    const agreements = await getAgreementsByStudentId(child.id);
+
+    const agreementContainer = document.getElementById("notes");
+
+    agreementContainer.innerHTML = "";
+
+    if (agreements.length === 0) {
+      const noAgreements = document.createElement("p");
+      noAgreements.classList.add("no-notes");
+      noAgreements.innerHTML = "Ingen faste aftaler";
+      agreementContainer.appendChild(noAgreements);
+    }
+
+    agreements.forEach((agreement, index) => {
+      const agreementElm = createAgreementElement(agreement, index);
+      agreementContainer.appendChild(agreementElm);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function createNoteElement(note, index) {
+function translateValidDays(agreement) {
+  let translatedDays = [];
+  const days = agreement.daysValid;
+  if (days.length === 7) {
+    translatedDays.push("Alle dage");
+    return translatedDays;
+  }
+  if (days.length === 0) {
+    translatedDays.push("Ingen valgte dage");
+    return translatedDays;
+  }
+  days.forEach((day) => {
+    if (day === "monday") {
+      translatedDays.push(" Mandag");
+    } else if (day === "tuesday") {
+      translatedDays.push(" Tirsdag");
+    } else if (day === "wednesday") {
+      translatedDays.push(" Onsdag");
+    } else if (day === "thursday") {
+      translatedDays.push(" Torsdag");
+    } else if (day === "friday") {
+      translatedDays.push(" Fredag");
+    } else if (day === "saturday") {
+      translatedDays.push(" Lørdag");
+    } else if (day === "sunday") {
+      translatedDays.push(" Søndag");
+    }
+  });
+  return translatedDays;
+}
+
+function createAgreementElement(agreement, index) {
   // Opret hovedelementet <div class="note">
-  const noteDiv = document.createElement("div");
-  noteDiv.classList.add("note");
+  const agreementDiv = document.createElement("div");
+  agreementDiv.classList.add("note");
 
   // Opret dropdown-containeren <div class="dropdown">
   const dropdownDiv = document.createElement("div");
   dropdownDiv.classList.add("dropdown");
-
-  // Opret <p>-elementer for titel, startdato og slutdato
-  const titleP = document.createElement("p");
-  titleP.innerHTML = note.title;
-
-  /* const startDateP = document.createElement("p");
-    startDateP.innerHTML = note.startDate; */
-
-  /*   const endDateP = document.createElement("p");
-      endDateP.innerHTML = note.endDate; */
+  dropdownDiv.innerHTML =
+    agreement.message +
+    "<br>" +
+    "Gældende dage: " +
+    translateValidDays(agreement);
 
   // Opret dropdown-indholdet <div class="dropdown-content">
   const dropdownContentDiv = document.createElement("div");
   dropdownContentDiv.classList.add("dropdown-content");
 
-  // Opret <p>-element for beskrivelse
-  const descriptionP = document.createElement("p");
-  descriptionP.innerHTML = note.description;
+  // Opret en input for beskrivelsen
+  const descriptionInput = document.createElement("input");
+  descriptionInput.type = "text";
 
-  // Tilføj <p>-elementet til dropdown-indholdet
-  dropdownContentDiv.appendChild(descriptionP);
-
-  // Tilføj <p>-elementerne til dropdown-containeren
-  /*   dropdownDiv.appendChild(startDateP);
-    dropdownDiv.appendChild(endDateP); */
-
-  dropdownDiv.appendChild(titleP);
-  dropdownDiv.appendChild(dropdownContentDiv);
+  // Tilføj input-elementet til dropdown-indholdet
 
   // Opret delete-knappen <div class="note-delete">
   const deleteBtnDiv = document.createElement("div");
@@ -434,14 +475,14 @@ function createNoteElement(note, index) {
 
   // Tilføj en event listener til delete-knappen
   deleteBtnDiv.addEventListener("click", () => {
-    deleteNoteHandler(index);
+    deleteAgreementHandler(index);
   });
 
   // Tilføj dropdown-containeren og delete-knappen til hovedelementet
   dropdownDiv.appendChild(deleteBtnDiv);
-  noteDiv.appendChild(dropdownDiv);
+  agreementDiv.appendChild(dropdownDiv);
 
-  return noteDiv;
+  return agreementDiv;
 }
 
 // const index = 0; // Dette skal være det aktuelle index for noten
