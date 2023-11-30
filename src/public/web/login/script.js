@@ -29,6 +29,7 @@ const logIn = async () => {
   } catch (error) {
     console.error(error);
     showError();
+  } finally {
     toggleLoadingSpinner();
   }
 };
