@@ -1,3 +1,4 @@
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
 
@@ -9,10 +10,12 @@ const firebaseConfig = {
   storageBucket: "quickcheck-254b9.appspot.com",
   messagingSenderId: "691879315868",
   appId: "1:691879315868:web:3c4888319c3d10b96ea059",
+  databaseURL: "https://quickcheck-254b9-default-rtdb.europe-west1.firebasedatabase.app",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const realtimeDB = getDatabase(app);
 
-export { auth };
+export { auth, realtimeDB };
