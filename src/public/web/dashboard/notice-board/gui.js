@@ -55,23 +55,30 @@ async function loadAgreements() {
 function displayNotice(notice) {
   let noticeElement = document.createElement("div");
   noticeElement.className = "notice";
-  noticeElement.innerHTML = `
-    <div class="concerning">
-        <p>${notice.sender.name} (<span>${notice.sender.relation}</span>)</p>
-        <div class="concerns">
-            ${
-              notice.concerns.length > 1
-                ? `<p>${notice.concerns[0].name} + ${
-                    notice.concerns.length - 1
-                  }</p>`
-                : `<p>${notice.concerns[0].name} (<span>${notice.concerns[0].class}</span>)</p>`
-            }
-        </div>
-    </div>
-    
-    <div class="message">
-        <p>${notice.message}</p>
-    </div>`;
+  const noticeContentElement = document.createElement("div");
+  noticeContentElement.className = "notice-content";
+
+  const senderElement = document.createElement("p");
+  senderElement.classList.add("sender");
+  senderElement.innerText = `${notice.sender.name} ${
+    notice.sender.relation ? "(" + notice.sender.relation + ")" : ""
+  }`;
+
+  const concerning = document.createElement("p");
+  concerning.classList.add("concerning");
+  concerning.innerText = notice.concerns
+    .map(concern => `${concern.name} (${concern.class})`)
+    .join(", ");
+
+  const messageElement = document.createElement("p");
+  messageElement.classList.add("message");
+  messageElement.innerText = notice.message;
+
+  noticeContentElement.appendChild(concerning);
+  noticeContentElement.appendChild(senderElement);
+  noticeContentElement.appendChild(messageElement);
+
+  noticeElement.appendChild(noticeContentElement);
 
   let checkButton = document.createElement("button");
   checkButton.className = "check-button";
@@ -97,14 +104,17 @@ function displayAgreement(agreement) {
   const student = agreement.student;
   let agreementElement = document.createElement("div");
   agreementElement.className = "notice";
+  const agreementContentElement = document.createElement("div");
   const classAndNameElement = document.createElement("p");
+  classAndNameElement.classList.add("concerning");
   classAndNameElement.innerText = `${student.name} (${student.class.colorLabel})`;
   const messageElement = document.createElement("p");
+  messageElement.classList.add("agreement-message");
   messageElement.innerText = agreement.message;
 
-  agreementElement.appendChild(classAndNameElement);
-  agreementElement.appendChild(messageElement);
-
+  agreementContentElement.appendChild(classAndNameElement);
+  agreementContentElement.appendChild(messageElement);
+  agreementElement.appendChild(agreementContentElement);
   dailyAgreementsContainer.appendChild(agreementElement);
 }
 
