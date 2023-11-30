@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirmation) {
       const data = {
         sendDate: sendDate,
-        sender: { name: sender.name, relation: sender.relation },
+        sender: sender,
         concerns: selectedChildren,
         message: message,
       };
@@ -128,7 +128,9 @@ async function createChildrenGui() {
 
   parents.forEach(parent => {
     dropdown.innerHTML += `
-            <option value="${parent.name}">${parent.name} (${parent.relation})</option>
+            <option value="${parent.name}">${parent.name} ${
+      parent.relation ? parent.relation : ""
+    }</option>
         `;
   });
 

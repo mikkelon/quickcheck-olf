@@ -6,6 +6,7 @@ import {
   push,
   update,
   child,
+  set,
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 import { realtimeDB } from "./firebase.js";
 
