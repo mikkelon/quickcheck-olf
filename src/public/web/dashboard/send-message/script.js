@@ -6,6 +6,7 @@ import {
 } from "../../../utility/datahandler.js";
 
 let parents = null;
+let children = null;
 const alert = document.querySelector("#alert");
 
 async function initGui() {
@@ -32,13 +33,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const sendDateInput = document.getElementById("sendDate");
     sendDateInput.valueAsDate = new Date();
 
-    const sender = document.getElementById("parents-dropdown").value;
+    const senderName = document.getElementById("parents-dropdown").value;
+    const sender = parents.find(parent => parent.name === senderName);
 
     const message = textArea.value;
 
     const selectedChildren = Array.from(childrenCheckboxes)
       .filter(checkbox => checkbox.checked)
-      .map(checkbox => checkbox.value);
+      .map(checkbox => {
+        const name = checkbox.value;
+        const child = children.find(child => child.name === name);
+        return { name: child.name, class: child.class.colorLabel };
+      });
 
     const sendDate = sendDateInput.value;
 
@@ -47,13 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     if (confirmation) {
-      console.log("Besked:", message);
-      console.log("Markerede børn:", selectedChildren);
-      console.log("Dato for afsendelse:", sendDate);
-
       const data = {
         sendDate: sendDate,
-        sender: sender,
+        sender: { name: sender.name, relation: sender.relation },
         concerns: selectedChildren,
         message: message,
       };
@@ -93,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function createChildrenGui() {
-  const children = await getStudentsBySessionCookie();
+  children = await getStudentsBySessionCookie();
 
   // Få fat i det overordnede container-element
   const childrenContainer = document.getElementById("children");
@@ -111,7 +113,7 @@ async function createChildrenGui() {
     const label = document.createElement("label");
     label.classList.add("label-child");
     label.htmlFor = child.id;
-    label.textContent = child.name;
+    label.textContent = `${child.name} (${child.class.colorLabel})`;
 
     childContainer.appendChild(checkbox);
     childContainer.appendChild(label);
@@ -126,7 +128,7 @@ async function createChildrenGui() {
 
   parents.forEach(parent => {
     dropdown.innerHTML += `
-            <option value="${parent.name}">${parent.name}</option>
+            <option value="${parent.name}">${parent.name} (${parent.relation})</option>
         `;
   });
 
