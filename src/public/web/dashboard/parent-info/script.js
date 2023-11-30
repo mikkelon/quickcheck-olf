@@ -138,14 +138,8 @@ const createButtons = (parent, index) => {
   const deleteButton = createButton(
     "Slet",
     "delete-btn",
-    () => {
-      if (index === parentsObj.parents.length) {
-        deleteCard(index);
-        addParentButton.style.display = "flex";
-      } else {
-        modal.dataset.id = index;
-        modal.style.display = "flex";
-      }
+    (event) => {
+      requestDeleteParent(event);
     },
     index
   ); //TODO: Delete parent
@@ -204,19 +198,32 @@ const toggleInputs = (index) => {
   });
 };
 
-// Delete a card
-const deleteCard = (index) => {
+// Delete card by index
+const deleteCardByIndex = (index) => {
   const card = document.querySelector(`.card[data-id="${index}"]`);
   card.remove();
 };
 
 // Delete a parent (calls deleteCard)
+const requestDeleteParent = async (event) => {
+  const index = parseInt(event.target.dataset.id);
+  if (index === parentsObj.parents.length) {
+    // If parent is not saved yet
+    deleteCardByIndex(index);
+    addParentButton.style.display = "flex";
+  } else {
+    // If parent is saved open modal
+    modal.dataset.id = index;
+    modal.style.display = "flex";
+  }
+};
+
 const deleteParent = async (index) => {
   try {
     await deleteParentByIndex(parentsObj.id, index);
     parentsObj.parents.splice(index, 1);
+    deleteCardByIndex(index);
     updateIndexes();
-    deleteCard(index);
     modal.style.display = "none";
   } catch (error) {
     console.log(error);
@@ -239,7 +246,7 @@ const addUpdateParent = async (index) => {
     email: emailInput.value,
   };
 
-  if (index === parentsObj.parents.length) {
+  if (index === parentsObj.parents?.length) {
     // #-- Add parent --#
     // Add parent to local array
     parentsObj.parents.push(parent);
@@ -259,9 +266,6 @@ const addUpdateParent = async (index) => {
     try {
       await updateParents(parentsObj.id, { parents: parentsObj.parents });
 
-      // Update parentsObj
-      parentsObj.parents = parent;
-
       toggleInputs(index);
       toggleSaveEditButtons(index);
     } catch (error) {
@@ -275,6 +279,7 @@ const addUpdateParent = async (index) => {
 const updateIndexes = () => {
   const cards = document.querySelectorAll(".card");
   cards.forEach((card, index) => {
+    console.log("Updating index", index);
     card.dataset.id = index;
     const buttons = card.querySelectorAll(".button");
     buttons.forEach((button) => {
@@ -312,8 +317,9 @@ const shortenName = (name) => {
 document.addEventListener("DOMContentLoaded", async () => {
   parentsObj = await getParentInfoBySessionCookie();
   console.log(parentsObj);
+  console.log(parentsObj.parents);
 
   // Create cards for students
-  parentsObj.parents.forEach((parent, index) => createCard(parent, index));
+  parentsObj.parents?.forEach((parent, index) => createCard(parent, index));
   addParentButton.style.display = "flex";
 });
