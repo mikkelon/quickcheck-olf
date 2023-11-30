@@ -103,3 +103,23 @@ textarea {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+#alert {
+  display: grid;
+  /* Center content */
+  place-items: center;
+  padding: 0px 40px;
+  margin-top: 20px;
+  border-radius: 8px;
+  margin-inline: 200px;
+}
+
+.success {
+  background-color: #4caf4f45;
+  color: #4bb14e;
+}
+
+.error {
+  background-color: rgba(239, 27, 27, 0.321);
+  color: #ff5656;
+}
