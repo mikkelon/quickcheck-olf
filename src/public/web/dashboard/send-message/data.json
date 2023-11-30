@@ -1,0 +1,36 @@
+{
+  "notice-board": [
+    {
+      "sender": {
+        "name": "Browly",
+        "relation": "Far"
+      },
+      "concerns": [
+        {
+          "name": "Kuririn",
+          "class": "Pink"
+        }
+      ],
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl quis aliquam ultricies, nunc",
+      "read": true
+    },
+    {
+      "sender": {
+        "name": "Gohan",
+        "relation": "Far"
+      },
+      "concerns": [
+        {
+          "name": "Son goku",
+          "class": "Blå"
+        },
+        {
+          "name": "Piccolo",
+          "class": "Rød"
+        }
+      ],
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl quis aliquam ultricies, nunc",
+      "read": true
+    }
+  ]
+}

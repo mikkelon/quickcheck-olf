@@ -47,6 +47,9 @@ export const getStudentsBySessionCookie = async (sessionCookie) => {
 
   const students = [];
 
+  console.log("parentsId:", parentsId);
+  console.log("userId:", userId);
+
   // Get students and their classes
   const studentsSnapshot = await adminDB
     .collection("students")
@@ -92,6 +95,26 @@ const addParent = async (parentsId, newParent) => {
   parents.push(newParent);
   await adminDB.collection("parents").doc(parentsId).update({ parents });
 };
+
+export const getParentInfoBySessionCookie = async (sessionCookie) => {
+  console.log("getting students by session cookie:", sessionCookie);
+  const decodedClaims = await adminAuth.verifySessionCookie(
+    sessionCookie,
+    true // Check if revoked (extra cost but more secure)
+  );
+  const userId = decodedClaims.uid;
+
+  const parentsId = await getParentsIdFromUserId(userId);
+
+
+  const parents = await getParentById(parentsId);
+
+  console.log("Forældre: " + parents);
+
+  return parents;
+};
+
+
 
 export {
   getParents,
