@@ -68,14 +68,14 @@
                 </div>
             </div>
 
-            <!-- Notes -->
+            <!-- Agreements -->
             <div class="notes-container">
-                <h2>Noter</h2>
+                <h2>Faste aftaler</h2>
                 <div id="notes">
 
                 </div>
                 <button class="add-note-btn">
-                    Tilføj ny note
+                    Opret ny fast aftale
                 </button>
             </div>
             </d>
@@ -95,35 +95,54 @@
     <div id="note-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" id="closeBtn">&times;</span>
-            <h2>Ny Note</h2>
-
-            <!-- Notetitel -->
-            <div class="form-container">
-                <label class="forms-label" for="note-title">Titel:</label>
-                <input class="forms-input" type="text" id="note-title" placeholder="Indtast notetitel">
-            </div>
+            <h2>Ny fast aftale</h2>
 
             <!-- Beskrivelse -->
             <div class="form-container">
-                <label class="forms-label" for="note-description">Beskrivelse:</label>
-                <textarea class="forms-input" id="note-description" placeholder="Indtast notebeskrivelse"></textarea>
+                <label class="forms-label" for="note-description">Besked:</label>
+                <textarea class="forms-input exclude-from-disabling" id="note-description" placeholder="Indtast besked"></textarea>
             </div>
 
-            <!-- Startdato -->
+            <!-- Dage -->
             <div class="form-container">
-                <label class="forms-label" for="start-date">Startdato:</label>
-                <input class="forms-input" type="date" id="start-date">
-            </div>
-
-            <!-- Slutdato -->
-            <div class="form-container">
-                <label class="forms-label" for="end-date">Slutdato:</label>
-                <input class="forms-input" type="date" id="end-date">
+                <label class="forms-label" for="start-date">Vælg gældende dage:</label>
+                <label for="monday">
+                    <input type="checkbox" id="monday" name="monday"> Mandag
+                  </label>
+                  <br>
+                  <label for="tuesday">
+                    <input type="checkbox" id="tuesday" name="tuesday"> Tirsdag
+                  </label>
+                  <br>
+                  <label for="wednesday">
+                    <input type="checkbox" id="wednesday" name="wednesday"> Onsdag
+                  </label>
+                  <br>
+                  <label for="thursday">
+                    <input type="checkbox" id="thursday" name="thursday"> Torsdag
+                  </label>
+                  <br>    
+                  <label for="friday">
+                    <input type="checkbox" id="friday" name="friday"> Fredag
+                  </label>
+                  <br>    
+                  <label for="saturday">
+                    <input type="checkbox" id="saturday" name="saturday"> Lørdag
+                  </label>
+                  <br>    
+                  <label for="sunday">
+                    <input type="checkbox" id="sunday" name="sunday"> Søndag
+                  </label>
+                  <br>    
+                  <label for="everyday">
+                    <input type="checkbox" id="everyday" name="everyday"> Alle dage
+                  </label>
+                  <br>        
             </div>
 
             <!-- Gem knap -->
             <div class="form-container">
-                <button class="note-save-btn">Gem Note</button>
+                <button class="note-save-btn">Opret aftale</button>
             </div>
 
         </div>

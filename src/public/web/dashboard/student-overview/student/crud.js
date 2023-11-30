@@ -1,13 +1,13 @@
 // crud.js
 import {
-  createNote,
-  deleteNoteById,
-  getNotesById,
+  createAgreement,
+  deleteAgreementById,
+  getAgreementsByStudentId,
 } from "../../../../utility/datahandler.js";
 
 // Sample data (in-memory storage)
 let parentsData = [];
-let notes = [];
+let agreements = [];
 
 // Function to create a new parent
 function createParent(name, phone, email) {
@@ -21,30 +21,30 @@ function getAllParents() {
   return parentsData;
 }
 
-async function getAllNotes(studentId) {
-  notes = await getNotesById(studentId);
-  return notes;
+async function getAgreementByStudentId(studentId) {
+  agreements = await getAgreementsByStudentId(studentId);
+  return agreements;
 }
 
-async function createNewNote(studentId, title, description) {
-  const note = {
-    title,
-    description,
+async function createNewAgreement(studentId, message, daysValid) {
+  const agreement = {
+    message,
+    daysValid,
   };
 
-  await createNote(studentId, note);
+  await createAgreement(studentId, agreement);
 
-  notes.push(note);
-  return note;
+  agreements.push(agreement);
+  return agreement;
 }
 
-//Function to delete note by index
-function deleteNote(index) {
-  const deletedNote = notes.splice(index, 1);
-  const noteId = deletedNote[0].id;
-  deleteNoteById(noteId);
+//Function to delete agreement by index
+function deleteAgreement(index) {
+  const deletedAgreement = agreements.splice(index, 1);
+  const agreementId = agreements[0].id;
+  deleteAgreementById(agreementId);
 
-  return deletedNote[0];
+  return deletedAgreement[0];
 }
 
 // Function to update parent by index
@@ -70,7 +70,7 @@ export {
   updateParent,
   deleteParent,
   clear,
-  createNewNote,
-  getAllNotes,
-  deleteNote,
+  createNewAgreement,
+  deleteAgreement,
+  getAgreementByStudentId,
 };

@@ -232,18 +232,18 @@ export const getParentsById = async (parentsId) => {
   }
 };
 
-// Create note
-export const createNote = async (studentId, note) => {
-  const url = `${apiUrl}/notes`;
+// Create agreement
+export const createAgreement = async (studentId, agreement) => {
+  const url = `${apiUrl}/agreements`;
   const options = {
     method: "POST",
-    body: JSON.stringify({ studentId, ...note }),
+    body: JSON.stringify({ studentId, ...agreement }),
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  console.log("prepost: " + JSON.stringify({ studentId, note }));
+  console.log("prepost: " + JSON.stringify({ studentId, agreement }));
 
   try {
     const response = await fetch(url, options);
@@ -261,14 +261,25 @@ export const createNote = async (studentId, note) => {
   }
 };
 
-export const deleteNoteById = async (noteId) => {
-  const url = `${apiUrl}/notes/${noteId}`;
+export const deleteAgreementById = async (agreementId) => {
+  const url = `${apiUrl}/agreements/${agreementId}`;
   const options = {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
   };
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching agreement:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
 };
 
 /**
@@ -294,9 +305,9 @@ export const deleteStudent = async (studentId) => {
   }
 };
 
-// GET notes til en elev
-export const getNotesById = async (studentId) => {
-  const url = `${apiUrl}/notes/${studentId}`;
+// GET aftaler til en elev
+export const getAgreementsByStudentId = async (studentId) => {
+  const url = `${apiUrl}/agreements/${studentId}`;
   try {
     const response = await fetch(url, {
       method: "GET",
@@ -304,8 +315,10 @@ export const getNotesById = async (studentId) => {
         "Content-Type": "application/json",
       },
     });
+
+    return await response.json();
   } catch (error) {
-    console.error("Error getting notes:", error);
+    console.error("Error getting aftaler:", error);
     throw error; // Rethrow the error for the caller to handle
   }
 };
