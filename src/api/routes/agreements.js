@@ -4,9 +4,20 @@ import {
   createAgreement,
   deleteAgreement,
   getAgreementByStudentId,
+  getDailyAgreements,
 } from "../controllers/agreementsController.js";
 
 const router = express.Router();
+
+router.get("/daily", async (req, res) => {
+  try {
+    const agreements = await getDailyAgreements();
+    res.status(200).send(agreements);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send("Fejl ved hentning af aftaler");
+  }
+});
 
 // Opret aftale
 router.post("/", async (req, res) => {

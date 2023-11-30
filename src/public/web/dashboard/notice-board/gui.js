@@ -1,9 +1,17 @@
-import { realtimeNoticeBoard, realtimeNoticeBoardDelete, realtimeNoticeBoardUpdate, updateNotice } from "../../../utility/realtime.js";
+import {
+  realtimeNoticeBoard,
+  realtimeNoticeBoardDelete,
+  realtimeNoticeBoardUpdate,
+  updateNotice,
+} from "../../../utility/realtime.js";
+import { getDailyAgreements } from "../../../utility/datahandler.js";
 
 const notices = [];
+const dailyAgreementsContainer = document.getElementById("daily-agreements");
 
 function loadNotices() {
   let noticeBoard = document.getElementById("notices");
+
   noticeBoard.innerHTML = "";
 
   if (notices.length == 0) {
@@ -35,6 +43,15 @@ function loadNotices() {
   }
 }
 
+async function loadAgreements() {
+  // Load daily agreements
+  const dailyAgreements = await getDailyAgreements();
+  console.log(dailyAgreements);
+  dailyAgreements.forEach(agreement => {
+    displayAgreement(agreement);
+  });
+}
+
 function displayNotice(notice) {
   let noticeElement = document.createElement("div");
   noticeElement.className = "notice";
@@ -42,11 +59,13 @@ function displayNotice(notice) {
     <div class="concerning">
         <p>${notice.sender.name} (<span>${notice.sender.relation}</span>)</p>
         <div class="concerns">
-            ${notice.concerns.length > 1
-      ? `<p>${notice.concerns[0].name} + ${notice.concerns.length - 1
-      }</p>`
-      : `<p>${notice.concerns[0].name} (<span>${notice.concerns[0].class}</span>)</p>`
-    }
+            ${
+              notice.concerns.length > 1
+                ? `<p>${notice.concerns[0].name} + ${
+                    notice.concerns.length - 1
+                  }</p>`
+                : `<p>${notice.concerns[0].name} (<span>${notice.concerns[0].class}</span>)</p>`
+            }
         </div>
     </div>
     
@@ -74,19 +93,35 @@ function displayNotice(notice) {
   return noticeElement;
 }
 
-loadNotices();
+function displayAgreement(agreement) {
+  const student = agreement.student;
+  let agreementElement = document.createElement("div");
+  agreementElement.className = "notice";
+  const classAndNameElement = document.createElement("p");
+  classAndNameElement.innerText = `${student.name} (${student.class.colorLabel})`;
+  const messageElement = document.createElement("p");
+  messageElement.innerText = agreement.message;
 
-realtimeNoticeBoard((notice) => {
+  agreementElement.appendChild(classAndNameElement);
+  agreementElement.appendChild(messageElement);
+
+  dailyAgreementsContainer.appendChild(agreementElement);
+}
+
+loadNotices();
+loadAgreements();
+
+realtimeNoticeBoard(notice => {
   notices.push(notice);
   loadNotices();
 });
 
-realtimeNoticeBoardUpdate((notice) => {
+realtimeNoticeBoardUpdate(notice => {
   notices[notice.index] = notice;
   loadNotices();
 });
 
-realtimeNoticeBoardDelete((notice) => {
+realtimeNoticeBoardDelete(notice => {
   notices.splice(notice.index, 1);
   loadNotices();
 });

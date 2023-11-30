@@ -1,7 +1,6 @@
 import { adminAuth, adminDB } from "../../config/firebase-admin.js";
-import { query, collection, where, getDocs } from "firebase/firestore";
 
-const createAgreement = async (agreement) => {
+const createAgreement = async agreement => {
   try {
     const docRef = await adminDB.collection("agreements").add(agreement);
     console.log("Agreement created with ID: ", docRef.id);
@@ -12,12 +11,12 @@ const createAgreement = async (agreement) => {
   }
 };
 
-const getAgreementByStudentId = async (studentId) => {
+const getAgreementByStudentId = async studentId => {
   const agreementsSnapshot = await adminDB
     .collection("agreements")
     .where("studentId", "==", studentId)
     .get();
-  const agreements = agreementsSnapshot.docs.map((doc) => ({
+  const agreements = agreementsSnapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data(),
   }));
@@ -25,8 +24,45 @@ const getAgreementByStudentId = async (studentId) => {
   return agreements;
 };
 
-const deleteAgreement = async (agreementId) => {
+const deleteAgreement = async agreementId => {
   await adminDB.collection("agreements").doc(agreementId).delete();
 };
 
-export { createAgreement, getAgreementByStudentId, deleteAgreement };
+const getDailyAgreements = async () => {
+  const agreementsSnapshot = await adminDB
+    .collection("agreements")
+    .where("daysValid", "array-contains", new Date().getDay())
+    .get();
+  const agreements = agreementsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const studentsSnapshot = await adminDB.collection("students").get();
+  const students = studentsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const classesSnapshot = await adminDB.collection("classes").get();
+  const classes = classesSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  agreements.forEach(agreement => {
+    const student = students.find(student => student.id == agreement.studentId);
+    const clazz = classes.find(clazz => clazz.id == student.classId);
+    agreement.student = student;
+    student.class = clazz;
+  });
+
+  return agreements;
+};
+
+export {
+  getDailyAgreements,
+  createAgreement,
+  getAgreementByStudentId,
+  deleteAgreement,
+};
