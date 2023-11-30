@@ -81,7 +81,7 @@ const createParentUserWithEmailAndId = async (email, parentsId) => {
   }
 
   try {
-    const userRecord = await createUser(email, parentsId, "parents");
+    const userRecord = await createUser(email, "123456", "parents");
 
     console.log("Successfully created new user:", userRecord.uid);
 

@@ -483,6 +483,7 @@ export const getButtonsForRole = async () => {
 
   try {
     const response = await fetch(url, options);
+    console.log(response);
     const data = await response.json();
 
     if (!response.ok) {
@@ -491,7 +492,32 @@ export const getButtonsForRole = async () => {
 
     return data;
   } catch (error) {
-    console.error("Error getting buttons for role:", error);
+    console.log("Error getting buttons for role:", error);
+    throw error;
+  }
+};
+
+/**
+ * Gets the students associated with the current user
+ * @returns {Array} Array of students
+ */
+export const getStudentsBySessionCookie = async () => {
+  const url = `${apiUrl}/parents/students`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting students by session cookie:", error);
     throw error;
   }
 };

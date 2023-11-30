@@ -113,6 +113,19 @@ const fetchClasses = async () => {
 
   renderClassOptions();
 };
+let skoletrinLabels = ["", "indskoling", "mellemskoling", "udskoling"];
+const mapClassToSkoletrin = (classNumber) => {
+  if (classNumber >= 0 && classNumber <= 3) {
+    return skoletrinLabels[1]; // Indskoling
+  } else if (classNumber >= 4 && classNumber <= 6) {
+    return skoletrinLabels[2]; // Mellemskoling
+  } else if (classNumber >= 7 && classNumber <= 9) {
+    return skoletrinLabels[3]; // Udskoling
+  } else {
+    console.log(`Unexpected class number: ${classNumber}`);
+    return []; // Default or unknown
+  }
+};
 
 // #--- Active filters ---#
 
@@ -127,7 +140,18 @@ const filterStudents = () => {
       activeFilters.name === "" ||
       student.name.toLowerCase().includes(activeFilters.name.toLowerCase());
 
-    return classFilter && checkedInFilter && checkedOutFilter && nameFilter;
+    const skoletrin = mapClassToSkoletrin(student.class.class);
+    const skoletrinFilter =
+      activeFilters.skoletrin.length === 0 ||
+      activeFilters.skoletrin.includes(skoletrin);
+
+    return (
+      classFilter &&
+      checkedInFilter &&
+      checkedOutFilter &&
+      nameFilter &&
+      skoletrinFilter
+    );
   });
 
   studentContainer.innerHTML = "";
@@ -148,6 +172,14 @@ searchInput.addEventListener("input", () => {
   activeFilters.name = searchInput.value;
   filterStudents();
   addFilter("name", searchInput.value);
+});
+
+const skoletrinSelect = document.querySelector("#skoletrin-select");
+skoletrinSelect.addEventListener("change", () => {
+  activeFilters.skoletrin = [...activeFilters.skoletrin, skoletrinSelect.value];
+  filterStudents();
+  addFilter("skoletrin", skoletrinSelect.value);
+  skoletrinSelect.value = skoletrinSelect.firstElementChild.value;
 });
 
 const classSelect = document.querySelector("#class-select");
@@ -251,6 +283,27 @@ const addFilter = (filterType, filterValue) => {
     }`;
   }
 
+  // Filter: Skoletrin
+  if (filterType === "skoletrin") {
+    activeFilterDiv.dataset.filterType = "skoletrin";
+    // If class filter already exists, return
+    const skoletrinFilters = activeFiltersContainer.querySelectorAll(
+      '[data-filter-type="skoletrin"]'
+    );
+    // if classFilters contains a filter with the same value, return
+    const skoletrinFilter = Array.from(skoletrinFilters).find(
+      (skoletrinFilter) =>
+        skoletrinFilter.querySelector(".active-filter-text").dataset
+          .filterValue === filterValue
+    );
+    if (skoletrinFilter) {
+      return;
+    }
+
+    activeFilterText.dataset.filterValue = filterValue;
+    activeFilterText.innerHTML = filterValue;
+  }
+
   // Add text
   activeFilterDiv.appendChild(activeFilterText);
 
@@ -296,6 +349,10 @@ const removeFilter = (filterType, filterValue) => {
     activeFilters.checkedIn = false;
   } else if (filterValue === "checkedOut") {
     activeFilters.checkedOut = false;
+  } else if (filterType === "skoletrin") {
+    activeFilters.skoletrin = activeFilters.skoletrin.filter(
+      (skoletrin) => skoletrin !== filterValue
+    );
   }
 
   updateActiveFiltersStorage();
@@ -342,6 +399,7 @@ clearFiltersBtn.addEventListener("click", () => {
     checkedIn: false,
     checkedOut: false,
     name: "",
+    skoletrin: [],
   };
   updateActiveFiltersStorage();
   searchInput.value = "";
@@ -380,6 +438,7 @@ const initActiveFiltersFromLocalStorage = () => {
       checkedIn: false,
       checkedOut: false,
       name: "",
+      skoletrin: [],
     };
   }
 };
@@ -400,6 +459,10 @@ const renderFilterCards = () => {
   if (activeFilters.name !== "") {
     addFilter("name", activeFilters.name);
   }
+
+  activeFilters.skoletrin.forEach((trin) => {
+    addFilter("skoletrin", trin);
+  });
 };
 
 const initOverview = async () => {
