@@ -1,11 +1,12 @@
-import { ref, onChildAdded, onChildChanged, onChildRemoved } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+import { ref, onChildAdded, onChildChanged, onChildRemoved, push, update, child } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 import { realtimeDB } from "./firebase.js";
 
 const realtime = ref(realtimeDB, "notice-board");
 
 export const realtimeNoticeBoard = (callback) => {
     onChildAdded(realtime, (snapshot) => {
-        callback(snapshot.val());
+        console.log(snapshot.key);
+        callback({ key: snapshot.key, ...snapshot.val() });
     });
 }
 
@@ -34,4 +35,11 @@ export function writeNotice(sender, concerns, message) {
         message,
         read: false
     });
+}
+
+export function updateNotice(key, noticeData) {
+    const updates = {};
+    updates[key] = noticeData;
+
+    return update(realtime, updates);
 }

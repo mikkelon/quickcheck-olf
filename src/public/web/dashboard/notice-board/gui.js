@@ -1,23 +1,6 @@
-import { realtimeNoticeBoard, realtimeNoticeBoardDelete, realtimeNoticeBoardUpdate } from "../../../utility/realtime.js";
+import { realtimeNoticeBoard, realtimeNoticeBoardDelete, realtimeNoticeBoardUpdate, updateNotice } from "../../../utility/realtime.js";
 
-const notices = [
-    // {
-    //   sender: {
-    //     name: "Browly",
-    //     relation: "Far",
-    //   },
-    //   concerns: [
-    //     {
-    //       name: "Kuririn",
-    //       class: "Pink",
-    //     },
-    //   ],
-    //   message:
-    //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla euismod, nisl quis aliquam ultricies, nunc",
-    //   read: true,
-    // },
-];
-
+const notices = [];
 
 function loadNotices() {
   let noticeBoard = document.getElementById("notices");
@@ -29,8 +12,6 @@ function loadNotices() {
     noNotices.innerHTML = `<p>Der er ingen beskeder at vise</p>`;
     noticeBoard.appendChild(noNotices);
   }
-
-  console.log(notices);
 
   // Load unread notices
   for (let i = 0; i < notices.length; i++) {
@@ -80,8 +61,8 @@ function displayNotice(notice) {
   else checkButton.innerText = 'Markér som "udført"';
   checkButton.addEventListener("click", () => {
     notice.read = !notice.read;
+    updateNotice(notice.key, notice);
     loadNotices();
-
   });
   noticeElement.appendChild(checkButton);
 
