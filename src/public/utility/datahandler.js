@@ -269,6 +269,17 @@ export const deleteAgreementById = async (agreementId) => {
       "Content-Type": "application/json",
     },
   };
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    // Handle errors appropriately, e.g., log or throw them
+    console.error("Error fetching agreement:", error);
+    throw error; // Rethrow the error for the caller to handle
+  }
 };
 
 /**
@@ -304,6 +315,7 @@ export const getAgreementsByStudentId = async (studentId) => {
         "Content-Type": "application/json",
       },
     });
+
     return await response.json();
   } catch (error) {
     console.error("Error getting aftaler:", error);
