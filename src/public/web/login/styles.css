@@ -35,7 +35,6 @@ body > div {
 }
 
 input {
-  border: 1px solid #ccc;
   border-radius: var(--small-border-radius);
   padding: 12px 12px;
   box-sizing: border-box;
