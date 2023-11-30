@@ -10,31 +10,35 @@ export const realtimeNoticeBoard = (callback) => {
     });
 }
 
-export const realtimeNoticeBoardUpdate = (callback) => {
-    onChildChanged(realtime, (snapshot) => {
-        callback(snapshot.val());
-    });
-}
+export const realtimeNoticeBoardUpdate = callback => {
+  onChildChanged(realtime, snapshot => {
+    callback(snapshot.val());
+  });
+};
 
-export const realtimeNoticeBoardDelete = (callback) => {
-    onChildRemoved(realtime, (snapshot) => {
-        callback(snapshot.val());
-    });
-}
+export const realtimeNoticeBoardDelete = callback => {
+  onChildRemoved(realtime, snapshot => {
+    callback(snapshot.val());
+  });
+};
 
 /**
- * 
- * @param {{name, relation}} sender 
- * @param {[{name, class}, {name, class}]} concerns 
- * @param {string} message 
+ *
+ * @param {{name, relation}} sender
+ * @param {[{name, class}, {name, class}]} concerns
+ * @param {string} message
  */
-export function writeNotice(sender, concerns, message) {
-    set(realtime, {
-        sender,
-        concerns,
-        message,
-        read: false
-    });
+export async function writeNotice(data) {
+  const { sendDate, sender, concerns, message } = data;
+
+  const newPostRef = push(realtime);
+  await set(newPostRef, {
+    sender: sender,
+    concerns: concerns,
+    message: message,
+    read: false,
+    sendDate: sendDate,
+  });
 }
 
 export function updateNotice(key, noticeData) {

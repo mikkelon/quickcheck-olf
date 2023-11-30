@@ -25,6 +25,10 @@ const buttons = {
     name: "Mine oplysninger",
     link: "/web/dashboard/parent-info",
   },
+  sendMessage: {
+    name: "Send besked",
+    link: "/web/dashboard/send-message",
+  },
 };
 const roles = {
   admin: [
@@ -34,7 +38,7 @@ const roles = {
     buttons.noticeBoard,
   ],
   employee: [buttons.studentOverview, buttons.noticeBoard],
-  parents: [buttons.myChildren, buttons.parentInfo],
+  parents: [buttons.myChildren, buttons.parentInfo, buttons.sendMessage],
   test: Object.keys(buttons).map((key) => buttons[key]), // TODO: Remove test role
 };
 

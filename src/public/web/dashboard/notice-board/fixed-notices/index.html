@@ -11,41 +11,30 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="../../../global.styles.css" />
+    <link rel="stylesheet" href="../../../../global.styles.css" />
     <script src="../../../../components/header.js" type="module" defer></script>
     <script src="gui.js" type="module" defer></script>
-    <title>Opslagstavlen</title>
+    <title>Faste aftaler</title>
   </head>
 
   <body>
     <header-component></header-component>
-    <h1 id="title">Opslagstavlen</h1>
+    <h1 id="title">Faste aftaler</h1>
     <div class="nav-container">
-      <a id="fixed-posts" href="fixed-notices/index.html" class="nav-button">
-        Faste aftaler
+      <a id="fixed-posts" href="../index.html" class="nav-button">
+        Opslagstavle
       </a>
-      <a id="student-overview" href="../student-overview/" class="nav-button">
+      <a
+        id="student-overview"
+        href="../../student-overview/index.html"
+        class="nav-button"
+      >
         Elevoversigt
       </a>
     </div>
-
     <div class="container">
-      <div class="notice-board">
-        <h3>Aktuelle beskeder for dagen</h3>
-        <div id="notices"></div>
-      </div>
-      <div class="vertical-line"></div>
-      <div id="actual-fixed-posts">
-        <h3>Faste aftaler for dagen</h3>
-        <div class="notice">
-          <div class="concerns">
-            <p>{Name} <span>({Class})</span></p>
-          </div>
-          <div class="message">{Message}</div>
-          <div class="check-button">
-            <button>Ikke udført</button>
-          </div>
-        </div>
+      <div class="fixed-posts">
+        <div id="notice"></div>
       </div>
     </div>
   </body>

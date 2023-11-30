@@ -57,8 +57,13 @@ function displayNotice(notice) {
   let checkButton = document.createElement("button");
   checkButton.className = "check-button";
 
-  if (notice.read) checkButton.innerText = 'Markér som "ikke udført"';
-  else checkButton.innerText = 'Markér som "udført"';
+  if (notice.read) {
+    checkButton.innerText = "Udført";
+    checkButton.classList.add("read");
+  } else {
+    checkButton.innerText = "Ikke udført";
+    checkButton.classList.remove("read");
+  }
   checkButton.addEventListener("click", () => {
     notice.read = !notice.read;
     updateNotice(notice.key, notice);

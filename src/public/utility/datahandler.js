@@ -361,21 +361,6 @@ export const getClassById = async (classId) => {
   }
 };
 
-/**
- * FOR TESTING PURPOSES ONLY
- *
- * Gets a random parent's students
- * @returns {Array} Array of students
- */
-export const getRandomParentStudents = async () => {
-  const parents = await fetch(apiUrl + "/parents").then((res) => res.json());
-
-  const randomParent = parents[Math.floor(Math.random() * parents.length)];
-  const students = await getStudentsByParentId(randomParent.id);
-
-  return students;
-};
-
 export const updateStudent = async (student) => {
   const url = `${apiUrl}/${student.id}`;
   const options = {
@@ -399,6 +384,7 @@ export const updateStudent = async (student) => {
 
 export const updateParents = async (id, parents) => {
   const url = `${apiUrl}/parents/${id}`;
+  console.log(id, parents);
   const options = {
     method: "PUT",
     headers: {
@@ -416,6 +402,54 @@ export const updateParents = async (id, parents) => {
     }
   } catch (error) {
     console.error("Error updating parents:", error);
+    throw error;
+  }
+};
+
+/**
+ * Add new parent object to parentsObj
+ * @param {string} id parentsObj id
+ * @param {Object} parent object containing name, relation, phone, email.
+ */
+export const addParent = async (id, parent) => {
+  const url = `${apiUrl}/parents/${id}`;
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(parent),
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error adding parent:", error);
+    throw error;
+  }
+};
+
+/**
+ * Delete parent object from parentsObj using index in parents array
+ * @param {string} id parentsObj id
+ * @param {number} index index of parent in parents array
+ */
+export const deleteParentByIndex = async (id, index) => {
+  const url = `${apiUrl}/parents/${id}/${index}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+  } catch (error) {
+    console.error("Error deleting parent:", error);
     throw error;
   }
 };
@@ -518,6 +552,32 @@ export const getStudentsBySessionCookie = async () => {
     return data;
   } catch (error) {
     console.error("Error getting students by session cookie:", error);
+    throw error;
+  }
+};
+
+/**
+ * Gets the parents associated with the current user
+ * @returns {Object} Object with parents' ID and array of parents.
+ */
+
+export const getParentInfoBySessionCookie = async () => {
+  const url = `${apiUrl}/parents/info`;
+  const options = {
+    method: "GET",
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error getting parents by session cookie:", error);
     throw error;
   }
 };
