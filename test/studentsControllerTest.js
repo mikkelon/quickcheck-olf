@@ -1,27 +1,25 @@
-import { expect as _expect } from "chai";
-const expect = _expect;
+import { expect } from "chai";
 import { adminDB } from "../src/config/firebase-admin.js";
 import { toggleCheckedInStatus } from "../src/api/controllers/studentsController.js";
 
 describe("toggleCheckedInStatus Function", () => {
   it("should toggle the checkedIn status of a student", async () => {
-    const testStudentId = "1CNqi56kl0UU6DBzKUVh"; // Find et passende test id fra databasen (kan være skiftende)
+    
+    // Get a random student from the database
+    let studentSnapshot = await adminDB.collection("students").get();
+    let studentDoc = studentSnapshot.docs[0];
 
-    // Initial check of student status
-    let studentSnapshot = await adminDB
-      .collection("students")
-      .doc(testStudentId)
-      .get();
-    let initialStatus = studentSnapshot.data().checkedIn;
+
+    expect(studentDoc.exists).to.be.true;
+
+    let studentId = studentDoc.id;
+    let initialStatus = studentDoc.data().checkedIn;
 
     // Toggle status
-    await toggleCheckedInStatus(testStudentId);
+    await toggleCheckedInStatus(studentId);
 
     // Check status after toggle
-    studentSnapshot = await adminDB
-      .collection("students")
-      .doc(testStudentId)
-      .get();
+    studentSnapshot = await adminDB.collection("students").doc(studentId).get();
     let toggledStatus = studentSnapshot.data().checkedIn;
 
     // Assertions
@@ -32,7 +30,7 @@ describe("toggleCheckedInStatus Function", () => {
     // Toggle back to initial state for cleanup
     await adminDB
       .collection("students")
-      .doc(testStudentId)
+      .doc(studentId)
       .update({ checkedIn: initialStatus });
   });
 });
