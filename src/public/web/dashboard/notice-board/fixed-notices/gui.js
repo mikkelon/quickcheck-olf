@@ -1,55 +1,60 @@
-const fixedNotices = [
-  {
-    concerns: [
-      {
-        name: "ArniBjarniBent",
-        class: "Blå",
-      },
-      {
-        name: "Son Goku",
-        class: "Rød",
-      },
-    ],
-    message:
-      "ArniBjarniBent og Son Goku bliver hentet af deres bedstefar hver torsdag da deres mor er på arbejde.",
-    daysValid: ["Mandag"],
-  },
-  {
-    concerns: [
-      {
-        name: "Son Goku",
-        class: "Rød",
-      },
-    ],
-    message:
-      "ArniBjarniBent og Son Goku bliver hentet af deres bedstefar hver torsdag da deres mor er på arbejde.",
-    daysValid: ["Torsdag", "Fredag"],
-  },
-];
+import { getAllAgreements } from "../../../../utility/datahandler.js";
 
-function displayFixedNotices() {
-  let noticeBoard = document.getElementById("notice");
-  noticeBoard.innerHTML = "";
+async function displayAllAgreements() {
+  let agreementBoard = document.getElementById("notice");
+  agreementBoard.innerHTML = "";
 
-  fixedNotices.forEach(notice => {
-    let noticeElement = document.createElement("div");
-    noticeElement.className = "notice";
+  const agreements = await getAllAgreements();
+  console.log(agreements);
 
-    let concernsElement = document.createElement("div");
-    concernsElement.className = "concerns";
-    concernsElement.innerHTML = notice.concerns
-      .map(concern => `<p>${concern.name} <span>(${concern.class})</span></p>`)
-      .join("");
+  agreements.sort((a, b) => {
+    // sort on agreement.student.name
+    if (a.student.name < b.student.name) return -1;
+    else if (a.student.name > b.student.name) return 1;
+    else return 0;
+  });
 
-    let messageElement = document.createElement("div");
-    messageElement.className = "message";
-    messageElement.innerHTML = `<p>${notice.message}</p>`;
+  agreements.forEach(agreement => {
+    let agreementElement = document.createElement("div");
+    agreementElement.className = "agreement";
+    const concerningContainer = document.createElement("div");
+    const concerningElement = document.createElement("p");
+    concerningElement.className = "concerning";
+    concerningElement.innerHTML =
+      agreement.student.name + " (" + agreement.student.class.colorLabel + ")";
+    concerningContainer.appendChild(concerningElement);
 
-    let dateElement = document.createElement("div");
-    dateElement.className = "date";
-    notice.daysValid.forEach(day => {
-      dateElement.innerHTML += `<p>${day}</p>`;
-    });
+    if (agreement.daysValid.length === 7) {
+      const daysValidContainer = document.createElement("div");
+      daysValidContainer.className = "days-valid";
+      const daysValidElement = document.createElement("p");
+      daysValidElement.innerText = "Alle dage";
+      daysValidContainer.appendChild(daysValidElement);
+      agreementElement.appendChild(daysValidContainer);
+    } else if (agreement.daysValid.length !== 0) {
+      const weekdays = [
+        "Søndag",
+        "Mandag",
+        "Tirsdag",
+        "Onsdag",
+        "Torsdag",
+        "Fredag",
+        "Lørdag",
+      ];
+      const daysValidContainer = document.createElement("div");
+      daysValidContainer.className = "days-valid";
+      const daysValidText = agreement.daysValid.map(day => weekdays[day]);
+      daysValidText.forEach(day => {
+        const dayElement = document.createElement("p");
+        dayElement.innerText = day;
+        daysValidContainer.appendChild(dayElement);
+      });
+
+      agreementElement.appendChild(daysValidContainer);
+    }
+
+    const messageElement = document.createElement("p");
+    messageElement.innerText = agreement.message;
 
     let crossElement = document.createElement("div");
     crossElement.className = "cross";
@@ -60,12 +65,11 @@ function displayFixedNotices() {
       // TODO: Remove from database
     });
 
-    noticeElement.appendChild(concernsElement);
-    noticeElement.appendChild(messageElement);
-    noticeElement.appendChild(dateElement);
-    noticeBoard.appendChild(noticeElement);
-    noticeElement.appendChild(crossElement);
+    agreementElement.appendChild(concerningContainer);
+    agreementElement.appendChild(messageElement);
+    agreementElement.appendChild(crossElement);
+    agreementBoard.appendChild(agreementElement);
   });
 }
 
-displayFixedNotices();
+displayAllAgreements();

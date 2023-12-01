@@ -60,6 +60,35 @@ const getDailyAgreements = async () => {
   return agreements;
 };
 
+export const getAgreements = async () => {
+  const agreementsSnapshot = await adminDB.collection("agreements").get();
+  const agreements = agreementsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const studentsSnapshot = await adminDB.collection("students").get();
+  const students = studentsSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const classesSnapshot = await adminDB.collection("classes").get();
+  const classes = classesSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  agreements.forEach(agreement => {
+    const student = students.find(student => student.id == agreement.studentId);
+    const clazz = classes.find(clazz => clazz.id == student.classId);
+    agreement.student = student;
+    student.class = clazz;
+  });
+
+  return agreements;
+};
+
 export {
   getDailyAgreements,
   createAgreement,

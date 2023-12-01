@@ -78,7 +78,7 @@
   align-items: center;
   gap: 50px;
   padding: 10px;
-  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
 

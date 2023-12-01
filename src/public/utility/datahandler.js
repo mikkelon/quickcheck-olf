@@ -606,3 +606,14 @@ export const getDailyAgreements = async () => {
     throw error;
   }
 };
+
+export const getAllAgreements = async () => {
+  const url = `${apiUrl}/agreements`;
+  try {
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting all agreements:", error);
+    throw error;
+  }
+};

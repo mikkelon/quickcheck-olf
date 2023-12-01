@@ -46,6 +46,12 @@ function loadNotices() {
 async function loadAgreements() {
   // Load daily agreements
   const dailyAgreements = await getDailyAgreements();
+  if (dailyAgreements.length == 0) {
+    let noAgreements = document.createElement("div");
+    noAgreements.className = "no-agreements";
+    noAgreements.innerHTML = `<p>Der er ingen aftaler at vise.</p>`;
+    dailyAgreementsContainer.appendChild(noAgreements);
+  }
   console.log(dailyAgreements);
   dailyAgreements.forEach(agreement => {
     displayAgreement(agreement);
