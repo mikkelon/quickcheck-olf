@@ -8,8 +8,8 @@ import {
 let parentsData = [];
 
 // Function to create a new parent
-function createParent(name, phone, email) {
-  const newParent = { name, phone, email };
+function createParent(name, phone, email, relation) {
+  const newParent = { name, phone, email, relation };
   parentsData.push(newParent);
   return newParent;
 }
@@ -39,13 +39,15 @@ function clear() {
 function deleteAgreement(id) {
   deleteAgreementById(id);
 }
+
 async function createNewAgreement(studentId, message, daysValid) {
   const agreement = {
     studentId: studentId,
     message: message,
     daysValid: daysValid,
   };
-  createAgreement(studentId, agreement);
+  
+  await createAgreement(studentId, agreement);
 }
 
 export {

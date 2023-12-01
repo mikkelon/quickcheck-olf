@@ -4,12 +4,14 @@
       {
         "name": "Anne Nielsen",
         "phone": "12345678",
-        "email": "anne@example.com"
+        "email": "anne@example.com",
+        "relation": "Mor"
       },
       {
         "name": "Peter Hansen",
         "phone": "23456789",
-        "email": "peter@example.com"
+        "email": "peter@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -30,12 +32,14 @@
       {
         "name": "Jesper Larsen",
         "phone": "45678901",
-        "email": "jesper@example.com"
+        "email": "jesper@example.com",
+        "relation": "Far"
       },
       {
         "name": "Mette Pedersen",
         "phone": "56789012",
-        "email": "mette@example.com"
+        "email": "mette@example.com",
+        "relation": "Mor"
       }
     ],
     "students": [
@@ -51,7 +55,8 @@
       {
         "name": "Lars Rasmussen",
         "phone": "67890123",
-        "email": "lars@example.com"
+        "email": "lars@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -72,17 +77,20 @@
       {
         "name": "Gitte Nielsen",
         "phone": "98765432",
-        "email": "gitte@example.com"
+        "email": "gitte@example.com",
+        "relation": "Mor"
       },
       {
         "name": "Kasper Kristensen",
         "phone": "65432109",
-        "email": "kasper@example.com"
+        "email": "kasper@example.com",
+        "relation": "Far"
       },
       {
         "name": "Helle Rasmussen",
         "phone": "54321098",
-        "email": "helle@example.com"
+        "email": "helle@example.com",
+        "relation": "Mormor"
       }
     ],
     "students": [
@@ -108,12 +116,14 @@
       {
         "name": "Niels Jørgensen",
         "phone": "43210987",
-        "email": "niels@example.com"
+        "email": "niels@example.com",
+        "relation": "Far"
       },
       {
         "name": "Anne Pedersen",
         "phone": "32109876",
-        "email": "anne@example.com"
+        "email": "anne@example.com",
+        "relation": "Mor"
       }
     ],
     "students": [
@@ -129,7 +139,8 @@
       {
         "name": "Anders Jensen",
         "phone": "87654321",
-        "email": "anders@example.com"
+        "email": "anders@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -150,7 +161,8 @@
       {
         "name": "Morten Mikkelsen",
         "phone": "78901234",
-        "email": "morten@example.com"
+        "email": "morten@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -166,12 +178,14 @@
       {
         "name": "Ida Christensen",
         "phone": "23456789",
-        "email": "ida@example.com"
+        "email": "ida@example.com",
+        "relation": "Mor"
       },
       {
         "name": "Nicolai Rasmussen",
         "phone": "34567890",
-        "email": "nicolai@example.com"
+        "email": "nicolai@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -192,12 +206,14 @@
       {
         "name": "Laura Petersen",
         "phone": "45678901",
-        "email": "laura@example.com"
+        "email": "laura@example.com",
+        "relation": "Mor"
       },
       {
         "name": "Andreas Madsen",
         "phone": "56789012",
-        "email": "andreas@example.com"
+        "email": "andreas@example.com",
+        "relation": "Far"
       }
     ],
     "students": [
@@ -218,17 +234,20 @@
       {
         "name": "Camilla Sørensen",
         "phone": "65432109",
-        "email": "camilla@example.com"
+        "email": "camilla@example.com",
+        "relation": "Mor"
       },
       {
         "name": "Jens Christensen",
         "phone": "76543210",
-        "email": "jens@example.com"
+        "email": "jens@example.com",
+        "relation": "Far"
       },
       {
         "name": "Mette Rasmussen",
         "phone": "87654321",
-        "email": "mette@example.com"
+        "email": "mette@example.com",
+        "relation": "Mormor"
       }
     ],
     "students": [
@@ -249,12 +268,14 @@
       {
         "name": "Michael Test Rasmussen",
         "phone": "12345678",
-        "email": "forælder@test.dk"
+        "email": "forælder@test.dk",
+        "relation": "Far"
       },
       {
         "name": "Julie Test Rasmussen",
         "phone": "12345678",
-        "email": "julie@test.dk"
+        "email": "julie@test.dk",
+        "relation": "Mor"
       }
     ],
     "students": [

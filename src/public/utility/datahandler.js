@@ -243,7 +243,7 @@ export const createAgreement = async (studentId, agreement) => {
     },
   };
 
-  console.log("prepost: " + JSON.stringify({ studentId, agreement }));
+  console.log("prepost: " + JSON.stringify({ studentId, ...agreement }));
 
   try {
     const response = await fetch(url, options);
@@ -375,7 +375,7 @@ export const getClassById = async classId => {
 };
 
 export const updateStudent = async student => {
-  const url = `${apiUrl}/${student.id}`;
+  const url = `${apiUrl}/students/${student.id}`;
   const options = {
     method: "PUT",
     headers: {
@@ -383,6 +383,8 @@ export const updateStudent = async student => {
     },
     body: JSON.stringify(student),
   };
+
+  console.log("Updating student:", student);
 
   try {
     const response = await fetch(url, options);

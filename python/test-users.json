@@ -13,5 +13,10 @@
     "email": "test@test.dk",
     "password": "123456",
     "role": "test"
+  },
+  {
+    "email": "forælder@test.dk",
+    "password": "123456",
+    "role": "parents"
   }
 ]
