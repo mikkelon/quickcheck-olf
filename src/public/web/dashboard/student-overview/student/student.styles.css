@@ -162,7 +162,12 @@ button:hover {
 }
 
 .form-container {
-  gap: 0px;
+  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+
 }
 
 .parent {
@@ -237,10 +242,6 @@ button:hover {
   justify-content: center;
 }
 
-.forms-label {
-  margin-bottom: 10px;
-}
-
 .forms-input,
 textarea {
   padding: 15px;
@@ -258,6 +259,7 @@ textarea {
   cursor: pointer;
   width: 50%;
   align-self: center;
+  justify-self: center;
 }
 
 .note-delete {
@@ -326,4 +328,28 @@ textarea {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.button-save {
+  display:flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.note-description {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.valid-days{
+  color: #ccccccc9;
+  font-size: 14px;
 }
