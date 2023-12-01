@@ -61,7 +61,7 @@ async function initGUI() {
 
   await getParentsById(child.parentsId).then((res) => {
     res.parents.map((parent) => {
-      createParent(parent.name, parent.phone, parent.email);
+      createParent(parent.name, parent.phone, parent.email, parent.relation);
     });
   });
 
@@ -171,7 +171,7 @@ async function setParents() {
         // Handle the click event for adding a child
         // You can show a form or perform any other action
         console.log("Add Parent button clicked");
-        createParent("", "", "");
+        createParent("", "", "", "");
         setParents();
       }
     );
@@ -213,7 +213,8 @@ function createParentElement(parent, index) {
       "delete",
       "<i class='fas fa-trash'></i>",
       () => {
-        deleteParentHandler(index);
+        const confirmed = confirm("Er du sikker på, at du vil slette denne forælder?");
+        if (confirmed) deleteParentHandler(index);
       }
     );
     deleteIcon.classList.add("delete-parent");
@@ -321,8 +322,6 @@ checkInOutBtn.addEventListener("click", () => {
   setStatus(child.checkedIn);
 
   toggleStudentCheckIn(child.id);
-
-  alert(child.checkedIn ? "Barnet er tjekket ind" : "Barnet er tjekket ud");
 });
 
 const agreementModal = document.getElementById("note-modal");
@@ -438,16 +437,12 @@ function createAgreementElement(agreement) {
   const dropdownDiv = document.createElement("div");
   dropdownDiv.classList.add("dropdown");
 
-  if (agreement.daysValid.length > 0) {
-    dropdownDiv.innerHTML = `
-    <div class="note-description">
-    ${agreement.message}
+  dropdownDiv.innerHTML = `
+  <div class="note-description">
+  ${agreement.message}
 
-    <span class="valid-days">${translateValidDays(agreement)}</span>
-    </div>`;
-  } else {
-    dropdownDiv.innerHTML = agreement.message;
-  }
+  <span class="valid-days">${translateValidDays(agreement)}</span>
+  </div>`;
 
   // Opret dropdown-indholdet <div class="dropdown-content">
   const dropdownContentDiv = document.createElement("div");
