@@ -90,7 +90,7 @@ function addButtons() {
 
         save();
       },
-      "#4bb14e"
+      "#56E87F"
     );
 
     const cancelbtn = createTextButton(
@@ -108,7 +108,7 @@ function addButtons() {
   } else {
     const deleteBtn = createTextButton(
       "delete",
-      "Slet",
+      "Slet elev",
       () => {
         document.getElementById("delete-modal").style.display = "block";
       },
@@ -122,7 +122,7 @@ function addButtons() {
         editing = !editing;
         setEditing(editing);
       },
-      "#4bb14e"
+      "#8774FF"
     );
 
     customizeButtons.appendChild(deleteBtn);
@@ -149,7 +149,7 @@ function setStatus(checkedIn) {
   status.style.backgroundColor = checkedIn ? "#4bb14e" : "#FF5656";
 
   checkInOutBtn.innerHTML = checkedIn ? "Tjek Ud" : "Tjek Ind";
-  checkInOutBtn.style.backgroundColor = checkedIn ? "#FF5656" : "#4bb14e";
+  checkInOutBtn.style.backgroundColor = checkedIn ? "#FF5656" : "#56E87F";
 }
 
 async function setParents() {
@@ -456,7 +456,18 @@ function createAgreementElement(agreement) {
   // Opret delete-knappen <div class="note-delete">
   const deleteBtnDiv = document.createElement("div");
   deleteBtnDiv.classList.add("note-delete");
-  deleteBtnDiv.innerHTML = "X";
+  deleteBtnDiv.style.backgroundImage = `url(${config.assets.icons.closeSquareThin})`;
+
+  // Add hover effect
+  deleteBtnDiv.addEventListener("mouseenter", () => {
+    deleteBtnDiv.style.backgroundImage = `url(${config.assets.icons.closeSquareBold})`;
+    deleteBtnDiv.style.cursor = "pointer";
+  });
+
+  deleteBtnDiv.addEventListener("mouseleave", () => {
+    deleteBtnDiv.style.backgroundImage = `url(${config.assets.icons.closeSquareThin})`;
+    deleteBtnDiv.style.cursor = "default";
+  });
 
   // Tilføj en event listener til delete-knappen
   deleteBtnDiv.addEventListener("click", () => {

@@ -31,8 +31,6 @@
     <header-component>
     </header-component>
 
-    <div id="buttons-container"></div>
-
     <div class="sections">
 
         <div class="child">
@@ -49,6 +47,9 @@
 
                     <!-- Tjek -->
                     <button class="tjek-ud-btn" id="checkInOutBtn">{checkInOut}</button>
+
+                    <!-- CRUD Buttons -->
+                    <div id="buttons-container"></div>
                 </div>
 
                 <!-- Details -->
@@ -70,13 +71,17 @@
 
             <!-- Agreements -->
             <div class="notes-container">
-                <h2>Faste aftaler</h2>
+                <header>
+                    <h2>Faste aftaler</h2>
+                    <button class="add-note-btn">
+                        Opret
+                    </button>
+                </header>
+                
                 <div id="notes">
 
                 </div>
-                <button class="add-note-btn">
-                    Opret ny fast aftale
-                </button>
+                
             </div>
             </d>
 

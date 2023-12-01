@@ -97,6 +97,7 @@ button:hover {
 
 button {
   color: white;
+  padding: 1rem;
 }
 
 .modal {
