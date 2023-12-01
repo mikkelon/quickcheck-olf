@@ -56,18 +56,29 @@
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
-  align-items: center;
+  width: 80vw;
 }
-.notice {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+.agreement {
+  display: grid;
+  grid-template-columns: 1fr 2fr 5fr 1fr;
+  gap: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   flex-wrap: wrap;
   margin: 1rem;
+}
+
+.agreement div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.days-valid p {
+  margin: 0;
+  font-size: 14px;
+  color: grey;
 }
 
 .date p {
@@ -80,8 +91,11 @@
 }
 
 .cross {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   color: red;
   font-size: 1.5rem;
-  margin-left: 1rem;
+  padding: 10px 20px;
 }
