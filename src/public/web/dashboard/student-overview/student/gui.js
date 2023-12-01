@@ -6,7 +6,6 @@ import {
   toggleStudentCheckIn,
   updateStudent,
   updateParents,
-  createAgreement,
   getAgreementsByStudentId,
 } from "../../../../utility/datahandler.js";
 import {
@@ -136,13 +135,11 @@ function setEditing(editing) {
 
   forms.forEach((form) => {
     const isExcluded = form.classList.contains("exclude-from-disabling");
-
     // Disable or enable based on the condition
     form.disabled = isExcluded ? form.disabled : !editing;
   });
 
   setParents();
-
   addButtons();
 }
 
@@ -291,8 +288,8 @@ function deleteParentHandler(index) {
 }
 
 // Event handler for deleting an agreement
-function deleteAgreementHandler(index) {
-  const deletedAgreement = deleteAgreement(index);
+function deleteAgreementHandler(agreementId) {
+  const deletedAgreement = deleteAgreement(agreementId);
   console.log("Deleted agreement:", deletedAgreement);
   // Update the UI
   createAgreementsGui();
@@ -332,6 +329,11 @@ const agreementModal = document.getElementById("note-modal");
 
 const addAgreement = document.querySelector(".add-note-btn");
 addAgreement.addEventListener("click", () => {
+  // Reset checkboxes
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
   agreementModal.style.display = "block";
 });
 
@@ -360,31 +362,20 @@ saveAgreement.addEventListener("click", async () => {
 
   checkboxes.forEach((checkbox) => {
     if (checkbox.checked && checkbox.id !== "everyday") {
-      selectedDays.add(checkbox.name);
+      selectedDays.add(Number(checkbox.name));
     }
   });
 
   // Check if "Alle dage" checkbox is selected
   const everydayCheckbox = document.getElementById("everyday");
   if (everydayCheckbox.checked) {
-    // If selected, add all the other days
-    const otherDays = [
-      "monday",
-      "tuesday",
-      "wednesday",
-      "thursday",
-      "friday",
-      "saturday",
-      "sunday",
-    ];
+    const otherDays = [1, 2, 3, 4, 5, 6, 0]; // Monday to Sunday
     otherDays.forEach((day) => selectedDays.add(day));
   }
 
   createNewAgreement(child.id, message, Array.from(selectedDays));
   createAgreementsGui();
-
   descriptionField.value = "";
-
   agreementModal.style.display = "none";
 });
 
@@ -404,46 +395,36 @@ async function createAgreementsGui() {
     }
 
     agreements.forEach((agreement, index) => {
-      const agreementElm = createAgreementElement(agreement, index);
+      const agreementElm = createAgreementElement(agreement);
       agreementContainer.appendChild(agreementElm);
     });
   } catch (error) {
     console.log(error);
   }
 }
-
 function translateValidDays(agreement) {
-  let translatedDays = [];
+  const daysMapping = {
+    0: "Søndag",
+    1: "Mandag",
+    2: "Tirsdag",
+    3: "Onsdag",
+    4: "Torsdag",
+    5: "Fredag",
+    6: "Lørdag",
+  };
+
   const days = agreement.daysValid;
   if (days.length === 7) {
-    translatedDays.push("Alle dage");
-    return translatedDays;
+    return ["Alle dage"];
   }
   if (days.length === 0) {
-    translatedDays.push("Ingen valgte dage");
-    return translatedDays;
+    return ["Ingen valgte dage"];
   }
-  days.forEach((day) => {
-    if (day === "monday") {
-      translatedDays.push(" Mandag");
-    } else if (day === "tuesday") {
-      translatedDays.push(" Tirsdag");
-    } else if (day === "wednesday") {
-      translatedDays.push(" Onsdag");
-    } else if (day === "thursday") {
-      translatedDays.push(" Torsdag");
-    } else if (day === "friday") {
-      translatedDays.push(" Fredag");
-    } else if (day === "saturday") {
-      translatedDays.push(" Lørdag");
-    } else if (day === "sunday") {
-      translatedDays.push(" Søndag");
-    }
-  });
+  const translatedDays = days.map((day) => daysMapping[day]);
   return translatedDays;
 }
 
-function createAgreementElement(agreement, index) {
+function createAgreementElement(agreement) {
   // Opret hovedelementet <div class="note">
   const agreementDiv = document.createElement("div");
   agreementDiv.classList.add("note");
@@ -451,11 +432,16 @@ function createAgreementElement(agreement, index) {
   // Opret dropdown-containeren <div class="dropdown">
   const dropdownDiv = document.createElement("div");
   dropdownDiv.classList.add("dropdown");
-  dropdownDiv.innerHTML =
-    agreement.message +
-    "<br>" +
-    "Gældende dage: " +
-    translateValidDays(agreement);
+
+  if (agreement.daysValid.length > 0) {
+    dropdownDiv.innerHTML =
+      agreement.message +
+      "<br>" +
+      "Gældende dage: " +
+      translateValidDays(agreement);
+  } else {
+    dropdownDiv.innerHTML = agreement.message;
+  }
 
   // Opret dropdown-indholdet <div class="dropdown-content">
   const dropdownContentDiv = document.createElement("div");
@@ -474,7 +460,7 @@ function createAgreementElement(agreement, index) {
 
   // Tilføj en event listener til delete-knappen
   deleteBtnDiv.addEventListener("click", () => {
-    deleteAgreementHandler(index);
+    deleteAgreementHandler(agreement.id);
   });
 
   // Tilføj dropdown-containeren og delete-knappen til hovedelementet

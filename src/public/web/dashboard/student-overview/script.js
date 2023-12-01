@@ -113,7 +113,7 @@ const fetchClasses = async () => {
 
   renderClassOptions();
 };
-let skoletrinLabels = ["", "indskoling", "mellemskoling", "udskoling"];
+let skoletrinLabels = ["", "Indskoling", "Mellemskoling", "Udskoling"];
 const mapClassToSkoletrin = (classNumber) => {
   if (classNumber >= 0 && classNumber <= 3) {
     return skoletrinLabels[1]; // Indskoling
@@ -131,9 +131,7 @@ const mapClassToSkoletrin = (classNumber) => {
 
 const filterStudents = () => {
   const filteredStudents = studentArray.filter((student) => {
-    const classFilter =
-      activeFilters.classes.length === 0 ||
-      activeFilters.classes.includes(student.class.id);
+    const classFilter = activeFilters.classes.includes(student.class.id);
     const checkedInFilter = !activeFilters.checkedIn || student.checkedIn;
     const checkedOutFilter = !activeFilters.checkedOut || !student.checkedIn;
     const nameFilter =
@@ -141,16 +139,20 @@ const filterStudents = () => {
       student.name.toLowerCase().includes(activeFilters.name.toLowerCase());
 
     const skoletrin = mapClassToSkoletrin(student.class.class);
-    const skoletrinFilter =
-      activeFilters.skoletrin.length === 0 ||
-      activeFilters.skoletrin.includes(skoletrin);
+    const skoletrinFilter = activeFilters.skoletrin.includes(skoletrin);
+
+    const skoletrinAndClassesAreEmpty =
+      activeFilters.skoletrin.length === 0 &&
+      activeFilters.classes.length === 0;
+
+    const combinedSkoletrinAndClassesFilter =
+      skoletrinAndClassesAreEmpty || skoletrinFilter || classFilter;
 
     return (
-      classFilter &&
+      combinedSkoletrinAndClassesFilter &&
       checkedInFilter &&
       checkedOutFilter &&
-      nameFilter &&
-      skoletrinFilter
+      nameFilter
     );
   });
 

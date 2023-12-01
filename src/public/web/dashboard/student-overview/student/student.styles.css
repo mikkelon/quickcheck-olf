@@ -101,6 +101,7 @@ body {
 }
 
 .notes-container {
+  margin-top: 25px;
   display: flex;
   flex: 1;
   flex-direction: column;
