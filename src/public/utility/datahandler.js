@@ -6,7 +6,7 @@ const apiUrl = config.apiUrl;
  * @param {*} classId The id of the class (firebase document id)
  * @returns {Array} Array of students
  */
-export const getStudentsByClassId = async (classId) => {
+export const getStudentsByClassId = async classId => {
   const url = `${apiUrl}/classes/${classId}/students`;
 
   try {
@@ -31,7 +31,7 @@ export const getStudentsByClassId = async (classId) => {
  * @param {string} parentId ID of the parents object in firebase
  * @returns
  */
-export const getStudentsByParentId = async (parentId) => {
+export const getStudentsByParentId = async parentId => {
   const url = `${apiUrl}/parents/${parentId}/students`;
 
   try {
@@ -111,7 +111,7 @@ export const createFamily = async (students, parents) => {
  * Creates a new employee user in firebase
  * @param {Object} employee And object containing the employee data
  */
-export const createEmployee = async (employee) => {
+export const createEmployee = async employee => {
   const url = apiUrl + "/signup/employee";
   const options = {
     method: "POST",
@@ -171,8 +171,8 @@ export const getStudentsWithClass = async () => {
   const classes = await getClasses();
 
   // Add class information to students
-  const studentsWithClass = students.map((student) => {
-    const studentClass = classes.find((c) => c.id === student.classId);
+  const studentsWithClass = students.map(student => {
+    const studentClass = classes.find(c => c.id === student.classId);
     return {
       ...student,
       class: studentClass,
@@ -187,7 +187,7 @@ export const getStudentsWithClass = async () => {
  * Toggles the checked in status of a student
  * @param {*} studentId The id of the student (firebase document id)
  */
-export const toggleStudentCheckIn = async (studentId) => {
+export const toggleStudentCheckIn = async studentId => {
   const url = `${apiUrl}/students/toggleCheckedIn/${studentId}`;
   const options = {
     method: "PUT",
@@ -210,7 +210,7 @@ export const toggleStudentCheckIn = async (studentId) => {
  * Get all parents
  * @returns {Array} Array of parents
  */
-export const getParentsById = async (parentsId) => {
+export const getParentsById = async parentsId => {
   const url = `${apiUrl}/parents/${parentsId}`;
   const options = {
     method: "GET",
@@ -261,7 +261,7 @@ export const createAgreement = async (studentId, agreement) => {
   }
 };
 
-export const deleteAgreementById = async (agreementId) => {
+export const deleteAgreementById = async agreementId => {
   const url = `${apiUrl}/agreements/${agreementId}`;
   const options = {
     method: "DELETE",
@@ -286,7 +286,7 @@ export const deleteAgreementById = async (agreementId) => {
  * Delete a student with a given studentId
  * @param {string} studentId
  */
-export const deleteStudent = async (studentId) => {
+export const deleteStudent = async studentId => {
   const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "DELETE",
@@ -306,7 +306,7 @@ export const deleteStudent = async (studentId) => {
 };
 
 // GET aftaler til en elev
-export const getAgreementsByStudentId = async (studentId) => {
+export const getAgreementsByStudentId = async studentId => {
   const url = `${apiUrl}/agreements/${studentId}`;
   try {
     const response = await fetch(url, {
@@ -327,7 +327,7 @@ export const getAgreementsByStudentId = async (studentId) => {
  * Get a student with a given studentId
  * @param {string} studentId
  */
-export const getStudentById = async (studentId) => {
+export const getStudentById = async studentId => {
   const url = `${apiUrl}/students/${studentId}`;
   const options = {
     method: "GET",
@@ -354,7 +354,7 @@ export const getStudentById = async (studentId) => {
  * @param {string} classId
  * @returns {Object} Class object
  */
-export const getClassById = async (classId) => {
+export const getClassById = async classId => {
   const url = `${apiUrl}/classes/${classId}`;
   const options = {
     method: "GET",
@@ -374,7 +374,7 @@ export const getClassById = async (classId) => {
   }
 };
 
-export const updateStudent = async (student) => {
+export const updateStudent = async student => {
   const url = `${apiUrl}/${student.id}`;
   const options = {
     method: "PUT",
@@ -471,7 +471,7 @@ export const deleteParentByIndex = async (id, index) => {
  * Requests a session cookie based on the idToken
  * @param {string} idToken
  */
-export const requestSessionCookie = async (idToken) => {
+export const requestSessionCookie = async idToken => {
   const url = `${apiUrl}/login`;
   const options = {
     method: "POST",
@@ -591,6 +591,29 @@ export const getParentInfoBySessionCookie = async () => {
     return data;
   } catch (error) {
     console.error("Error getting parents by session cookie:", error);
+    throw error;
+  }
+};
+
+export const getDailyAgreements = async () => {
+  // fetch daily agreements
+  const url = `${apiUrl}/agreements/daily`;
+  try {
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting daily agreements:", error);
+    throw error;
+  }
+};
+
+export const getAllAgreements = async () => {
+  const url = `${apiUrl}/agreements`;
+  try {
+    const response = await fetch(url);
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting all agreements:", error);
     throw error;
   }
 };

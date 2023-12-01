@@ -4,9 +4,11 @@ import { toggleCheckedInStatus } from "../src/api/controllers/studentsController
 
 describe("toggleCheckedInStatus Function", () => {
   it("should toggle the checkedIn status of a student", async () => {
+    
     // Get a random student from the database
     let studentSnapshot = await adminDB.collection("students").get();
     let studentDoc = studentSnapshot.docs[0];
+
 
     expect(studentDoc.exists).to.be.true;
 

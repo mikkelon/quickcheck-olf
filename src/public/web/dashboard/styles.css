@@ -47,6 +47,7 @@ body {
   text-decoration: none;
   text-align: center;
   border-radius: var(--default-border-radius);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .buttons a:hover {
