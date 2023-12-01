@@ -8,10 +8,9 @@ import { getDailyAgreements } from "../../../utility/datahandler.js";
 
 const notices = [];
 const dailyAgreementsContainer = document.getElementById("daily-agreements");
+let noticeBoard = document.getElementById("notices");
 
 function loadNotices() {
-  let noticeBoard = document.getElementById("notices");
-
   noticeBoard.innerHTML = "";
 
   if (notices.length == 0) {
@@ -21,26 +20,22 @@ function loadNotices() {
     noticeBoard.appendChild(noNotices);
   }
 
-  // Load unread notices
-  for (let i = 0; i < notices.length; i++) {
-    let notice = notices[i];
-    if (notice.read) continue;
+  const todaysMessages = notices.filter(message => {
+    const today = new Date();
+    const messageDate = new Date(message.sendDate);
+    return today.toDateString() === messageDate.toDateString();
+  });
 
-    const noticeElement = displayNotice(notice);
+  todaysMessages.sort((a, b) => {
+    // Sort by read status
+    if (a.read && !b.read) return 1;
+    else if (!a.read && b.read) return -1;
+    return 0;
+  });
 
-    noticeBoard.appendChild(noticeElement);
-  }
-
-  // Load read notices
-  for (let i = 0; i < notices.length; i++) {
-    let notice = notices[i];
-    if (!notice.read) continue;
-
-    const noticeElement = displayNotice(notice);
-    noticeElement.classList.add("read");
-
-    noticeBoard.appendChild(noticeElement);
-  }
+  todaysMessages.forEach(message => {
+    displayNotice(message);
+  });
 }
 
 async function loadAgreements() {
@@ -60,6 +55,8 @@ async function loadAgreements() {
 
 function displayNotice(notice) {
   let noticeElement = document.createElement("div");
+  if (notice.read) noticeElement.classList.add("read");
+
   noticeElement.className = "notice";
   const noticeContentElement = document.createElement("div");
   noticeContentElement.className = "notice-content";
@@ -90,6 +87,7 @@ function displayNotice(notice) {
   checkButton.className = "check-button";
 
   if (notice.read) {
+    noticeElement.classList.add("read");
     checkButton.innerText = "Udført";
     checkButton.classList.add("read");
   } else {
@@ -103,7 +101,7 @@ function displayNotice(notice) {
   });
   noticeElement.appendChild(checkButton);
 
-  return noticeElement;
+  noticeBoard.appendChild(noticeElement);
 }
 
 function displayAgreement(agreement) {

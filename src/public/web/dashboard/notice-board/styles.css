@@ -82,6 +82,11 @@
   border-radius: 10px;
 }
 
+.notice.read {
+  background-color: rgba(214, 214, 214, 0.202);
+  color: rgb(162, 162, 162);
+}
+
 .notice-content {
   flex: 3;
 }
@@ -113,17 +118,17 @@
 button {
   box-sizing: border-box;
   background-color: #ff5656b6;
+  color: white;
   width: 160px;
   padding: 10px 20px;
   font-size: medium;
 }
 
 .read {
-  background-color: #91919127;
-  color: #00000047;
+  background-color: #56e87fc3;
 }
 
-.read button {
+.check-button.read {
   background-color: #56e87fc3;
 }
 
