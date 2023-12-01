@@ -1,4 +1,7 @@
-import { getAllAgreements } from "../../../../utility/datahandler.js";
+import {
+  getAllAgreements,
+  deleteAgreementById,
+} from "../../../../utility/datahandler.js";
 
 async function displayAllAgreements() {
   let agreementBoard = document.getElementById("notice");
@@ -61,8 +64,9 @@ async function displayAllAgreements() {
     crossElement.innerHTML = `<i class="fas fa-times"></i>`;
 
     crossElement.addEventListener("click", () => {
-      noticeElement.remove();
-      // TODO: Remove from database
+      agreementElement.remove();
+      console.log(agreement.id);
+      deleteAgreementById(agreement.id);
     });
 
     agreementElement.appendChild(concerningContainer);
