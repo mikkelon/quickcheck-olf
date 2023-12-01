@@ -39,7 +39,7 @@ function clear() {
 function deleteAgreement(id) {
   deleteAgreementById(id);
 }
-function createNewAgreement(studentId, message, daysValid) {
+async function createNewAgreement(studentId, message, daysValid) {
   const agreement = {
     studentId: studentId,
     message: message,

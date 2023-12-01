@@ -373,7 +373,12 @@ saveAgreement.addEventListener("click", async () => {
     otherDays.forEach((day) => selectedDays.add(day));
   }
 
-  createNewAgreement(child.id, message, Array.from(selectedDays));
+  if (selectedDays.size === 0) {
+    alert("Vælg venligst en eller flere dage");
+    return;
+  }
+
+  await createNewAgreement(child.id, message, Array.from(selectedDays));
   createAgreementsGui();
   descriptionField.value = "";
   agreementModal.style.display = "none";
@@ -434,11 +439,12 @@ function createAgreementElement(agreement) {
   dropdownDiv.classList.add("dropdown");
 
   if (agreement.daysValid.length > 0) {
-    dropdownDiv.innerHTML =
-      agreement.message +
-      "<br>" +
-      "Gældende dage: " +
-      translateValidDays(agreement);
+    dropdownDiv.innerHTML = `
+    <div class="note-description">
+    ${agreement.message}
+
+    <span class="valid-days">${translateValidDays(agreement)}</span>
+    </div>`;
   } else {
     dropdownDiv.innerHTML = agreement.message;
   }
@@ -471,7 +477,10 @@ function createAgreementElement(agreement) {
 
   // Tilføj en event listener til delete-knappen
   deleteBtnDiv.addEventListener("click", () => {
-    deleteAgreementHandler(agreement.id);
+    const confirmDelete = confirm("Er du sikker på, at du vil slette aftalen?");
+    if (confirmDelete) {
+      deleteAgreementHandler(agreement.id);
+    }
   });
 
   // Tilføj dropdown-containeren og delete-knappen til hovedelementet

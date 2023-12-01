@@ -5,7 +5,7 @@ import { toggleCheckedInStatus } from "../src/api/controllers/studentsController
 
 describe("toggleCheckedInStatus Function", () => {
   it("should toggle the checkedIn status of a student", async () => {
-    const testStudentId = "KxVf1jlbiQefXT31B6v9"; // Find et passende test id fra databasen (kan være skiftende)
+    const testStudentId = "1CNqi56kl0UU6DBzKUVh"; // Find et passende test id fra databasen (kan være skiftende)
 
     // Initial check of student status
     let studentSnapshot = await adminDB
