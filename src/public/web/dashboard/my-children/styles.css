@@ -53,8 +53,9 @@ main {
 }
 
 .left-container button {
-  width: 75px;
-  height: 1rem;
+  box-sizing: border-box;
+  width: 90px;
+  padding: 0.5rem 1rem;
   font-size: 0.75rem;
   white-space: nowrap;
 }

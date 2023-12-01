@@ -11,7 +11,7 @@ const closeModalBtn = document.querySelector("#close-modal");
 
 let students = [];
 
-const toggleCheckIn = async (studentId) => {
+const toggleCheckIn = async studentId => {
   try {
     await toggleStudentCheckIn(studentId);
   } catch (error) {
@@ -43,7 +43,7 @@ const toggleCheckIn = async (studentId) => {
   }
 };
 
-const createCard = (student) => {
+const createCard = student => {
   // LOG STUDENT FOR TESTING PURPOSES
   console.log(student);
 
@@ -63,7 +63,7 @@ const createCard = (student) => {
   main.appendChild(cardDiv);
 };
 
-const createLeftContainer = (student) => {
+const createLeftContainer = student => {
   // Create left container
   const leftContainer = document.createElement("div");
   leftContainer.classList.add("left-container");
@@ -74,13 +74,13 @@ const createLeftContainer = (student) => {
 
   // Add buttons to left container
   const buttons = createButtons(student);
-  buttons.forEach((button) => leftContainer.appendChild(button));
+  buttons.forEach(button => leftContainer.appendChild(button));
 
   // Return left container
   return leftContainer;
 };
 
-const createAvatar = (student) => {
+const createAvatar = student => {
   // Create avatar div
   const avatar = document.createElement("div");
   avatar.classList.add("avatar-container");
@@ -110,7 +110,7 @@ const createAvatar = (student) => {
   return avatar;
 };
 
-const createButtons = (student) => {
+const createButtons = student => {
   const buttons = [];
 
   // Create check in/out button
@@ -137,12 +137,11 @@ const createButtons = (student) => {
 
   // Create notes button
   const notesBtn = document.createElement("button");
-  notesBtn.innerText = "Noter";
+  notesBtn.innerText = "Faste aftaler";
   notesBtn.style.backgroundColor = "#8774FF";
 
   // Add event listener to notes button
   notesBtn.addEventListener("click", () => {
-    console.log("Notes button clicked for student: ", student.id);
     openModal(student);
   });
 
@@ -152,7 +151,7 @@ const createButtons = (student) => {
   return buttons;
 };
 
-const createInfoContainer = (student) => {
+const createInfoContainer = student => {
   const infoContainer = document.createElement("div");
   infoContainer.classList.add("info-container");
 
@@ -190,7 +189,7 @@ const createInfoBox = (label, value) => {
   return infoBox;
 };
 
-const shortenName = (name) => {
+const shortenName = name => {
   const nameArray = name.split(" ");
 
   // If name is longer than 2 words, return first name and initials of the other names
@@ -211,7 +210,7 @@ const shortenName = (name) => {
 };
 
 // #--- MODAL ---#
-const openModal = (student) => {
+const openModal = student => {
   modal.style.display = "flex";
 };
 
@@ -220,7 +219,7 @@ const closeModal = () => {
 };
 
 // Add eventlistener to grey background
-modal.addEventListener("click", (e) => {
+modal.addEventListener("click", e => {
   if (e.target.classList.contains("modal")) {
     closeModal();
   }
@@ -237,5 +236,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   students = await getStudentsBySessionCookie();
 
   // Create cards for students
-  students.forEach((student) => createCard(student));
+  students.forEach(student => createCard(student));
 });
