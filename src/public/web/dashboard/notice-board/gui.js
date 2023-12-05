@@ -13,29 +13,29 @@ let noticeBoard = document.getElementById("notices");
 function loadNotices() {
   noticeBoard.innerHTML = "";
 
-  if (notices.length == 0) {
-    let noNotices = document.createElement("div");
-    noNotices.className = "no-notices";
-    noNotices.innerHTML = `<p>Der er ingen beskeder at vise</p>`;
-    noticeBoard.appendChild(noNotices);
-  }
-
   const todaysMessages = notices.filter(message => {
     const today = new Date();
     const messageDate = new Date(message.sendDate);
     return today.toDateString() === messageDate.toDateString();
   });
 
-  todaysMessages.sort((a, b) => {
-    // Sort by read status
-    if (a.read && !b.read) return 1;
-    else if (!a.read && b.read) return -1;
-    return 0;
-  });
+  if (todaysMessages.length == 0) {
+    let noNotices = document.createElement("div");
+    noNotices.className = "no-notices";
+    noNotices.innerHTML = `<p>Der er ingen beskeder at vise</p>`;
+    noticeBoard.appendChild(noNotices);
+  } else {
+    todaysMessages.sort((a, b) => {
+      // Sort by read status
+      if (a.read && !b.read) return 1;
+      else if (!a.read && b.read) return -1;
+      return 0;
+    });
 
-  todaysMessages.forEach(message => {
-    displayNotice(message);
-  });
+    todaysMessages.forEach(message => {
+      displayNotice(message);
+    });
+  }
 }
 
 async function loadAgreements() {
