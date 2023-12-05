@@ -131,7 +131,7 @@ function createParentElement(parent, index) {
   emailInput.addEventListener("blur", () =>
     updateParentData(index, "email", emailInput.value)
   );
-  emailInput.addEventListener("blur", () =>
+  relationInput.addEventListener("blur", () =>
     updateParentData(index, "relation", relationInput.value)
   );
 
