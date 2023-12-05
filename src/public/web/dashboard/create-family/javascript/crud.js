@@ -14,7 +14,7 @@ function createParent(name, phone, email, relation) {
 
 async function submitToDatabase() {
   console.log("submitting to database");
-  console.log(childrenData, parentsData);
+  console.log("crud", childrenData, parentsData);
 
   try {
     await createFamily(childrenData, parentsData);
